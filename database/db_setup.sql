@@ -1,0 +1,66 @@
+DROP DATABASE IF EXISTS network;
+CREATE DATABASE network;
+USE network;
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET GLOBAL time_zone = '+02:00';
+
+CREATE TABLE users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE _groups (
+    gid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    group_name VARCHAR(255) UNIQUE NOT NULL,
+    group_admin BIGINT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(group_admin) REFERENCES users(id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE sites (
+    sid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    site_name VARCHAR(255) UNIQUE,
+    location POINT NOT NULL
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE posts (
+    pid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    post VARCHAR(255) NOT NULL,
+    category VARCHAR(255),
+    group_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    site_id BIGINT,
+    posted_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(group_id) REFERENCES _groups(gid),
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(site_id) REFERENCES sites(sid)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE comments (
+    cid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    comment_text VARCHAR(255) NOT NULL,
+    user_id BIGINT NOT NULL,
+    post_id BIGINT NOT NULL,
+    made_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(user_id) REFERENCES users(id),
+    FOREIGN KEY(post_id) REFERENCES posts(pid)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE members_info (
+    member_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    group_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    admin_rights BOOLEAN NOT NULL,
+    joined_at TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY(group_id) REFERENCES _groups(gid),
+    FOREIGN KEY(user_id) REFERENCES users(id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -1,4 +1,4 @@
-package com.example.project3.member;
+package com.project3.api.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

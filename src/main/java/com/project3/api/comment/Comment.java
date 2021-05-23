@@ -1,4 +1,4 @@
-package com.example.project3.comment;
+package com.project3.api.comment;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

@@ -1,4 +1,4 @@
-package com.example.project3.group;
+package com.project3.api.group;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

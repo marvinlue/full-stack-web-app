@@ -1,4 +1,4 @@
-package com.example.project3.message;
+package com.project3.api.message;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

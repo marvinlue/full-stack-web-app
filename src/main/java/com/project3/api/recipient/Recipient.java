@@ -1,4 +1,4 @@
-package com.example.project3.recipient;
+package com.project3.api.recipient;
 
 import javax.persistence.*;
 import static javax.persistence.GenerationType.SEQUENCE;

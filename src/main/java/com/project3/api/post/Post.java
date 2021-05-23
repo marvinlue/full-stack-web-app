@@ -1,4 +1,4 @@
-package com.example.project3.post;
+package com.project3.api.post;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

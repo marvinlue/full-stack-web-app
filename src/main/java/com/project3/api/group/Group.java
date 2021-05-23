@@ -1,8 +1,7 @@
-package com.example.project3.group;
+package com.project3.api.group;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Table

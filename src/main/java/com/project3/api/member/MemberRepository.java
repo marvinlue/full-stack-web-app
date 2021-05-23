@@ -1,7 +1,6 @@
-package com.example.project3.member;
+package com.project3.api.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 import java.util.Optional;
 

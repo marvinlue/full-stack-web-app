@@ -17,7 +17,7 @@ CREATE TABLE _groups (
     gid BIGINT AUTO_INCREMENT PRIMARY KEY,
     group_name VARCHAR(255) UNIQUE NOT NULL,
     group_admin BIGINT NOT NULL,
-    created_at TIMESTAMP DEFAULT NOW(),
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY(group_admin) REFERENCES users(id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -36,7 +36,7 @@ CREATE TABLE posts (
     group_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     site_id BIGINT,
-    posted_at TIMESTAMP DEFAULT NOW(),
+    posted_at TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY(group_id) REFERENCES _groups(gid),
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(site_id) REFERENCES sites(sid)
@@ -48,7 +48,7 @@ CREATE TABLE comments (
     comment_text VARCHAR(255) NOT NULL,
     user_id BIGINT NOT NULL,
     post_id BIGINT NOT NULL,
-    made_at TIMESTAMP DEFAULT NOW(),
+    made_at TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY(user_id) REFERENCES users(id),
     FOREIGN KEY(post_id) REFERENCES posts(pid)
 )
@@ -59,8 +59,26 @@ CREATE TABLE members_info (
     group_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     admin_rights BOOLEAN NOT NULL,
-    joined_at TIMESTAMP DEFAULT NOW(),
+    joined_at TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY(group_id) REFERENCES _groups(gid),
     FOREIGN KEY(user_id) REFERENCES users(id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE messages (
+    mid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    message VARCHAR(255) NOT NULL,
+    sender BIGINT NOT NULL,
+    sent_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    FOREIGN KEY(sender) REFERENCES users(id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE recipient_info (
+    rid BIGINT AUTO_INCREMENT PRIMARY KEY,
+    message_id BIGINT NOT NULL,
+    recipient BIGINT NOT NULL,
+    FOREIGN KEY(message_id) REFERENCES messages(mid),
+    FOREIGN KEY(recipient) REFERENCES users(id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;

@@ -22,6 +22,30 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserByIdOrUsername(Long userId, String username) {
+        if (userId == null && username == null) {
+            throw new IllegalStateException("User id or username required for this route!");
+        }
+        if (userId != null && username != null) {
+            Optional<User> userByIdAndUsername = userRepository.findByIdAndUsername(userId, username);
+            if (!userByIdAndUsername.isPresent()) {
+                throw new IllegalStateException("User with id " + userId + " and username " + username + " not found!");
+            }
+        }
+        if (userId != null) {
+            Optional<User> userById = userRepository.findUserById(userId);
+            if (!userById.isPresent()) {
+                throw new IllegalStateException("User with id " + userId + " does not exist!");
+            }
+            return userById.get();
+        }
+        Optional<User> userByUsername = userRepository.findUserByUsername(username);
+        if (!userByUsername.isPresent()) {
+            throw new IllegalStateException("User with username " + username + " does not exist!");
+        }
+        return userByUsername.get();
+    }
+
     public void addNewUser(User user) {
         Optional<User> userByUsername = userRepository.findUserByUsername(user.getUsername());
         if (userByUsername.isPresent()) {

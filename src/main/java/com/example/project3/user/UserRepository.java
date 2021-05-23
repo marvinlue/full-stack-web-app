@@ -10,5 +10,6 @@ public interface UserRepository
 
     // SELECT * FROM users WHERE username = ?
     Optional<User> findUserByUsername(String username);
-
+    Optional<User> findUserById(Long id);
+    Optional<User> findByIdAndUsername(Long id, String username);
 }

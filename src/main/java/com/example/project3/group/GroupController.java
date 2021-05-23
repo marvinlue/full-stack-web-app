@@ -17,6 +17,13 @@ public class GroupController {
         return groupService.getGroups();
     }
 
+    @GetMapping(path = "group")
+    public Group getGroupByGidOrGroupName(
+            @RequestParam (required = false) Long groupId,
+            @RequestParam (required = false) String groupName) {
+        return groupService.getGroupByGidOrGroupName(groupId, groupName);
+    }
+
     @PostMapping
     public void createNewGroup(@RequestBody Group group) {
         groupService.addNewGroup(group);

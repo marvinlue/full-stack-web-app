@@ -2,9 +2,12 @@ package com.example.project3.group;
 
 import com.example.project3.member.Member;
 import com.example.project3.member.MemberRepository;
+import com.example.project3.user.User;
 import com.example.project3.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -27,6 +30,30 @@ public class GroupService {
 
     public List<Group> getGroups() {
         return groupRepository.findAll();
+    }
+
+    public Group getGroupByGidOrGroupName(Long groupId, String groupName) {
+        if (groupId == null && groupName == null) {
+            throw new IllegalStateException("groupId or groupName required for this route!");
+        }
+        if (groupId != null && groupName != null) {
+            Optional<Group> groupByGidAndGroupName = groupRepository.findGroupByGidAndGroupName(groupId, groupName);
+            if (!groupByGidAndGroupName.isPresent()) {
+                throw new IllegalStateException("Group with id " + groupId + " and name " + groupName + " not found!");
+            }
+        }
+        if (groupId != null) {
+            Optional<Group> groupByGid = groupRepository.findGroupByGid(groupId);
+            if (!groupByGid.isPresent()) {
+                throw new IllegalStateException("Group with id " + groupId + " does not exist!");
+            }
+            return groupByGid.get();
+        }
+        Optional<Group> groupByGroupName = groupRepository.findGroupByGroupName(groupName);
+        if (!groupByGroupName.isPresent()) {
+            throw new IllegalStateException("Group with name " + groupName + " does not exist!");
+        }
+        return groupByGroupName.get();
     }
 
     public void addNewGroup(Group group) {

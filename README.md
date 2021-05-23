@@ -25,11 +25,29 @@ API will be running on http://localhost:8080
 
 ### HTTP REQUESTS
 #### Users
+##### GET
 * To obtain a list of dictonaries containing all entries in users table using a GET request:
 ```
 GET http://localhost:8080/api/users
 ```
-
+* To obtain a dictionary of the entry in users table with userId and/or username using a GET request:
+```
+GET http://localhost:8080/api/users/user?userId={{userId}}&username={{username}}
+```
+EXAMPLE 1: Getting user with userId 1:
+```
+GET http://localhost:8080/api/users/user?userId=1
+```
+EXAMPLE 2: Getting user with username "some-username":
+```
+GET http://localhost:8080/api/users/user?username=some-username
+```
+EXAMPLE 3: Getting user with userId 1 and username "some-username":
+```
+GET http://localhost:8080/api/users/user?userId=1&username=some-username
+```
+**NOTE** EXAMPLE 3 is not really necessary - rather use either of first 2 examples
+##### POST
 * Using a POST request to add a new user to users table with a dictoinary as input:
 ```
 POST http://localhost:8080/api/users
@@ -42,6 +60,7 @@ Dictionary must be in the following form:
   "password": "some-password"
 }
 ```
+##### DELETE
 * To delete a user with userId from users table using a DELETE request:
 ```
 DELETE http://localhost:8080/api/users/{{userId}}
@@ -50,6 +69,7 @@ e.g. deleting user with userId 1:
 ```
 DELETE http://localhost:8080/api/users/1
 ```
+##### PUT
 * Update user properties (username, email, password) of user with userId in users table using a PUT request:
 ```
 PUT http://localhost:8080/api/users/{{userId}}?username={{username}}&email={{email}}&password={{password}}
@@ -72,10 +92,29 @@ PUT http://localhost:8080/api/users/1?username=new-username&email=new-email&pass
 ```
 
 #### Groups
+##### GET
 * To obtain a list of dictonaries containing all entries in _groups ("groups" is a reserved word in MySQL, hence "_groups") table using a GET request:
 ```
 GET http://localhost:8080/api/groups
 ```
+* To obtain a dictionary of the entry in _groups table with groupId and/or groupName using a GET request:
+```
+GET http://localhost:8080/api/groups/group?groupId={{groupId}}&groupName={{groupName}}
+```
+EXAMPLE 1: Getting group with groupId 1:
+```
+GET http://localhost:8080/api/groups/group?groupId=1
+```
+EXAMPLE 2: Getting group with groupName "some-groupname":
+```
+GET http://localhost:8080/api/groupss/group?groupName=some-groupname
+```
+EXAMPLE 3: Getting group with groupId 1 and groupName "some-groupname":
+```
+GET http://localhost:8080/api/groups/group?groupId=1&groupName=some-groupname
+```
+**NOTE** EXAMPLE 3 is not really necessary - rather use either of first 2 examples
+##### POST
 * Using a POST request to add a new group to _groups table with a dictoinary as input:
 ```
 POST http://localhost:8080/api/groups
@@ -96,7 +135,7 @@ e.g. if user with userId 1 created the group:
 ```
 
 **NOTE:** Upon group creation user who created group is added to group. All info regarding groups and their members are kept in the members_info table
-
+##### DELETE
 * To delete a group with groupId from _groups table using a DELETE request:
 ```
 DELETE http://localhost:8080/api/groups/{{groupId}}
@@ -105,6 +144,7 @@ e.g. deleting group with groupId 1:
 ```
 DELETE http://localhost:8080/api/groups/1
 ```
+##### PUT
 * Update group properties (groupName, groupAdmin) of group with groupId in _groups table using a PUT request:
 ```
 PUT http://localhost:8080/api/groups/{{groupId}}?groupName={{groupName}}&groupAdmin={{groupAdmin}}
@@ -123,10 +163,36 @@ PUT http://localhost:8080/api/users/1?username=new-username&email=new-email&pass
 ```
 
 ### Members
+##### GET
 * To obtain a list of dictonaries containing all entries in members_info table using a GET request:
 ```
 GET http://localhost:8080/api/members
 ```
+* To obtain a list of dictionaries containing all entries in members_info table with groupId using a GET request:
+```
+GET http://localhost:8080/api/members?groupId={{groupId}}
+```
+e.g. getting all the members belonging the group with groupId 1:
+```
+GET http://localhost:8080/api/members?groupId=1
+```
+* To obtain a list of dictionaries containing all entries in members_info table with userId using a GET request:
+```
+GET http://localhost:8080/api/members?userId={{userId}}
+```
+e.g. getting all the groups that user with userId 1 belongs to:
+```
+GET http://localhost:8080/api/members?userId=1
+```
+* To obtain a dictionary of the entry in members_info table with groupId and userId using a GET request:
+```
+GET http://localhost:8080/api/members/{{groupId}}?userId={{userId}}
+```
+e.g. to get user with userId 1 belonging to group with groupId 1:
+```
+GET http://localhost:8080/api/members/1?userId=1
+```
+##### POST
 * A member can be added to a group by using POST request. This is done by adding a entry to members_info table with a dictoinary as input:
 ```
 POST http://localhost:8080/api/members
@@ -147,6 +213,7 @@ e.g. if user with userId 1 is added to group with groupId 1 and is granted admin
   "adminRights": "true"
 }
 ```
+##### DELETE
 * A user with userId 1 can be deleted from a group with groupId using a DELETE request. This is done by deleting corresponding entry in members_info table:
 ```
 DELETE http://localhost:8080/api/members/{{groupId}}?userId={{userId}}
@@ -155,6 +222,7 @@ e.g. deleting user with userId 1 from group with groupId 1:
 ```
 DELETE http://localhost:8080/api/members/1?userId=1
 ```
+##### PUT
 * The adminRights of user with userId in group with groupId can be updated using a PUT request. This is done by updating corresponding entry in members_info table:
 ```
 PUT http://localhost:8080/api/members/{{groupId}}?userId={{userId}}&adminRights={{adminRights}}

@@ -25,8 +25,35 @@ public class MemberService {
         this.groupRepository = groupRepository;
     }
 
-    public List<Member> getMembers() {
+    public List<Member> getMembers(Long groupId, Long userId) {
+        boolean exists;
+        if (groupId != null && userId != null) {
+            throw new IllegalStateException("This route requires either groupId, userId, or neither, but not both!");
+        }
+        if (groupId != null) {
+            exists = groupRepository.existsById(groupId);
+            if (!exists) {
+                throw new IllegalStateException("Group with id " + groupId + " does not exist!");
+            }
+            return memberRepository.findAllByGroupId(groupId);
+        }
+        if (userId != null) {
+            exists = userRepository.existsById(userId);
+            if (!exists) {
+                throw new IllegalStateException("User with id " + userId + " does not exist!");
+            }
+            return memberRepository.findAllByUserId(userId);
+        }
         return memberRepository.findAll();
+    }
+
+    public Member getMemberByGidAndUserId(Long groupId, Long userId) {
+        validateGroupAndUser(groupId, userId);
+        Optional<Member> memberByGidAndId = memberRepository.findMemberByGroupIdAndUserId(groupId, userId);
+        if (!memberByGidAndId.isPresent()) {
+            throw new IllegalStateException("Member with id " + userId + " is not part of group with id " + groupId + "!");
+        }
+        return memberByGidAndId.get();
     }
 
     public void addNewMember(Member member) {

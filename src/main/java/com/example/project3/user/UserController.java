@@ -19,6 +19,13 @@ public class UserController {
         return userService.getUsers();
     }
 
+    @GetMapping(path = "user")
+    public User getUserById(
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) String username) {
+        return userService.getUserByIdOrUsername(userId, username);
+    }
+
     @PostMapping
     public void registerNewUser(@RequestBody User user) {
         userService.addNewUser(user);

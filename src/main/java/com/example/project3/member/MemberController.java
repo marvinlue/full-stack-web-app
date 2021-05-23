@@ -15,8 +15,17 @@ public class MemberController {
     }
 
     @GetMapping
-    public List<Member> getMembers() {
-        return memberService.getMembers();
+    public List<Member> getMembers(
+            @RequestParam (required = false) Long groupId,
+            @RequestParam (required = false) Long userId) {
+        return memberService.getMembers(groupId, userId);
+    }
+
+    @GetMapping(path = "{groupId}")
+    public Member getMemberByGidAndUserId(
+            @PathVariable("groupId") Long groupId,
+            @RequestParam Long userId) {
+        return memberService.getMemberByGidAndUserId(groupId, userId);
     }
 
     @PostMapping

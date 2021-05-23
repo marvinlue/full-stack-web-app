@@ -2,12 +2,9 @@ package com.example.project3.group;
 
 import com.example.project3.member.Member;
 import com.example.project3.member.MemberRepository;
-import com.example.project3.user.User;
 import com.example.project3.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

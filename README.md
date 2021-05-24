@@ -162,7 +162,7 @@ EXAMPLE 3: Updating all properties of group with groupId 1:
 PUT http://localhost:8080/api/users/1?username=new-username&email=new-email&password=new-password
 ```
 
-### Members
+#### Members
 ##### GET
 * To obtain all entries in members_info table as a list of dictonaries using a GET request:
 ```

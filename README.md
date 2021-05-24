@@ -26,11 +26,11 @@ API will be running on http://localhost:8080
 ### HTTP REQUESTS
 #### Users
 ##### GET
-* To obtain a list of dictonaries containing all entries in users table using a GET request:
+* To obtain all entries in users table as a list of dictonaries using a GET request:
 ```
 GET http://localhost:8080/api/users
 ```
-* To obtain a dictionary of the entry in users table with userId and/or username using a GET request:
+* To obtain the entry in users table with a specific userId and/or username as a dictonary using a GET request:
 ```
 GET http://localhost:8080/api/users/user?userId={{userId}}&username={{username}}
 ```
@@ -93,11 +93,11 @@ PUT http://localhost:8080/api/users/1?username=new-username&email=new-email&pass
 
 #### Groups
 ##### GET
-* To obtain a list of dictonaries containing all entries in _groups ("groups" is a reserved word in MySQL, hence "_groups") table using a GET request:
+* To obtain all entries in _groups ("groups" is a reserved word in MySQL, hence "_groups") table as a list of dictonaries using a GET request:
 ```
 GET http://localhost:8080/api/groups
 ```
-* To obtain a dictionary of the entry in _groups table with groupId and/or groupName using a GET request:
+* To obtain the entry in _groups table with a specific groupId and/or groupName as a dictonary using a GET request:
 ```
 GET http://localhost:8080/api/groups/group?groupId={{groupId}}&groupName={{groupName}}
 ```
@@ -164,11 +164,11 @@ PUT http://localhost:8080/api/users/1?username=new-username&email=new-email&pass
 
 ### Members
 ##### GET
-* To obtain a list of dictonaries containing all entries in members_info table using a GET request:
+* To obtain all entries in members_info table as a list of dictonaries using a GET request:
 ```
 GET http://localhost:8080/api/members
 ```
-* To obtain a list of dictionaries containing all entries in members_info table with groupId using a GET request:
+* To obtain all entries in members_info table with a specific groupId using a GET request as a list of dictonaries:
 ```
 GET http://localhost:8080/api/members?groupId={{groupId}}
 ```
@@ -176,7 +176,7 @@ e.g. getting all the members belonging the group with groupId 1:
 ```
 GET http://localhost:8080/api/members?groupId=1
 ```
-* To obtain a list of dictionaries containing all entries in members_info table with userId using a GET request:
+* To obtain all entries in members_info table with a specific userId as a list of dictonaries using a GET request:
 ```
 GET http://localhost:8080/api/members?userId={{userId}}
 ```
@@ -184,7 +184,7 @@ e.g. getting all the groups that user with userId 1 belongs to:
 ```
 GET http://localhost:8080/api/members?userId=1
 ```
-* To obtain a dictionary of the entry in members_info table with groupId and userId using a GET request:
+* To obtain the entry in members_info table with a specific groupId and userId as a dictonary using a GET request:
 ```
 GET http://localhost:8080/api/members/{{groupId}}?userId={{userId}}
 ```

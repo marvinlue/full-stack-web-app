@@ -1,4 +1,4 @@
-package com.project3.api.site;
+package com.project3.api.entities.site;
 
 import org.springframework.data.geo.Point;
 import javax.persistence.*;

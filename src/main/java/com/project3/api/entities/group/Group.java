@@ -1,4 +1,4 @@
-package com.project3.api.group;
+package com.project3.api.entities.group;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

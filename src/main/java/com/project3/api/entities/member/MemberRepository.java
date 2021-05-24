@@ -1,4 +1,4 @@
-package com.project3.api.member;
+package com.project3.api.entities.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;

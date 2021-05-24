@@ -1,4 +1,4 @@
-package com.project3.api.user;
+package com.project3.api.entities.user;
 
 import javax.persistence.*;
 import static javax.persistence.GenerationType.SEQUENCE;

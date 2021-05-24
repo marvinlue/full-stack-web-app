@@ -1,8 +1,8 @@
-package com.project3.api.member;
+package com.project3.api.entities.member;
 
-import com.project3.api.group.Group;
-import com.project3.api.group.GroupRepository;
-import com.project3.api.user.UserRepository;
+import com.project3.api.entities.group.Group;
+import com.project3.api.entities.group.GroupRepository;
+import com.project3.api.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;

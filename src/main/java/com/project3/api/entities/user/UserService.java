@@ -1,11 +1,14 @@
-package com.project3.api.user;
+package com.project3.api.entities.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import static com.project3.api.functions.Hash.getSHA;
+import static com.project3.api.functions.Hash.toHexString;
 
 @Service
 public class UserService {
@@ -49,6 +52,11 @@ public class UserService {
         Optional<User> userByUsername = userRepository.findUserByUsername(user.getUsername());
         if (userByUsername.isPresent()) {
             throw new IllegalStateException("Username already taken!");
+        }
+        try {
+           user.setPassword(toHexString(getSHA(user.getPassword())));
+        } catch (NoSuchAlgorithmException e) {
+            System.out.println("Exception thrown for incorrect algorithm: " + e);
         }
         userRepository.save(user);
     }

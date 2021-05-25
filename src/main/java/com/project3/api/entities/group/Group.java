@@ -1,10 +1,16 @@
 package com.project3.api.entities.group;
 
+import com.project3.api.entities.member.Member;
+import com.project3.api.entities.user.User;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Table
+@Table(name = "_groups")
 @Entity(name = "_groups")
 public class Group {
     @Id
@@ -30,29 +36,25 @@ public class Group {
     private String groupName;
 
     @Column(
-            name = "group_admin"
-    )
-    private Long groupAdmin;
-
-    @Column(
             name = "created_at",
             updatable = false
     )
     private Timestamp createdAt;
 
+    @OneToMany(mappedBy = "group", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Member> members = new ArrayList<>();
+
     public Group() {
     }
 
-    public Group(Long gid, String groupName, Long groupAdmin, Timestamp createdAt) {
+    public Group(Long gid, String groupName, Timestamp createdAt) {
         this.gid = gid;
         this.groupName = groupName;
-        this.groupAdmin = groupAdmin;
         this.createdAt = createdAt;
     }
 
-    public Group(String groupName, Long groupAdmin, Timestamp createdAt) {
+    public Group(String groupName, Timestamp createdAt) {
         this.groupName = groupName;
-        this.groupAdmin = groupAdmin;
         this.createdAt = createdAt;
     }
 
@@ -72,14 +74,6 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public Long getGroupAdmin() {
-        return groupAdmin;
-    }
-
-    public void setGroupAdmin(Long groupAdmin) {
-        this.groupAdmin = groupAdmin;
-    }
-
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -93,7 +87,6 @@ public class Group {
         return "Group{" +
                 "gid=" + gid +
                 ", groupName='" + groupName + '\'' +
-                ", groupAdmin='" + groupAdmin + '\'' +
                 ", createdAt='" + createdAt + '\'' +
                 '}';
     }

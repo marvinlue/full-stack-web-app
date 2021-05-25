@@ -2,6 +2,7 @@ package com.project3.api.entities.member;
 
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.group.GroupRepository;
+import com.project3.api.entities.user.User;
 import com.project3.api.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,33 +36,41 @@ public class MemberService {
             if (!exists) {
                 throw new IllegalStateException("Group with id " + groupId + " does not exist!");
             }
-            return memberRepository.findAllByGroupId(groupId);
+            Group group = groupRepository.getById(groupId);
+            return memberRepository.findAllByGroup(group);
         }
         if (userId != null) {
             exists = userRepository.existsById(userId);
             if (!exists) {
                 throw new IllegalStateException("User with id " + userId + " does not exist!");
             }
-            return memberRepository.findAllByUserId(userId);
+            User user = userRepository.getById(userId);
+            return memberRepository.findAllByUser(user);
         }
         return memberRepository.findAll();
     }
 
     public Member getMemberByGidAndUserId(Long groupId, Long userId) {
         validateGroupAndUser(groupId, userId);
-        Optional<Member> memberByGidAndId = memberRepository.findMemberByGroupIdAndUserId(groupId, userId);
-        if (!memberByGidAndId.isPresent()) {
+        Group group = groupRepository.getById(groupId);
+        User user = userRepository.getById(userId);
+        Optional<Member> memberByGroupAndUser = memberRepository.findMemberByGroupAndUser(group, user);
+        if (!memberByGroupAndUser.isPresent()) {
             throw new IllegalStateException("Member with id " + userId + " is not part of group with id " + groupId + "!");
         }
-        return memberByGidAndId.get();
+        return memberByGroupAndUser.get();
     }
 
-    public void addNewMember(Member member) {
-        validateGroupAndUser(member.getGroupId(), member.getUserId());
-        Optional<Member> memberByGroupIdAndUserId =
-                memberRepository.findMemberByGroupIdAndUserId(member.getGroupId(), member.getUserId());
-        if (memberByGroupIdAndUserId.isPresent()) {
-            throw new IllegalStateException("User with id " + member.getUserId() + " is already a member of group with id " + member.getGroupId() +"!");
+    public void addNewMember(Long groupId, Long userId, Member member) {
+        validateGroupAndUser(groupId, userId);
+        Group group = groupRepository.getById(groupId);
+        User user = userRepository.getById(userId);
+        member.setGroup(group);
+        member.setUser(user);
+        Optional<Member> memberByGroupAndUser =
+                memberRepository.findMemberByGroupAndUser(member.getGroup(), member.getUser());
+        if (memberByGroupAndUser.isPresent()) {
+            throw new IllegalStateException("User with id " + member.getUser().getId() + " is already a member of group with id " + member.getGroup().getGid() +"!");
         }
         member.setJoinedAt(Timestamp.valueOf(LocalDateTime.now()));
         memberRepository.save(member);
@@ -69,33 +78,29 @@ public class MemberService {
 
     public void deleteMember(Long groupId, Long userId) {
         validateGroupAndUser(groupId, userId);
-        Optional<Member> memberByGroupIdAndUserId =
-                memberRepository.findMemberByGroupIdAndUserId(groupId, userId);
-        if (!memberByGroupIdAndUserId.isPresent()) {
+        Group group = groupRepository.getById(groupId);
+        User user = userRepository.getById(userId);
+        Optional<Member> memberByGroupAndUser =
+                memberRepository.findMemberByGroupAndUser(group, user);
+        if (!memberByGroupAndUser.isPresent()) {
             throw new IllegalStateException("User with id " + userId + " is not a member of group with id " + groupId +"!");
         }
-        Optional<Group> groupByGidAndGroupAdmin = groupRepository.findGroupByGidAndGroupAdmin(groupId, userId);
-        if (groupByGidAndGroupAdmin.isPresent()) {
-            throw new IllegalStateException("User with id " + userId + " is group admin of group with id " + groupId + ". Please select another group admin first.");
-        }
-        Member member = memberByGroupIdAndUserId.get();
+        Member member = memberByGroupAndUser.get();
         memberRepository.delete(member);
     }
 
     @Transactional
     public void updateMember(Long groupId, Long userId, Boolean adminRights) {
         validateGroupAndUser(groupId, userId);
-        Optional<Member> memberByGroupIdAndUserId =
-                memberRepository.findMemberByGroupIdAndUserId(groupId, userId);
-        if (!memberByGroupIdAndUserId.isPresent()) {
+        Group group = groupRepository.getById(groupId);
+        User user = userRepository.getById(userId);
+        Optional<Member> memberByGroupAndUser =
+                memberRepository.findMemberByGroupAndUser(group, user);
+        if (!memberByGroupAndUser.isPresent()) {
             throw new IllegalStateException("User with id " + userId + " is not a member of group with id " + groupId +"!");
         }
-        Member member = memberByGroupIdAndUserId.get();
+        Member member = memberByGroupAndUser.get();
         if (adminRights != null && !Objects.equals(member.getAdminRights(), adminRights)) {
-            Optional<Group> groupByGidAndGroupAdmin = groupRepository.findGroupByGidAndGroupAdmin(groupId, userId);
-            if (groupByGidAndGroupAdmin.isPresent()) {
-                throw new IllegalStateException("Cannot update adminRights as user with id " + userId + " is group admin of group with id " + groupId + "!");
-            }
             member.setAdminRights(adminRights);
         }
     }

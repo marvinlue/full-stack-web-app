@@ -1,10 +1,12 @@
 package com.project3.api.entities.member;
 
+import com.project3.api.entities.group.Group;
+import com.project3.api.entities.user.User;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Table
+@Table(name = "members_info")
 @Entity(name = "members_info")
 public class Member {
     @Id
@@ -23,17 +25,13 @@ public class Member {
     )
     private Long memberId;
 
-    @Column(
-            name = "group_id",
-            updatable = false
-    )
-    private Long groupId;
+    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false)
+    private Group group;
 
-    @Column(
-            name = "user_id",
-            updatable = false
-    )
-    private Long userId;
+    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
+    private User user;
 
     @Column(
             name = "admin_rights"
@@ -49,19 +47,35 @@ public class Member {
     public Member() {
     }
 
-    public Member(Long memberId, Long groupId, Long userId, Boolean adminRights, Timestamp joinedAt) {
+    public Member(Long memberId, Group group, User user, Boolean adminRights, Timestamp joinedAt) {
         this.memberId = memberId;
-        this.groupId = groupId;
-        this.userId = userId;
+        this.group = group;
+        this.user = user;
         this.adminRights = adminRights;
         this.joinedAt = joinedAt;
     }
 
-    public Member(Long groupId, Long userId, Boolean adminRights, Timestamp joinedAt) {
-        this.groupId = groupId;
-        this.userId = userId;
+    public Member(Group group, User user, Boolean adminRights, Timestamp joinedAt) {
+        this.group = group;
+        this.user = user;
         this.adminRights = adminRights;
         this.joinedAt = joinedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public Long getMemberId() {
@@ -70,22 +84,6 @@ public class Member {
 
     public void setMemberId(Long memberId) {
         this.memberId = memberId;
-    }
-
-    public Long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Boolean getAdminRights() { return adminRights; }
@@ -104,10 +102,10 @@ public class Member {
     public String toString() {
         return "Member{" +
                 "memberId=" + memberId +
-                ", groupId=" + groupId +
-                ", userId=" + userId +
                 ", adminRights=" + adminRights +
                 ", joinedAt=" + joinedAt +
+                ", user=" + user +
+                ", group=" + group +
                 '}';
     }
 }

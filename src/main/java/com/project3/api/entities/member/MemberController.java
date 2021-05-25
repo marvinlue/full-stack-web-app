@@ -29,8 +29,8 @@ public class MemberController {
     }
 
     @PostMapping
-    public void registerNewMember(@RequestBody Member member) {
-        memberService.addNewMember(member);
+    public void registerNewMember(@RequestParam Long groupId, @RequestParam Long userId, @RequestBody Member member) {
+        memberService.addNewMember(groupId, userId, member);
     }
 
     @DeleteMapping(path = "{groupId}")

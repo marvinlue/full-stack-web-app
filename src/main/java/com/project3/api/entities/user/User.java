@@ -1,9 +1,15 @@
 package com.project3.api.entities.user;
 
+import com.project3.api.entities.group.Group;
+import com.project3.api.entities.member.Member;
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Table
+@Table(name = "users")
 @Entity(name = "users")
 public class User {
     @Id
@@ -40,25 +46,38 @@ public class User {
     )
     private String password;
 
+    @Column(
+            name = "registered_at",
+            updatable = false
+    )
+    private Timestamp registeredAt;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Member> members = new ArrayList<>();
+
     public User() {
     }
 
     public User(Long id,
                 String username,
                 String email,
-                String password) {
+                String password,
+                Timestamp registeredAt) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+        this.registeredAt = registeredAt;
     }
 
     public User(String username,
                 String email,
-                String password) {
+                String password,
+                Timestamp registeredAt) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.registeredAt = registeredAt;
     }
 
     public Long getId() {
@@ -93,6 +112,14 @@ public class User {
         this.password = password;
     }
 
+    public Timestamp getRegisteredAt() {
+        return registeredAt;
+    }
+
+    public void setRegisteredAt(Timestamp registeredAt) {
+        this.registeredAt = registeredAt;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -100,6 +127,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", registeredAt='" + registeredAt + '\'' +
                 '}';
     }
 }

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -58,6 +60,7 @@ public class UserService {
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Exception thrown for incorrect algorithm: " + e);
         }
+        user.setRegisteredAt(Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(user);
     }
 
@@ -91,10 +94,15 @@ public class UserService {
             user.setEmail(email);
         }
 
-        if (password != null &&
-                password.length() > 0 &&
-                !Objects.equals(user.getPassword(), password)) {
-            user.setPassword(password);
+        if (password != null && password.length() > 0) {
+            try {
+                String hash = toHexString(getSHA(password));
+                if (!Objects.equals(user.getPassword(), hash)) {
+                    user.setPassword(hash);
+                }
+            } catch (NoSuchAlgorithmException e) {
+                System.out.println("Exception thrown for incorrect algorithm: " + e);
+            }
         }
     }
 }

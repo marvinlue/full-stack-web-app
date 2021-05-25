@@ -1,8 +1,9 @@
 package com.project3.api.entities.group;
 
-import com.project3.api.entities.member.Member;
-import com.project3.api.entities.member.MemberRepository;
+import com.project3.api.entities.user.User;
 import com.project3.api.entities.user.UserRepository;
+import com.project3.api.entities.member.MemberRepository;
+import com.project3.api.entities.member.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -53,22 +54,23 @@ public class GroupService {
         return groupByGroupName.get();
     }
 
-    public void addNewGroup(Group group) {
+    public void addNewGroup(Group group, Long userId) {
         Optional<Group> groupByGroupName = groupRepository.findGroupByGroupName(group.getGroupName());
         if (groupByGroupName.isPresent()) {
             throw new IllegalStateException("Group name already taken!");
         }
-        boolean exists = userRepository.existsById(group.getGroupAdmin());
+        boolean exists = userRepository.existsById(userId);
         if (!exists) {
-            throw new IllegalStateException("User with id " + group.getGroupAdmin() + " does not exist!");
+            throw new IllegalStateException("User with id " + userId + " does not exist!");
         }
         group.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
         groupRepository.save(group);
-        groupByGroupName = groupRepository.findGroupByGroupName(group.getGroupName());
-        group = groupByGroupName.get();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "User with id " + userId + " does not exist!"));
         Member member = new Member(
-                group.getGid(),
-                group.getGroupAdmin(),
+                group,
+                user,
                 true,
                 Timestamp.valueOf(LocalDateTime.now())
         );
@@ -84,7 +86,7 @@ public class GroupService {
     }
 
     @Transactional
-    public void updateGroup(Long groupId, String groupName, Long groupAdmin) {
+    public void updateGroup(Long groupId, String groupName) {
         Group group = groupRepository.findById(groupId)
                 .orElseThrow(() -> new IllegalStateException(
                         "Group with id " + groupId + " does not exist!"));
@@ -97,22 +99,6 @@ public class GroupService {
                 throw new IllegalStateException("Group name already taken!");
             }
             group.setGroupName(groupName);
-        }
-
-        if (groupAdmin != null &&
-                !Objects.equals(group.getGroupAdmin(), groupAdmin)) {
-            boolean exists = userRepository.existsById(groupAdmin);
-            if (!exists) {
-                throw new IllegalStateException("User with id " + groupAdmin + " does not exist!");
-            }
-            Optional<Member> memberByGroupIdAndUserId =
-                    memberRepository.findMemberByGroupIdAndUserId(groupId, groupAdmin);
-            if (!memberByGroupIdAndUserId.isPresent()) {
-                throw new IllegalStateException("User with id " + groupAdmin + " is not a member of group with id " + groupId +"!");
-            }
-            group.setGroupAdmin(groupAdmin);
-            Member member = memberByGroupIdAndUserId.get();
-            member.setAdminRights(true);
         }
     }
 }

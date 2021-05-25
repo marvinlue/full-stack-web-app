@@ -115,22 +115,22 @@ GET http://localhost:8080/api/groups/group?groupId=1&groupName=some-groupname
 ```
 **NOTE** EXAMPLE 3 is not really necessary - rather use either of first 2 examples
 ##### POST
-* Using a POST request to add a new group to _groups table with a dictoinary as input:
+* A user with with a specific userId can use a POST request to add a new group to _groups table with a dictoinary as input:
 ```
-POST http://localhost:8080/api/groups
+POST http://localhost:8080/api/groups?userId={{userId}}
 ```
 Dictionary must be in the following form:
 ```
 {
-  "groupName": "some-unique-group-name",
-  "groupAdmin": "userId-of-user-who-created-group"
+  "groupName": "some-unique-group-name"
 }
 ```
 e.g. if user with userId 1 created the group:
 ```
+POST http://localhost:8080/api/groups?userId=1
+
 {
-  "groupName": "some-unique-group-name",
-  "groupAdmin": "1"
+  "groupName": "some-unique-group-name"
 }
 ```
 
@@ -145,21 +145,13 @@ e.g. deleting group with groupId 1:
 DELETE http://localhost:8080/api/groups/1
 ```
 ##### PUT
-* Update group properties (groupName, groupAdmin) of group with groupId in _groups table using a PUT request:
+* Update groupName of group with specific groupId in _groups table using a PUT request:
 ```
-PUT http://localhost:8080/api/groups/{{groupId}}?groupName={{groupName}}&groupAdmin={{groupAdmin}}
+PUT http://localhost:8080/api/groups/{{groupId}}?groupName={{groupName}}
 ```
-EXAMPLE 1: Setting groupName of group with groupId 1 to "new-groupname":
+e.g. setting groupName of group with groupId 1 to "new-groupname":
 ```
 PUT http://localhost:8080/api/groups/1?groupName=new-groupname
-```
-EXAMPLE 2: Changing groupAdmin of group with groupId 1 to user with userId 1:
-```
-PUT http://localhost:8080/api/groups/1?groupAdmin=1
-```
-EXAMPLE 3: Updating all properties of group with groupId 1:
-```
-PUT http://localhost:8080/api/users/1?username=new-username&email=new-email&password=new-password
 ```
 
 #### Members
@@ -193,23 +185,21 @@ e.g. to get user with userId 1 belonging to group with groupId 1:
 GET http://localhost:8080/api/members/1?userId=1
 ```
 ##### POST
-* A member can be added to a group by using POST request. This is done by adding a entry to members_info table with a dictoinary as input:
+* A user with a specific userId can be added to a group with a specific groupId by using a POST request. This is done by adding a entry to members_info table with a dictoinary as input:
 ```
-POST http://localhost:8080/api/members
+POST http://localhost:8080/api/members?groupId={{groupId}}&userId={{userId}}
 ```
 Dictionary must be in the following form:
 ```
 {
-  "groupId": "id-of-group",
-  "userId": "id-of-user",
   "adminRights": "true/false"
 }
 ```
 e.g. if user with userId 1 is added to group with groupId 1 and is granted adminRights:
 ```
+POST http://localhost:8080/api/members?groupId=1&userId=1
+
 {
-  "groupId": "1",
-  "userId": "1",
   "adminRights": "true"
 }
 ```

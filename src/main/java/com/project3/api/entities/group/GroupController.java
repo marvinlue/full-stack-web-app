@@ -25,8 +25,8 @@ public class GroupController {
     }
 
     @PostMapping
-    public void createNewGroup(@RequestBody Group group) {
-        groupService.addNewGroup(group);
+    public void createNewGroup(@RequestParam Long userId, @RequestBody Group group) {
+        groupService.addNewGroup(group, userId);
     }
 
     @DeleteMapping(path = "{groupId}")
@@ -37,8 +37,7 @@ public class GroupController {
     @PutMapping(path = "{groupId}")
     public void updateGroup(
             @PathVariable("groupId") Long groupId,
-            @RequestParam(required = false) String groupName,
-            @RequestParam(required = false) Long groupAdmin) {
-        groupService.updateGroup(groupId, groupName, groupAdmin);
+            @RequestParam String groupName) {
+        groupService.updateGroup(groupId, groupName);
     }
 }

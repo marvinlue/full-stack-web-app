@@ -31,11 +31,11 @@ public class Comment {
     )
     private String comment;
 
-    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
     private User user;
 
-    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName="pid", updatable = false)
     private Post post;
 
@@ -108,8 +108,8 @@ public class Comment {
         return "Comment{" +
                 "cid=" + cid +
                 ", comment='" + comment + '\'' +
-                ", user=" + user +
-                ", post=" + post +
+                ", user=" + user.toString() +
+                ", post=" + post.toString() +
                 ", madeAt=" + madeAt +
                 '}';
     }

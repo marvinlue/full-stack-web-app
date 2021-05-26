@@ -1,7 +1,13 @@
 package com.project3.api.entities.message;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project3.api.entities.recipient.Recipient;
+import com.project3.api.entities.user.User;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Table
@@ -29,11 +35,9 @@ public class Message {
     )
     private String message;
 
-    @Column(
-            name = "sender",
-            updatable = false
-    )
-    private Long sender;
+    @ManyToOne
+    @JoinColumn(name = "sender", referencedColumnName="id", updatable = false)
+    private User user;
 
     @Column(
             name = "sent_at",
@@ -41,19 +45,23 @@ public class Message {
     )
     private Timestamp sentAt;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "message", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Recipient> recipients = new ArrayList<>();
+
     public Message() {
     }
 
-    public Message(Long mid, String message, Long sender, Timestamp sentAt) {
+    public Message(Long mid, String message, User user, Timestamp sentAt) {
         this.mid = mid;
         this.message = message;
-        this.sender = sender;
+        this.user = user;
         this.sentAt = sentAt;
     }
 
-    public Message(String message, Long sender, Timestamp sentAt) {
+    public Message(String message, User user, Timestamp sentAt) {
         this.message = message;
-        this.sender = sender;
+        this.user = user;
         this.sentAt = sentAt;
     }
 
@@ -73,12 +81,12 @@ public class Message {
         this.message = message;
     }
 
-    public Long getSender() {
-        return sender;
+    public User getUser() {
+        return user;
     }
 
-    public void setSender(Long sender) {
-        this.sender = sender;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Timestamp getSentAt() {
@@ -94,7 +102,7 @@ public class Message {
         return "Message{" +
                 "mid=" + mid +
                 ", message='" + message + '\'' +
-                ", sender=" + sender +
+                ", user=" + user.toString() +
                 ", sentAt=" + sentAt +
                 '}';
     }

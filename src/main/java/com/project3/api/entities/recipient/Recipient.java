@@ -1,5 +1,7 @@
 package com.project3.api.entities.recipient;
 
+import com.project3.api.entities.message.Message;
+import com.project3.api.entities.user.User;
 import javax.persistence.*;
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -22,30 +24,26 @@ public class Recipient {
     )
     private Long rid;
 
-    @Column(
-            name = "message_id",
-            updatable = false
-    )
-    private Long messageId;
+    @ManyToOne
+    @JoinColumn(name = "message_id", referencedColumnName="mid", updatable = false)
+    private Message message;
 
-    @Column(
-            name = "recipient",
-            updatable = false
-    )
-    private Long recipient;
+    @ManyToOne
+    @JoinColumn(name = "recipient", referencedColumnName="id", updatable = false)
+    private User user;
 
     public Recipient() {
     }
 
-    public Recipient(Long rid, Long messageId, Long recipient) {
+    public Recipient(Long rid, Message message, User user) {
         this.rid = rid;
-        this.messageId = messageId;
-        this.recipient = recipient;
+        this.message = message;
+        this.user = user;
     }
 
-    public Recipient(Long messageId, Long recipient) {
-        this.messageId = messageId;
-        this.recipient = recipient;
+    public Recipient(Message message, User user) {
+        this.message = message;
+        this.user = user;
     }
 
     public Long getRid() {
@@ -56,28 +54,26 @@ public class Recipient {
         this.rid = rid;
     }
 
-    public Long getMessageId() {
-        return messageId;
+    public Message getMessage() {
+        return message;
     }
 
-    public void setMessageId(Long messageId) {
-        this.messageId = messageId;
+    public void setMessage(Message message) { this.message = message; }
+
+    public User getUser() {
+        return user;
     }
 
-    public Long getRecipient() {
-        return recipient;
-    }
-
-    public void setRecipient(Long recipient) {
-        this.recipient = recipient;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "Recipient{" +
                 "rid=" + rid +
-                ", messageId=" + messageId +
-                ", recipient=" + recipient +
+                ", message=" + message.toString() +
+                ", user=" + user.toString() +
                 '}';
     }
 }

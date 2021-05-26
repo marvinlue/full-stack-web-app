@@ -1,7 +1,15 @@
 package com.project3.api.entities.post;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project3.api.entities.comment.Comment;
+import com.project3.api.entities.group.Group;
+import com.project3.api.entities.site.Site;
+import com.project3.api.entities.user.User;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Table
@@ -34,23 +42,17 @@ public class Post {
     )
     private String category;
 
-    @Column(
-            name = "group_id",
-            updatable = false
-    )
-    private Long groupId;
+    @ManyToOne
+    @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false)
+    private Group group;
 
-    @Column(
-            name = "user_id",
-            updatable = false
-    )
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
+    private User user;
 
-    @Column(
-            name = "site_id",
-            updatable = false
-    )
-    private Long siteId;
+    @ManyToOne
+    @JoinColumn(name = "site_id", referencedColumnName="sid", updatable = false)
+    private Site site;
 
     @Column(
             name = "posted_at",
@@ -58,25 +60,29 @@ public class Post {
     )
     private Timestamp postedAt;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Comment> comments = new ArrayList<>();
+
     public Post() {
     }
 
-    public Post(Long pid, String post, String category, Long groupId, Long userId, Long siteId, Timestamp postedAt) {
+    public Post(Long pid, String post, String category, Group group, User user, Site site, Timestamp postedAt) {
         this.pid = pid;
         this.post = post;
         this.category = category;
-        this.groupId = groupId;
-        this.userId = userId;
-        this.siteId = siteId;
+        this.group = group;
+        this.user = user;
+        this.site = site;
         this.postedAt = postedAt;
     }
 
-    public Post(String post, String category, Long groupId, Long userId, Long siteId, Timestamp postedAt) {
+    public Post(String post, String category, Group group, User user, Site site, Timestamp postedAt) {
         this.post = post;
         this.category = category;
-        this.groupId = groupId;
-        this.userId = userId;
-        this.siteId = siteId;
+        this.group = group;
+        this.user = user;
+        this.site = site;
         this.postedAt = postedAt;
     }
 
@@ -104,28 +110,28 @@ public class Post {
         this.category = category;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getSiteId() {
-        return siteId;
+    public Site getSite() {
+        return site;
     }
 
-    public void setSiteId(Long siteId) {
-        this.siteId = siteId;
+    public void setSite(Site site) {
+        this.site = site;
     }
 
     public Timestamp getCreatedAt() {
@@ -142,9 +148,9 @@ public class Post {
                 "pid=" + pid +
                 ", post='" + post + '\'' +
                 ", category='" + category + '\'' +
-                ", groupId=" + groupId +
-                ", userId=" + userId +
-                ", siteId=" + siteId +
+                ", group=" + group.toString() +
+                ", user=" + user.toString() +
+                ", site=" + site.toString() +
                 ", postedAt=" + postedAt +
                 '}';
     }

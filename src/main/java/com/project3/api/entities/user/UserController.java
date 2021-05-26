@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping(path = "user")
-    public User getUserById(
+    public User getUserByIdOrUsername(
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) String username) {
         return userService.getUserByIdOrUsername(userId, username);
@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteStudent(@PathVariable("userId") Long userId) {
+    public void deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
     }
 

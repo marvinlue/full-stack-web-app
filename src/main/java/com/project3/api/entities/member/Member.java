@@ -25,11 +25,11 @@ public class Member {
     )
     private Long memberId;
 
-    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false)
     private Group group;
 
-    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
     private User user;
 
@@ -104,8 +104,8 @@ public class Member {
                 "memberId=" + memberId +
                 ", adminRights=" + adminRights +
                 ", joinedAt=" + joinedAt +
-                ", user=" + user +
-                ", group=" + group +
+                ", user=" + user.toString() +
+                ", group=" + group.toString() +
                 '}';
     }
 }

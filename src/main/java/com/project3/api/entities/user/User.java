@@ -1,7 +1,11 @@
 package com.project3.api.entities.user;
 
-import com.project3.api.entities.group.Group;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.member.Member;
+import com.project3.api.entities.message.Message;
+import com.project3.api.entities.post.Post;
+import com.project3.api.entities.recipient.Recipient;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -52,8 +56,25 @@ public class User {
     )
     private Timestamp registeredAt;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Member> members = new ArrayList<>();
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Post> posts = new ArrayList<>();
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Comment> comments = new ArrayList<>();
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Message> messages = new ArrayList<>();
+
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Recipient> recipients = new ArrayList<>();
 
     public User() {
     }

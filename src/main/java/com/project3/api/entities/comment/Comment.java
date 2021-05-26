@@ -1,5 +1,7 @@
 package com.project3.api.entities.comment;
 
+import com.project3.api.entities.post.Post;
+import com.project3.api.entities.user.User;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -29,17 +31,13 @@ public class Comment {
     )
     private String comment;
 
-    @Column(
-            name = "user_id",
-            updatable = false
-    )
-    private Long userId;
+    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
+    private User user;
 
-    @Column(
-            name = "post_id",
-            updatable = false
-    )
-    private Long postId;
+    @ManyToOne(optional=false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", referencedColumnName="pid", updatable = false)
+    private Post post;
 
     @Column(
             name = "made_at",
@@ -50,18 +48,18 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(Long cid, String comment, Long userId, Long postId, Timestamp madeAt) {
+    public Comment(Long cid, String comment, User user, Post post, Timestamp madeAt) {
         this.cid = cid;
         this.comment = comment;
-        this.userId = userId;
-        this.postId = postId;
+        this.user = user;
+        this.post = post;
         this.madeAt = madeAt;
     }
 
-    public Comment(String comment, Long userId, Long postId, Timestamp madeAt) {
+    public Comment(String comment, User user, Post post, Timestamp madeAt) {
         this.comment = comment;
-        this.userId = userId;
-        this.postId = postId;
+        this.user = user;
+        this.post = post;
         this.madeAt = madeAt;
     }
 
@@ -81,20 +79,20 @@ public class Comment {
         this.comment = comment;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getPostId() {
-        return postId;
+    public Post getPost() {
+        return post;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     public Timestamp getMadeAt() {
@@ -110,8 +108,8 @@ public class Comment {
         return "Comment{" +
                 "cid=" + cid +
                 ", comment='" + comment + '\'' +
-                ", userId=" + userId +
-                ", postId=" + postId +
+                ", user=" + user +
+                ", post=" + post +
                 ", madeAt=" + madeAt +
                 '}';
     }

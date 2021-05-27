@@ -9,7 +9,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Table

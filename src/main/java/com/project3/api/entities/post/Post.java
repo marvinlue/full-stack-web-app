@@ -42,14 +42,17 @@ public class Post {
     )
     private String category;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false)
     private Group group;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
     private User user;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "site_id", referencedColumnName="sid", updatable = false)
     private Site site;
@@ -60,7 +63,6 @@ public class Post {
     )
     private Timestamp postedAt;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Comment> comments = new ArrayList<>();
 

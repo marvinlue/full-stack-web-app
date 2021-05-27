@@ -1,6 +1,5 @@
 package com.project3.api.entities.user;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.member.Member;
 import com.project3.api.entities.message.Message;
@@ -56,23 +55,18 @@ public class User {
     )
     private Timestamp registeredAt;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Member> members = new ArrayList<>();
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Post> posts = new ArrayList<>();
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Comment> comments = new ArrayList<>();
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Message> messages = new ArrayList<>();
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Recipient> recipients = new ArrayList<>();
 

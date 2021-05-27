@@ -1,5 +1,6 @@
 package com.project3.api.entities.member;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.user.User;
 import javax.persistence.*;
@@ -25,10 +26,12 @@ public class Member {
     )
     private Long memberId;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false)
     private Group group;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
     private User user;

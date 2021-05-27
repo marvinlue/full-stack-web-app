@@ -35,6 +35,7 @@ public class Message {
     )
     private String message;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "sender", referencedColumnName="id", updatable = false)
     private User user;
@@ -45,7 +46,6 @@ public class Message {
     )
     private Timestamp sentAt;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "message", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Recipient> recipients = new ArrayList<>();
 

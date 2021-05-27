@@ -1,5 +1,6 @@
 package com.project3.api.entities.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project3.api.entities.post.Post;
 import com.project3.api.entities.user.User;
 import javax.persistence.*;
@@ -31,10 +32,12 @@ public class Comment {
     )
     private String comment;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
     private User user;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName="pid", updatable = false)
     private Post post;

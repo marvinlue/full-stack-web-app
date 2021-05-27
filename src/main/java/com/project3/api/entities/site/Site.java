@@ -1,6 +1,5 @@
 package com.project3.api.entities.site;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project3.api.entities.post.Post;
 import org.springframework.data.geo.Point;
 import javax.persistence.*;
@@ -40,7 +39,6 @@ public class Site {
     )
     private Point location;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "site", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Post> posts = new ArrayList<>();
 

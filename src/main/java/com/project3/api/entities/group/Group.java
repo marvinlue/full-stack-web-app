@@ -1,6 +1,5 @@
 package com.project3.api.entities.group;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project3.api.entities.member.Member;
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -39,7 +38,6 @@ public class Group {
     )
     private Timestamp createdAt;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToMany(mappedBy = "group", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Member> members = new ArrayList<>();
 

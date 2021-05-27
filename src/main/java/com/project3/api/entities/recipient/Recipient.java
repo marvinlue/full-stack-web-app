@@ -1,5 +1,6 @@
 package com.project3.api.entities.recipient;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project3.api.entities.message.Message;
 import com.project3.api.entities.user.User;
 import javax.persistence.*;
@@ -24,10 +25,12 @@ public class Recipient {
     )
     private Long rid;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "message_id", referencedColumnName="mid", updatable = false)
     private Message message;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "recipient", referencedColumnName="id", updatable = false)
     private User user;

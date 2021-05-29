@@ -283,7 +283,7 @@ $ tar -xzvf jdk-16.0.1_linux-x64_bin.tar.gz
 ```
 4. Move the extracted folder to /usr/lib/jvm:
 ```
-$ sudo mv ./jdk-16.0.1 /usr/lib/jvm
+$ sudo mv ./jdk-16.0.1 /usr/lib/jvm/
 ```
 5. Setup environment variable, using;
 ```
@@ -303,7 +303,7 @@ $ sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk-16
 ```
 8. Configure Java Compiler Alternatives, using:
 ```
-$ sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk-16.0.1/bin/java" 1
+$ sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk-16.0.1/bin/javac" 1
 ```
 9. Configure Java, using:
 ```

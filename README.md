@@ -259,7 +259,7 @@ $ sudo systemctl start mysql
 #### Step 3 — Creating a Dedicated MySQL User, Creating Database and Granting Privileges
 1. Access MySQL shell, using:
 ```
-$ mysql -u root -p
+$ sudo mysql -u root -p
 ```
 2. Once you have access to the MySQL prompt, you can set up database, using:
 ```

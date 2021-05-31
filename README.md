@@ -11,7 +11,7 @@ $ cd target
 ```
 3. Execute jar file, using:
 ```
-$ jar -jar api-0.0.1-SNAPSHOT.jar
+$ java -jar api-0.0.1-SNAPSHOT.jar
 ```
 **NOTE** You can clean target folder before running mvn install again, using:
 ```

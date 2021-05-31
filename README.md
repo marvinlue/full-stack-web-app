@@ -331,7 +331,7 @@ $ sudo tar xf /tmp/apache-maven-*.tar.gz -C /opt
 ```
 4. Create a symbolic link that will point to the Maven installation directory:
 ```
-$ sudo ln -s /opt/apache-maven-3.6.3 /opt/maven
+$ sudo ln -s /opt/apache-maven-3.8.1 /opt/maven
 ```
 5. Setup environment variables:
 ```

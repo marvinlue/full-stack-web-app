@@ -4,6 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+enum Status {
+    SUCCESS,
+    USER_ALREADY_EXISTS,
+    FAILURE
+}
+
 @RestController
 @RequestMapping(path = "api/users")
 public class UserController {
@@ -43,5 +49,16 @@ public class UserController {
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String password) {
         userService.updateUser(userId, username, email, password);
+    }
+
+    @PostMapping(path = "register")
+    public Status registerUser(@RequestBody User newUser){
+        List<User> users = userService.getUsers();
+        for(User user : users){
+            if (newUser.getUsername().contentEquals(user.getUsername())){
+                return Status.USER_ALREADY_EXISTS;
+            }
+        }
+        return Status.SUCCESS;
     }
 }

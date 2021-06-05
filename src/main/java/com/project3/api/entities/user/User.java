@@ -1,10 +1,7 @@
 package com.project3.api.entities.user;
 
-//TODO: uncomment
-//import com.project3.api.entities.comment.Comment;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.member.Member;
 import com.project3.api.entities.message.Message;
 import com.project3.api.entities.post.Post;
@@ -69,9 +66,8 @@ public class User {
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Post> posts = new ArrayList<>();
 
-    //TODO: uncomment
-    /*@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    private final List<Comment> comments = new ArrayList<>();*/
+    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Message> messages = new ArrayList<>();

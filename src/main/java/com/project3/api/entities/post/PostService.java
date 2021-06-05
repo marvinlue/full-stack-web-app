@@ -2,6 +2,9 @@ package com.project3.api.entities.post;
 
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.group.GroupRepository;
+import com.project3.api.entities.post.dto.PostLocation;
+import com.project3.api.entities.post.dto.PostSite;
+import com.project3.api.entities.post.dto.PostTime;
 import com.project3.api.entities.post.dto.PostUpdate;
 import com.project3.api.entities.user.User;
 import com.project3.api.entities.user.UserRepository;
@@ -50,6 +53,7 @@ public class PostService {
             post.setUser(userOptional.get());
             post.setGroup(groupOptional.get());
             post.setPostedAt(Timestamp.valueOf(LocalDateTime.now()));
+            System.out.println(post);
             postRepository.save(post);
         }
         else {
@@ -77,5 +81,26 @@ public class PostService {
         else {
             throw new IllegalStateException("No Post: " + postId + " exists");
         }
+    }
+
+    public List<Post> getPostByTimestamp(PostTime postTime) {
+        if (postTime.isGreaterOperation()){
+            return postRepository.findPostsByPostedAtGreaterThanOrderByPostedAtDesc(postTime.getTime());
+        }
+        if (postTime.isLessOperation()){
+            return postRepository.findPostsByPostedAtLessThanEqualOrderByPostedAtDesc(postTime.getTime());
+        }
+        else {
+            throw new IllegalStateException("No Operation: " + postTime.getOperation() + " selected");
+        }
+    }
+
+    public List<Post> getPostsByLocation(PostLocation postLocation) {
+        return postRepository.findAllPostsAroundLocation(postLocation.getLongitude(), postLocation.getLatitude(), postLocation.getRadius());
+    }
+
+    //TODO: implement Site-Repository & Site-Service
+    public List<Post> getPostBySite(PostSite postSite) {
+        return Collections.<Post>emptyList();
     }
 }

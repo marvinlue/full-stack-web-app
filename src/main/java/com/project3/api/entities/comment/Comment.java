@@ -1,4 +1,3 @@
-/*
 package com.project3.api.entities.comment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -118,4 +117,3 @@ public class Comment {
                 '}';
     }
 }
-*/

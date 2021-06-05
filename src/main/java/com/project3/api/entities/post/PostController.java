@@ -1,18 +1,20 @@
 package com.project3.api.entities.post;
 
+import com.project3.api.entities.post.dto.PostLocation;
+import com.project3.api.entities.post.dto.PostSite;
+import com.project3.api.entities.post.dto.PostTime;
 import com.project3.api.entities.post.dto.PostUpdate;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /*
-TODO: Given a location and a radius or quantity limit, return nearest posts
-TODO: Order and filter by time
+TODO: Given a location and a radius or quantity limit, return nearest posts - DONE
+TODO: Order and filter by time - DONE
 TODO: Order and filter by user or group - DONE
 TODO: Order and filter by user - DONE
 TODO: CRUD Operations - DONE
-TODO: Add all fields
+TODO: Add all fields - DONE
 */
 
 @RestController
@@ -40,7 +42,20 @@ public class PostController {
         return postService.getPostsUserGroup(userId, groupId);
     }
 
-    public List<Post> getPostBiggerTimestamp ()
+    @GetMapping(path = "postByTime")
+    public List<Post> getPostByTimestamp (@RequestBody PostTime postTime){
+        return postService.getPostByTimestamp(postTime);
+    }
+
+    @GetMapping(path = "PostByLocation")
+    public List<Post> getPostByLocation(@RequestBody PostLocation postLocation){
+        return postService.getPostsByLocation(postLocation);
+    }
+
+    @GetMapping(path = "PostBySite")
+    public List<Post> getPostBySite(@RequestBody PostSite postSite){
+        return postService.getPostBySite(postSite);
+    }
 
     @DeleteMapping(path = "{postId}")
     public void deletePostByID (@PathVariable("postId") Long postId){

@@ -1,11 +1,17 @@
 package com.project3.api.entities.post;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.user.User;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -50,17 +56,12 @@ public class Post {
     @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
     private User user;
 
-    //TODO: enable location
-   /* @Column(
+    @Column(
             name = "location",
-            updatable = false
+            updatable = false,
+            columnDefinition = "POINT"
     )
     private Point location;
-
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne
-    @JoinColumn(name = "site_id", referencedColumnName="sid", updatable = false)
-    private Site site;*/
 
     @Column(
             name = "posted_at",
@@ -68,28 +69,28 @@ public class Post {
     )
     private Timestamp postedAt;
 
-    //TODO: enable comments
-    /*
     @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = CascadeType.ALL)
-    private final List<Comment> comments = new ArrayList<>();*/
+    private final List<Comment> comments = new ArrayList<>();
 
     public Post() {
     }
 
-    public Post(Long pid, String post, String category, Group group, User user, Timestamp postedAt) {
+    public Post(Long pid, String post, String category, Group group, User user, Point location, Timestamp postedAt) {
         this.pid = pid;
         this.post = post;
         this.category = category;
         this.group = group;
         this.user = user;
+        this.location = location;
         this.postedAt = postedAt;
     }
 
-    public Post(String post, String category, Group group, User user, Timestamp postedAt) {
+    public Post(String post, String category, Group group, User user, Point location, Timestamp postedAt) {
         this.post = post;
         this.category = category;
         this.group = group;
         this.user = user;
+        this.location = location;
         this.postedAt = postedAt;
     }
 
@@ -133,6 +134,14 @@ public class Post {
         this.user = user;
     }
 
+    public Point getLocation() {
+        return location;
+    }
+
+    public void setLocation(Point location) {
+        this.location = location;
+    }
+
     public Timestamp getPostedAt() {
         return postedAt;
     }
@@ -147,8 +156,9 @@ public class Post {
                 "pid=" + pid +
                 ", post='" + post + '\'' +
                 ", category='" + category + '\'' +
-                ", group=" + group.getGroupName() +
-                ", user=" + user.getUsername() +
+                ", group=" + group +
+                ", user=" + user +
+                ", location=" + location +
                 ", postedAt=" + postedAt +
                 '}';
     }

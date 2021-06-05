@@ -1,10 +1,8 @@
 package com.project3.api.entities.site;
 
-import com.project3.api.entities.post.Post;
-import org.springframework.data.geo.Point;
+import org.locationtech.jts.geom.Point;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Table
@@ -34,12 +32,10 @@ public class Site {
 
     @Column(
             name = "location",
-            updatable = false
+            updatable = false,
+            columnDefinition = "POINT"
     )
     private Point location;
-
-    /*@OneToMany(mappedBy = "site", orphanRemoval = true, cascade = CascadeType.ALL)
-    private final List<Post> posts = new ArrayList<>();*/
 
     public Site() {
     }

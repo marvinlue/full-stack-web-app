@@ -1,6 +1,10 @@
 package com.project3.api.entities.user;
 
-import com.project3.api.entities.comment.Comment;
+//TODO: uncomment
+//import com.project3.api.entities.comment.Comment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project3.api.entities.member.Member;
 import com.project3.api.entities.message.Message;
 import com.project3.api.entities.post.Post;
@@ -9,11 +13,14 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Table(name = "users")
 @Entity(name = "users")
 public class User {
+    @JsonProperty(access = WRITE_ONLY)
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -42,12 +49,14 @@ public class User {
     )
     private String email;
 
+    @JsonProperty(access = WRITE_ONLY)
     @Column(
             name = "password",
             columnDefinition = "TEXT"
     )
     private String password;
 
+    @JsonProperty(access = WRITE_ONLY)
     @Column(
             name = "registered_at",
             updatable = false
@@ -60,8 +69,9 @@ public class User {
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Post> posts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
-    private final List<Comment> comments = new ArrayList<>();
+    //TODO: uncomment
+    /*@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Comment> comments = new ArrayList<>();*/
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Message> messages = new ArrayList<>();

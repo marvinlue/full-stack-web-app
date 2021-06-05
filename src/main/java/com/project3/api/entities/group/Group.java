@@ -1,15 +1,19 @@
 package com.project3.api.entities.group;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project3.api.entities.member.Member;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Table(name = "_groups")
 @Entity(name = "_groups")
 public class Group {
+    @JsonProperty(access = WRITE_ONLY)
     @Id
     @SequenceGenerator(
             name = "group_sequence",
@@ -32,6 +36,7 @@ public class Group {
     )
     private String groupName;
 
+    @JsonProperty(access = WRITE_ONLY)
     @Column(
             name = "created_at",
             updatable = false

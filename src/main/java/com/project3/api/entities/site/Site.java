@@ -38,8 +38,8 @@ public class Site {
     )
     private Point location;
 
-    @OneToMany(mappedBy = "site", orphanRemoval = true, cascade = CascadeType.ALL)
-    private final List<Post> posts = new ArrayList<>();
+    /*@OneToMany(mappedBy = "site", orphanRemoval = true, cascade = CascadeType.ALL)
+    private final List<Post> posts = new ArrayList<>();*/
 
     public Site() {
     }

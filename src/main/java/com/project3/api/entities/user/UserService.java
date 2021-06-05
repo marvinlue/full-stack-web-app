@@ -51,6 +51,7 @@ public class UserService {
     }
 
     public void addNewUser(User user) {
+        System.out.println(user);
         Optional<User> userByUsername = userRepository.findUserByUsername(user.getUsername());
         if (userByUsername.isPresent()) {
             throw new IllegalStateException("Username already taken!");

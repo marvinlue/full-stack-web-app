@@ -3,6 +3,7 @@
 ### Steps to run spring boot application
 1. Open terminal in project directory and create a jar file for the application using:
 ```
+$ . /etc/profile.d/maven.sh
 $ mvn install
 ```
 2. Change directory to target folder:
@@ -244,7 +245,7 @@ $ sudo mysql_secure_installation utitlity
 
 3. Enter 0 to set the password validation policy to LOW
 
-4. Pick any password for root user
+4. Pick any password for root user, i.e. "password"
 
 5. Run the following commands to allow remote access to the mysql server:
 ```

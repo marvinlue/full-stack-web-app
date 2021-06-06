@@ -1,9 +1,8 @@
 package com.project3.api.entities.post;
 
-import com.project3.api.entities.post.dto.PostLocation;
-import com.project3.api.entities.post.dto.PostSite;
-import com.project3.api.entities.post.dto.PostTime;
-import com.project3.api.entities.post.dto.PostUpdate;
+import com.project3.api.entities.comment.Comment;
+import com.project3.api.entities.post.dto.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +14,10 @@ TODO: Order and filter by user or group - DONE
 TODO: Order and filter by user - DONE
 TODO: CRUD Operations - DONE
 TODO: Add all fields - DONE
+TODO: Refactor Path & http-Template - DONE
+TODO: Develop Testcases with http Requests - DONE
+TODO: Comment http-Template - DONE
+TODO: Edit README
 */
 
 @RestController
@@ -23,6 +26,7 @@ public class PostController {
 
     private final PostService postService;
 
+    @Autowired
     public PostController(PostService postService) {
         this.postService = postService;
     }
@@ -32,27 +36,27 @@ public class PostController {
         postService.addNewPost(userId, groupId, post);
     }
 
-    @GetMapping(path = "postByUser")
+    @GetMapping(path = "byUser")
     public List<Post> getPostByUser (@RequestParam Long userId){
         return postService.getPostsUser(userId);
     }
 
-    @GetMapping(path = "postByUserOrGroup")
+    @GetMapping(path = "byUserOrGroup")
     public List<Post> getPostByUserOrGroup(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long groupId){
         return postService.getPostsUserGroup(userId, groupId);
     }
 
-    @GetMapping(path = "postByTime")
+    @GetMapping(path = "byTime")
     public List<Post> getPostByTimestamp (@RequestBody PostTime postTime){
         return postService.getPostByTimestamp(postTime);
     }
 
-    @GetMapping(path = "PostByLocation")
+    @GetMapping(path = "byLocation")
     public List<Post> getPostByLocation(@RequestBody PostLocation postLocation){
         return postService.getPostsByLocation(postLocation);
     }
 
-    @GetMapping(path = "PostBySite")
+    @GetMapping(path = "bySite")
     public List<Post> getPostBySite(@RequestBody PostSite postSite){
         return postService.getPostBySite(postSite);
     }
@@ -67,7 +71,25 @@ public class PostController {
         postService.updatePostText(postId, postUpdate);
     }
 
+    //CRUD Comment
+    @PostMapping("{postId}/comment")
+    public void addComment(@PathVariable("postId") Long postId, @RequestBody PostComment postComment){
+        postService.addNewComment(postId, postComment);
+    }
 
+    @GetMapping(path = "{postId}/comment")
+    public List<Comment> getComments(@PathVariable("postId") Long postId){
+        return postService.getCommentsforPost(postId);
+    }
 
+    @DeleteMapping("comment/{commentId}")
+    public void deleteComment(@PathVariable("commentId") Long commentId){
+        postService.deleteComment(commentId);
+    }
+
+    @PutMapping("comment/{commentId}")
+    public void updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentUpdate commentUpdate){
+        postService.updateComment(commentId, commentUpdate);
+    }
 
 }

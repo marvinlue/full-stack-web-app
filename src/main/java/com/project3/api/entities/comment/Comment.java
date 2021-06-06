@@ -7,6 +7,12 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import static javax.persistence.GenerationType.SEQUENCE;
 
+/*
+TODO: Add CRUD Operations - DONE
+TODO: Add Service and Repository - DONE
+TODO: order and filter by PostId - DONE
+ */
+
 @Table
 @Entity(name = "comments")
 public class Comment {
@@ -32,12 +38,12 @@ public class Comment {
     )
     private String comment;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"password","registeredAt"})
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
     private User user;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"post","category","group","user","location","postedAt","comments"})
     @ManyToOne
     @JoinColumn(name = "post_id", referencedColumnName="pid", updatable = false)
     private Post post;

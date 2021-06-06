@@ -1,0 +1,78 @@
+### Add user1
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "email": "user1@mail.com",
+  "password": "password"
+}
+
+### Add user2
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "email": "user2@mail.com",
+  "password": "password"
+}
+
+### Add group1
+POST http://localhost:8080/api/groups?userId=1
+Content-Type: application/json
+
+{
+  "groupName": "group1"
+}
+
+### Add first post
+POST http://localhost:8080/api/posts/?userId=1&groupId=1
+Content-Type: application/json
+
+{
+  "post": "This is the first post",
+  "category" : "First",
+  "location": { "type": "Point", "coordinates": [65,80] }
+}
+
+### Add first comment
+POST http://localhost:8080/api/posts/1/comment
+Content-Type: application/json
+
+{
+  "commentText": "This is the first comment",
+  "userId" : "1"
+}
+
+### Add second comment
+POST http://localhost:8080/api/posts/1/comment
+Content-Type: application/json
+
+{
+  "commentText": "This is the second comment",
+  "userId" : "2"
+}
+
+### Get comments for post
+### ECPECTED: 2 comments
+GET http://localhost:8080/api/posts/1/comment
+
+### Update comment
+PUT http://localhost:8080/api/posts/comment/1
+Content-Type: application/json
+
+{
+  "updatedText": "This is the updated first comment"
+}
+
+### Get comments
+### ECPECTED: 2 comments, first is updated
+GET http://localhost:8080/api/posts/1/comment
+
+### Delete comment
+DELETE http://localhost:8080/api/posts/comment/2
+
+### Get comments
+### ECPECTED: 1 comment only first
+GET http://localhost:8080/api/posts/1/comment

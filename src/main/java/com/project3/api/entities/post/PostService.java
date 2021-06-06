@@ -1,11 +1,12 @@
 package com.project3.api.entities.post;
 
+import com.project3.api.entities.comment.Comment;
+import com.project3.api.entities.comment.CommentRepository;
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.group.GroupRepository;
-import com.project3.api.entities.post.dto.PostLocation;
-import com.project3.api.entities.post.dto.PostSite;
-import com.project3.api.entities.post.dto.PostTime;
-import com.project3.api.entities.post.dto.PostUpdate;
+import com.project3.api.entities.post.dto.*;
+import com.project3.api.entities.site.Site;
+import com.project3.api.entities.site.SiteRepository;
 import com.project3.api.entities.user.User;
 import com.project3.api.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +24,22 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final GroupRepository groupRepository;
+    private final CommentRepository commentRepository;
+    private final SiteRepository siteRepository;
 
     @Autowired
     public PostService(
             PostRepository postRepository,
             UserRepository userRepository,
-            GroupRepository groupRepository
+            GroupRepository groupRepository,
+            CommentRepository commentRepository,
+            SiteRepository siteRepository
     ) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.groupRepository = groupRepository;
+        this.commentRepository = commentRepository;
+        this.siteRepository = siteRepository;
     }
 
     public List<Post> getPostsUser(Long userID) {
@@ -96,11 +103,56 @@ public class PostService {
     }
 
     public List<Post> getPostsByLocation(PostLocation postLocation) {
-        return postRepository.findAllPostsAroundLocation(postLocation.getLongitude(), postLocation.getLatitude(), postLocation.getRadius());
+        return postRepository.findAllPostsAroundLocation(
+                postLocation.getLongitude(),
+                postLocation.getLatitude(),
+                postLocation.getRadius()*1000
+        );
     }
 
-    //TODO: implement Site-Repository & Site-Service
     public List<Post> getPostBySite(PostSite postSite) {
-        return Collections.<Post>emptyList();
+        Site site = siteRepository.findSiteBySiteName(postSite.getSitename());
+        return postRepository.findAllPostsAroundLocation(
+                site.getLocation().getX(),
+                site.getLocation().getY(),
+                postSite.getRadius()*1000
+        );
+    }
+
+    public void addNewComment(Long postId, PostComment postComment) {
+        Optional<User> userOptional = userRepository.findById(postComment.getUserId());
+        Post post = postRepository.getById(postId);
+
+        if (userOptional.isPresent()){
+            Comment comment = new Comment();
+            comment.setPost(post);
+            comment.setUser(userOptional.get());
+            comment.setComment(postComment.getCommentText());
+            comment.setMadeAt(Timestamp.valueOf(LocalDateTime.now()));
+            commentRepository.save(comment);
+        }
+        else {
+            throw new IllegalStateException("No User:" + postComment.getUserId() + " exists");
+        }
+    }
+
+    public void deleteComment(Long commentId) {
+        commentRepository.deleteById(commentId);
+    }
+
+    public void updateComment(Long commentId, CommentUpdate commentUpdate) {
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        if (commentOptional.isPresent()){
+            Comment comment = commentOptional.get();
+            comment.setComment(commentUpdate.getUpdatedText());
+            commentRepository.save(comment);
+        }
+        else {
+            throw new IllegalStateException("No Comment: " + commentId + " exists");
+        }
+    }
+
+    public List<Comment> getCommentsforPost(Long postId) {
+        return commentRepository.findCommentsByPostOrderByMadeAtDesc(postId);
     }
 }

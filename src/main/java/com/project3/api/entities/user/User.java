@@ -17,7 +17,6 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Table(name = "users")
 @Entity(name = "users")
 public class User {
-    @JsonProperty(access = WRITE_ONLY)
     @Id
     @SequenceGenerator(
             name = "user_sequence",
@@ -46,7 +45,6 @@ public class User {
     )
     private String email;
 
-    @JsonProperty(access = WRITE_ONLY)
     @Column(
             name = "password",
             columnDefinition = "TEXT"

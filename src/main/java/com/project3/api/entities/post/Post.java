@@ -1,8 +1,6 @@
 package com.project3.api.entities.post;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.user.User;
@@ -46,12 +44,12 @@ public class Post {
     )
     private String category;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"createdAt"})
     @ManyToOne
     @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false)
     private Group group;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JsonIgnoreProperties({"password","registeredAt"})
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
     private User user;
@@ -69,14 +67,14 @@ public class Post {
     )
     private Timestamp postedAt;
 
+    @JsonIgnoreProperties({"post"})
     @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Comment> comments = new ArrayList<>();
 
     public Post() {
     }
 
-    public Post(Long pid, String post, String category, Group group, User user, Point location, Timestamp postedAt) {
-        this.pid = pid;
+    public Post(String post, String category, Group group, User user, Point location, Timestamp postedAt) {
         this.post = post;
         this.category = category;
         this.group = group;
@@ -85,7 +83,8 @@ public class Post {
         this.postedAt = postedAt;
     }
 
-    public Post(String post, String category, Group group, User user, Point location, Timestamp postedAt) {
+    public Post(Long pid, String post, String category, Group group, User user, Point location, Timestamp postedAt) {
+        this.pid = pid;
         this.post = post;
         this.category = category;
         this.group = group;
@@ -150,6 +149,10 @@ public class Post {
         this.postedAt = postedAt;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -160,6 +163,7 @@ public class Post {
                 ", user=" + user +
                 ", location=" + location +
                 ", postedAt=" + postedAt +
+                ", comments=" + comments +
                 '}';
     }
 }

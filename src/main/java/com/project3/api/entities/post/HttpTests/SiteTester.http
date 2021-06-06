@@ -1,0 +1,32 @@
+### Add Site1
+POST http://localhost:8080/api/site/
+Content-Type: application/json
+
+{
+  "siteName": "Site1",
+  "location": { "type": "Point", "coordinates": [65,80] }
+}
+
+### Add Site2
+POST http://localhost:8080/api/site/
+Content-Type: application/json
+
+{
+  "siteName": "Site2",
+  "location": { "type": "Point", "coordinates": [65,81] }
+}
+
+### Get Site1
+### EXPECTED: 1 Site
+GET http://localhost:8080/api/site/id?sId=1
+
+### Get Site2
+### EXPECTED: 1 Site
+GET http://localhost:8080/api/site/name?name=Site2
+
+### Delete Site1
+DELETE http://localhost:8080/api/site/1
+
+### Get all Sites
+### EXPECTED: 1 Site
+GET http://localhost:8080/api/site/all

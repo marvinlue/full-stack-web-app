@@ -54,14 +54,26 @@ Content-Type: application/json
   "location": { "type": "Point", "coordinates": [65,81] }
 }
 
+### Add first comment
+POST http://localhost:8080/api/posts/1/comment
+Content-Type: application/json
+
+{
+  "commentText": "This is the first comment",
+  "userId" : "1"
+}
+
 ### Get Posts of user1
-GET http://localhost:8080/api/posts/postByUser?userId=1
+### ECPECTED: 3 Posts
+GET http://localhost:8080/api/posts/byUser?userId=1
 
 ### Get Posts of user2
-GET http://localhost:8080/api/posts/postByUser?userId=2
+### ECPECTED: 0 Posts
+GET http://localhost:8080/api/posts/byUser?userId=2
 
 ### Get Posts of Group2
-GET http://localhost:8080/api/posts/postByUserOrGroup?groupId=2
+### ECPECTED: 1 Post
+GET http://localhost:8080/api/posts/byUserOrGroup?groupId=2
 
 ### Update post2
 PUT http://localhost:8080/api/posts/2
@@ -72,7 +84,18 @@ Content-Type: application/json
 }
 
 ### Get Posts after Time
-GET http://localhost:8080/api/posts/postByTime
+### ECPECTED: 3 Posts
+GET http://localhost:8080/api/posts/byTime
+Content-Type: application/json
+
+{
+  "time": "2021-06-05T07:26:59.529+00:00",
+  "operation": "greater"
+}
+
+### Get Posts before Time
+### ECPECTED: 0 Posts
+GET http://localhost:8080/api/posts/byTime
 Content-Type: application/json
 
 {
@@ -80,24 +103,52 @@ Content-Type: application/json
   "operation": "less"
 }
 
-###
-GET http://localhost:8080/api/posts/PostByLocation
+### Add Site
+POST http://localhost:8080/api/site/
+Content-Type: application/json
+
+{
+  "siteName": "Site1",
+  "location": { "type": "Point", "coordinates": [65,80] }
+}
+
+### Get Post from Site within Radius
+### ECPECTED: 1 Posts
+GET http://localhost:8080/api/posts/bySite
+Content-Type: application/json
+
+{
+  "sitename": "Site1",
+  "radius": "1000000"
+}
+
+### Get Posts from Long,Lat Lpcation within Radius
+### ECPECTED: 1 Posts
+GET http://localhost:8080/api/posts/byLocation
 Content-Type: application/json
 
 {
   "longitude": "65",
   "latitude": "80",
-  "radius": "10000000"
+  "radius": "1"
 }
 
-###
-GET http://localhost:8080/api/posts/postByUserOrGroup?groupId=2
-
-###
+### Delete second Post
 DELETE http://localhost:8080/api/posts/2
 
-###
-GET http://localhost:8080/api/posts/postByUserOrGroup?groupId=2
+### Get Posts
+### ECPECTED: 2 Posts, no second post
+GET http://localhost:8080/api/posts/byUserOrGroup?groupId=2
 
-###
+### Delete User
 DELETE http://localhost:8080/api/users/1
+
+### Get Posts after Time
+### ECPECTED: 0 Posts
+GET http://localhost:8080/api/posts/byTime
+Content-Type: application/json
+
+{
+  "time": "2021-06-05T07:26:59.529+00:00",
+  "operation": "greater"
+}

@@ -226,7 +226,7 @@ PUT http://localhost:8080/api/members/1?userId=1&adminRights=true
 HTTP-Testcases for working with Posts, Comments, Sites are already added under post.HTTPTests
 Please play around with them to get a feeling for the response Structure
 
-###Posts
+### Posts
 
 | Request | route | body | example | explanation |
 | :---: | :---: | :---: | :---: | :---: |
@@ -239,7 +239,7 @@ Please play around with them to get a feeling for the response Structure
 | DELETE | api/posts/{postId} | - | api/posts/1 | Delete a Post identified by its ID |
 | PUT | api/posts/{postId} | {"text":"Update"} | api/posts/1 | Update the text of a Post |
 
-###Comments
+### Comments
 
 | Request | route | body | example | explanation |
 | :---: | :---: | :---: | :---: | :---: |
@@ -248,11 +248,11 @@ Please play around with them to get a feeling for the response Structure
 | DELETE | api/posts/comment/{commentId} | - | api/posts/comment/1 | Delete a Comment from a Post |
 | PUT | api/posts/comment/{commentId} | {"updatedText":"Text"} | api/posts/comment/1 | Update the Text of a Comment from a Post |
 
-###Sites
+### Sites
 
 | Request | route | body | example | explanation |
 | :---: | :---: | :---: | :---: | :---: |
-| POST | api/site/ | {"siteName":"Site1","location":{"type":"Point","coordinates":[65,80]}} | - | Adds Site |
+| POST | api/site/ | {"siteName":"Site1","location":{"type":"Point","coordinates":[Lon,Lat]}} | - | Adds Site |
 | GET | api/site/id?sId={Id} | - | api/site/id?sId=1 | Get Site by its ID |
 | GET | api/site/name?name={Name} | - | api/site/name?name=Site1 | Get Site by its Name |
 | GET | api/site/all | - | - | Get all Sites |

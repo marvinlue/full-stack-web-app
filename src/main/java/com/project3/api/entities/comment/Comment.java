@@ -7,12 +7,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import static javax.persistence.GenerationType.SEQUENCE;
 
-/*
-TODO: Add CRUD Operations - DONE
-TODO: Add Service and Repository - DONE
-TODO: order and filter by PostId - DONE
- */
-
 @Table
 @Entity(name = "comments")
 public class Comment {

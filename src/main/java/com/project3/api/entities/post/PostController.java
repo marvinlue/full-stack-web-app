@@ -7,19 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/*
-TODO: Given a location and a radius or quantity limit, return nearest posts - DONE
-TODO: Order and filter by time - DONE
-TODO: Order and filter by user or group - DONE
-TODO: Order and filter by user - DONE
-TODO: CRUD Operations - DONE
-TODO: Add all fields - DONE
-TODO: Refactor Path & http-Template - DONE
-TODO: Develop Testcases with http Requests - DONE
-TODO: Comment http-Template - DONE
-TODO: Edit README
-*/
-
 @RestController
 @RequestMapping(path = "api/posts/")
 public class PostController {

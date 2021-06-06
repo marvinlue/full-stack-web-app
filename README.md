@@ -222,9 +222,10 @@ e.g. setting adminRights of user with userId 1 belonging to group with groupId 1
 ```
 PUT http://localhost:8080/api/members/1?userId=1&adminRights=true
 ```
+### Note
 
 HTTP-Testcases for working with Posts, Comments, Sites are already added under post.HTTPTests
-Please play around with them to get a feeling for the response Structure
+Please play around with them to get a feeling for the response Structure!
 
 ### Posts
 

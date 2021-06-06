@@ -223,6 +223,41 @@ e.g. setting adminRights of user with userId 1 belonging to group with groupId 1
 PUT http://localhost:8080/api/members/1?userId=1&adminRights=true
 ```
 
+HTTP-Testcases for working with Posts, Comments, Sites are already added under post.HTTPTests
+Please play around with them to get a feeling for the response Structure
+
+###Posts
+
+| Request | route | body | example | explanation |
+| :---: | :---: | :---: | :---: | :---: |
+| POST | api/posts/?userId={userId}&groupId={groupId} | {"post":"Text","category":"cat1","location":{"type":"Point","coordinates":[Lon,Lat]}} | api/posts/?userId=1&groupId=1 | Post is mapped to User and Group |
+| GET | api/posts/byUser?userId={userId} | - | api/posts/byUser?userId=1 | Get all Posts from a User identified by its ID |
+| GET | api/posts/byUserOrGroup?userId={userId}&groupId={groupId} | - | api/posts/byUserOrGroup?userId=1&groupId=2 | Get all Posts from a Group or User or both |
+| GET | api/posts/byTime | {"time": "2021-06-05T07:26:59.529","operation": "greater"/"less"} | - | Get all Posts after / before certain Timestamp |
+| GET | api/posts/byLocation | {"longitude":"65","latitude": "80","radius": "1"} | - | Gives all Posts around GPS Coord within Radius in km |
+| GET | api/posts/bySite | {"sitename":"Site1","radius": "1"} | - | Get all Posts around a certain Site which is already stored in SiteTable
+| DELETE | api/posts/{postId} | - | api/posts/1 | Delete a Post identified by its ID |
+| PUT | api/posts/{postId} | {"text":"Update"} | api/posts/1 | Update the text of a Post |
+
+###Comments
+
+| Request | route | body | example | explanation |
+| :---: | :---: | :---: | :---: | :---: |
+| POST | api/posts/{postId}/comment | {"commentText":"Text","userId":"1"} | api/posts/1/comment | Adds Comment to a Post from a User |
+| GET | api/posts/{postId}/comment | - | api/posts/1/comment | Get all Comments to a Post |
+| DELETE | api/posts/comment/{commentId} | - | api/posts/comment/1 | Delete a Comment from a Post |
+| PUT | api/posts/comment/{commentId} | {"updatedText":"Text"} | api/posts/comment/1 | Update the Text of a Comment from a Post |
+
+###Sites
+
+| Request | route | body | example | explanation |
+| :---: | :---: | :---: | :---: | :---: |
+| POST | api/site/ | {"siteName":"Site1","location":{"type":"Point","coordinates":[65,80]}} | - | Adds Site |
+| GET | api/site/id?sId={Id} | - | api/site/id?sId=1 | Get Site by its ID |
+| GET | api/site/name?name={Name} | - | api/site/name?name=Site1 | Get Site by its Name |
+| GET | api/site/all | - | - | Get all Sites |
+| DELETE | api/site/{siteId} | - | api/site/1 | Delete a Site |
+
 ## SETUP
 ### Steps to set up MySQL
 This project uses a MySQL database.

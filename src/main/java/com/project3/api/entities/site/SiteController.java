@@ -8,7 +8,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/site/")
 public class SiteController {
-    private SiteService siteService;
+    private final SiteService siteService;
 
     @Autowired
     public SiteController(SiteService siteService) {

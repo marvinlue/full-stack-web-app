@@ -55,7 +55,7 @@ Content-Type: application/json
 }
 
 ### Get comments for post
-### ECPECTED: 2 comments
+### EXPECTED: 2 comments
 GET http://localhost:8080/api/posts/1/comment
 
 ### Update comment
@@ -67,12 +67,12 @@ Content-Type: application/json
 }
 
 ### Get comments
-### ECPECTED: 2 comments, first is updated
+### EXPECTED: 2 comments, first is updated
 GET http://localhost:8080/api/posts/1/comment
 
 ### Delete comment
 DELETE http://localhost:8080/api/posts/comment/2
 
 ### Get comments
-### ECPECTED: 1 comment only first
+### EXPECTED: 1 comment only first
 GET http://localhost:8080/api/posts/1/comment

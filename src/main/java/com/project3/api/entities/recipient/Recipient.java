@@ -6,7 +6,7 @@ import com.project3.api.entities.user.User;
 import javax.persistence.*;
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Table
+@Table(name = "recipient_info")
 @Entity(name = "recipient_info")
 public class Recipient {
     @Id

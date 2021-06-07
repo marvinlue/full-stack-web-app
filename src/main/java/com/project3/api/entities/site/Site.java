@@ -5,7 +5,7 @@ import org.locationtech.jts.geom.Point;
 import javax.persistence.*;
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Table
+@Table(name = "sites")
 @Entity(name = "sites")
 public class Site {
     @Id

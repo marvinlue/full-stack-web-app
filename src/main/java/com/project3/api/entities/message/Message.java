@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Table
+@Table(name = "messages")
 @Entity(name = "messages")
 public class Message {
     @Id

@@ -32,13 +32,12 @@ CREATE TABLE posts (
     pid BIGINT AUTO_INCREMENT PRIMARY KEY,
     post VARCHAR(255) NOT NULL,
     category VARCHAR(255),
+    location POINT NOT NULL,
     group_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
-    site_id BIGINT,
     posted_at TIMESTAMP NOT NULL DEFAULT NOW(),
     FOREIGN KEY(group_id) REFERENCES _groups(gid),
-    FOREIGN KEY(user_id) REFERENCES users(id),
-    FOREIGN KEY(site_id) REFERENCES sites(sid)
+    FOREIGN KEY(user_id) REFERENCES users(id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;
 

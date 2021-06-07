@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import static javax.persistence.GenerationType.SEQUENCE;
 
-@Table
+@Table(name = "comments")
 @Entity(name = "comments")
 public class Comment {
     @Id

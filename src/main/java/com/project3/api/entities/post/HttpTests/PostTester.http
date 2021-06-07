@@ -64,15 +64,15 @@ Content-Type: application/json
 }
 
 ### Get Posts of user1
-### ECPECTED: 3 Posts
+### EXPECTED: 3 Posts
 GET http://localhost:8080/api/posts/byUser?userId=1
 
 ### Get Posts of user2
-### ECPECTED: 0 Posts
+### EXPECTED: 0 Posts
 GET http://localhost:8080/api/posts/byUser?userId=2
 
 ### Get Posts of Group2
-### ECPECTED: 1 Post
+### EXPECTED: 1 Post
 GET http://localhost:8080/api/posts/byUserOrGroup?groupId=2
 
 ### Update post2
@@ -84,7 +84,7 @@ Content-Type: application/json
 }
 
 ### Get Posts after Time
-### ECPECTED: 3 Posts
+### EXPECTED: 3 Posts
 GET http://localhost:8080/api/posts/byTime
 Content-Type: application/json
 
@@ -94,7 +94,7 @@ Content-Type: application/json
 }
 
 ### Get Posts before Time
-### ECPECTED: 0 Posts
+### EXPECTED: 0 Posts
 GET http://localhost:8080/api/posts/byTime
 Content-Type: application/json
 
@@ -113,7 +113,7 @@ Content-Type: application/json
 }
 
 ### Get Post from Site within Radius
-### ECPECTED: 1 Posts
+### EXPECTED: 3 Posts
 GET http://localhost:8080/api/posts/bySite
 Content-Type: application/json
 
@@ -123,7 +123,7 @@ Content-Type: application/json
 }
 
 ### Get Posts from Long,Lat Lpcation within Radius
-### ECPECTED: 1 Posts
+### EXPECTED: 1 Posts
 GET http://localhost:8080/api/posts/byLocation
 Content-Type: application/json
 
@@ -137,14 +137,14 @@ Content-Type: application/json
 DELETE http://localhost:8080/api/posts/2
 
 ### Get Posts
-### ECPECTED: 2 Posts, no second post
+### EXPECTED: 2 Posts, no second post
 GET http://localhost:8080/api/posts/byUserOrGroup?groupId=2
 
 ### Delete User
 DELETE http://localhost:8080/api/users/1
 
 ### Get Posts after Time
-### ECPECTED: 0 Posts
+### EXPECTED: 0 Posts
 GET http://localhost:8080/api/posts/byTime
 Content-Type: application/json
 

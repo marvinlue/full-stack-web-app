@@ -1,8 +1,12 @@
 package com.project3.api.entities.user;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -50,7 +54,7 @@ public class UserService {
         return userByUsername.get();
     }
 
-    public void addNewUser(User user) {
+    public void addNewUser(User user, MultipartFile file) {
         System.out.println(user);
         Optional<User> userByUsername = userRepository.findUserByUsername(user.getUsername());
         if (userByUsername.isPresent()) {
@@ -62,6 +66,17 @@ public class UserService {
             System.out.println("Exception thrown for incorrect algorithm: " + e);
         }
         user.setRegisteredAt(Timestamp.valueOf(LocalDateTime.now()));
+        if (file != null) {
+            String fileName = file.getOriginalFilename();
+            try {
+                file.transferTo(new File("/static/images/" + fileName));
+            } catch (IOException e) {
+                throw new IllegalStateException("Error uploading avatar");
+            }
+            user.setAvatarUrl("/static/images/" + fileName);
+        } else {
+            user.setAvatarUrl("/static/images/default.png");
+        }
         userRepository.save(user);
     }
 
@@ -74,7 +89,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateUser(Long userId, String username, String email, String password) {
+    public void updateUser(Long userId, String username, String email, String password, MultipartFile file) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalStateException(
                         "User with id " + userId + " does not exist!"));
@@ -104,6 +119,16 @@ public class UserService {
             } catch (NoSuchAlgorithmException e) {
                 System.out.println("Exception thrown for incorrect algorithm: " + e);
             }
+        }
+
+        if (file != null) {
+            String fileName = file.getOriginalFilename();
+            try {
+                file.transferTo(new File("/static/images/" + fileName));
+            } catch (IOException e) {
+                throw new IllegalStateException("Error uploading avatar");
+            }
+            user.setAvatarUrl("/static/images/" + fileName);
         }
     }
 }

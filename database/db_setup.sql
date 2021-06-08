@@ -5,7 +5,7 @@ USE network;
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET GLOBAL time_zone = '+02:00';
 
-/*CREATE TABLE users (
+CREATE TABLE users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) NOT NULL,
@@ -80,4 +80,3 @@ CREATE TABLE recipient_info (
     FOREIGN KEY(recipient) REFERENCES users(id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;
-*/

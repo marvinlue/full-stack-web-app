@@ -62,6 +62,10 @@ public class User {
     )
     private Timestamp registeredAt;
 
+    @Lob
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private String avatarUrl;
+
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)
     private final List<Member> members = new ArrayList<>();
 
@@ -84,22 +88,26 @@ public class User {
                 String username,
                 String email,
                 String password,
-                Timestamp registeredAt) {
+                Timestamp registeredAt,
+                String avatarUrl) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.registeredAt = registeredAt;
+        this.avatarUrl = avatarUrl;
     }
 
     public User(String username,
                 String email,
                 String password,
-                Timestamp registeredAt) {
+                Timestamp registeredAt,
+                String avatarUrl) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.registeredAt = registeredAt;
+        this.avatarUrl = avatarUrl;
     }
 
     public Long getId() {
@@ -142,6 +150,14 @@ public class User {
         this.registeredAt = registeredAt;
     }
 
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -149,7 +165,8 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", registeredAt='" + registeredAt + '\'' +
+                ", registeredAt=" + registeredAt +
+                ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
 }

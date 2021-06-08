@@ -2,6 +2,8 @@ package com.project3.api.entities.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 @RestController
@@ -27,8 +29,9 @@ public class UserController {
     }
 
     @PostMapping
-    public void registerNewUser(@RequestBody User user) {
-        userService.addNewUser(user);
+    public void registerNewUser(@RequestBody User user,
+                                @RequestParam(value = "file", required = false) MultipartFile file) {
+        userService.addNewUser(user, file);
     }
 
     @DeleteMapping(path = "{userId}")
@@ -41,7 +44,8 @@ public class UserController {
             @PathVariable("userId") Long userId,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String password) {
-        userService.updateUser(userId, username, email, password);
+            @RequestParam(required = false) String password,
+            @RequestParam(value = "file", required = false) MultipartFile file) {
+        userService.updateUser(userId, username, email, password, file);
     }
 }

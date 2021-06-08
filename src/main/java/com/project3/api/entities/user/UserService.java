@@ -56,7 +56,7 @@ public class UserService {
             throw new IllegalStateException("Username already taken!");
         }
         try {
-           user.setPassword(toHexString(getSHA(user.getPassword())));
+            user.setPassword(toHexString(getSHA(user.getPassword())));
         } catch (NoSuchAlgorithmException e) {
             System.out.println("Exception thrown for incorrect algorithm: " + e);
         }
@@ -79,8 +79,8 @@ public class UserService {
                         "User with id " + userId + " does not exist!"));
 
         if (username != null &&
-        username.length() > 0 &&
-        !Objects.equals(user.getUsername(), username)) {
+                username.length() > 0 &&
+                !Objects.equals(user.getUsername(), username)) {
             Optional<User> userByUsername = userRepository.findUserByUsername(username);
             if (userByUsername.isPresent()) {
                 throw new IllegalStateException("Username already taken!");
@@ -89,8 +89,8 @@ public class UserService {
         }
 
         if (email != null &&
-        email.length() > 0 &&
-        !Objects.equals(user.getEmail(), email)) {
+                email.length() > 0 &&
+                !Objects.equals(user.getEmail(), email)) {
             user.setEmail(email);
         }
 

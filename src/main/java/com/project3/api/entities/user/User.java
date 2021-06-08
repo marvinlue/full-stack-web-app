@@ -10,7 +10,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -35,18 +34,22 @@ public class User {
 
     @Column(
             name = "username",
-            columnDefinition = "TEXT"
+            nullable = false,
+            columnDefinition = "TEXT",
+            unique = true
     )
     private String username;
 
     @Column(
             name = "email",
+            nullable = false,
             columnDefinition = "TEXT"
     )
     private String email;
 
     @Column(
             name = "password",
+            nullable = false,
             columnDefinition = "TEXT"
     )
     private String password;
@@ -54,6 +57,7 @@ public class User {
     @JsonProperty(access = WRITE_ONLY)
     @Column(
             name = "registered_at",
+            nullable = false,
             updatable = false
     )
     private Timestamp registeredAt;

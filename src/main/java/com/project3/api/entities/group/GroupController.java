@@ -29,15 +29,18 @@ public class GroupController {
         groupService.addNewGroup(group, userId);
     }
 
-    @DeleteMapping(path = "{groupId}")
-    public void deleteGroup(@PathVariable("groupId") Long groupId) {
-        groupService.deleteGroup(groupId);
+    @DeleteMapping(path = "{userId}")
+    public void deleteGroup(
+            @PathVariable("userId") Long userId,
+            @RequestParam Long groupId) {
+        groupService.deleteGroup(userId, groupId);
     }
 
-    @PutMapping(path = "{groupId}")
+    @PutMapping(path = "{userId}")
     public void updateGroup(
-            @PathVariable("groupId") Long groupId,
+            @PathVariable("userId") Long userId,
+            @RequestParam Long groupId,
             @RequestParam String groupName) {
-        groupService.updateGroup(groupId, groupName);
+        groupService.updateGroup(userId, groupId, groupName);
     }
 }

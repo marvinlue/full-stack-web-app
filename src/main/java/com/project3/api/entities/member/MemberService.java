@@ -51,20 +51,18 @@ public class MemberService {
     }
 
     public Member getMemberByGidAndUserId(Long groupId, Long userId) {
-        validateGroupAndUser(groupId, userId);
-        Group group = groupRepository.getById(groupId);
-        User user = userRepository.getById(userId);
+        User user = getUser(userId);
+        Group group = getGroup(groupId);
         Optional<Member> memberByGroupAndUser = memberRepository.findMemberByGroupAndUser(group, user);
-        if (!memberByGroupAndUser.isPresent()) {
-            throw new IllegalStateException("Member with id " + userId + " is not part of group with id " + groupId + "!");
+        if (memberByGroupAndUser.isEmpty()) {
+            throw new IllegalStateException("User with id " + userId + " is not a member of group with id " + groupId + "!");
         }
         return memberByGroupAndUser.get();
     }
 
     public void addNewMember(Long groupId, Long userId, Member member) {
-        validateGroupAndUser(groupId, userId);
-        Group group = groupRepository.getById(groupId);
-        User user = userRepository.getById(userId);
+        User user = getUser(userId);
+        Group group = getGroup(groupId);
         member.setGroup(group);
         member.setUser(user);
         Optional<Member> memberByGroupAndUser =
@@ -76,43 +74,68 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    public void deleteMember(Long groupId, Long userId) {
-        validateGroupAndUser(groupId, userId);
-        Group group = groupRepository.getById(groupId);
-        User user = userRepository.getById(userId);
-        Optional<Member> memberByGroupAndUser =
-                memberRepository.findMemberByGroupAndUser(group, user);
-        if (!memberByGroupAndUser.isPresent()) {
-            throw new IllegalStateException("User with id " + userId + " is not a member of group with id " + groupId +"!");
+    public void leaveGroup(Long userId, Long groupId) {
+        User user = getUser(userId);
+        Group group = getGroup(groupId);
+        Optional<Member> memberByGroupAndUser = memberRepository.findMemberByGroupAndUser(group, user);
+        if (memberByGroupAndUser.isEmpty()) {
+            throw new IllegalStateException("User with id " + userId + " is not a member of group with id " + groupId + "!");
         }
         Member member = memberByGroupAndUser.get();
         memberRepository.delete(member);
     }
 
-    @Transactional
-    public void updateMember(Long groupId, Long userId, Boolean adminRights) {
-        validateGroupAndUser(groupId, userId);
-        Group group = groupRepository.getById(groupId);
-        User user = userRepository.getById(userId);
-        Optional<Member> memberByGroupAndUser =
-                memberRepository.findMemberByGroupAndUser(group, user);
-        if (!memberByGroupAndUser.isPresent()) {
-            throw new IllegalStateException("User with id " + userId + " is not a member of group with id " + groupId +"!");
+    public void deleteMember(Long currentUserId, Long userId, Long groupId) {
+        Member member = memberRepository.getById(validateUsersInGroup(currentUserId, userId, groupId));
+        if (member.getAdminRights()) {
+            throw new IllegalStateException("Cannot delete user with id " + userId + " from group with id " + groupId + ". User is a group admin!");
         }
-        Member member = memberByGroupAndUser.get();
+        memberRepository.delete(member);
+    }
+
+    @Transactional
+    public void updateMember(Long currentUserId, Long userId, Long groupId, Boolean adminRights) {
+        Member member = memberRepository.getById(validateUsersInGroup(currentUserId, userId, groupId));
         if (adminRights != null && !Objects.equals(member.getAdminRights(), adminRights)) {
+            if (!currentUserId.equals(userId)) {
+                if (member.getAdminRights()) {
+                    throw new IllegalStateException("Cannot update admin rights of user with id " + userId + " in group with id " + groupId + ". User is a group admin!");
+                }
+            }
             member.setAdminRights(adminRights);
         }
     }
 
-    private void validateGroupAndUser(Long groupId, Long userId) {
-        boolean exists = userRepository.existsById(userId);
-        if (!exists) {
-            throw new IllegalStateException("User with id " + userId + " does not exist!");
+    private Long validateUsersInGroup(Long currentUserId, Long userId, Long groupId) {
+        User current = getUser(currentUserId);
+        User user = getUser(userId);
+        Group group = getGroup(groupId);
+        Optional<Member> memberByGroupAndUser = memberRepository.findMemberByGroupAndUser(group, user);
+        if (memberByGroupAndUser.isEmpty()) {
+            throw new IllegalStateException("User with id " + user.getId() + " is not a member of group with id " + group.getGid() + "!");
         }
-        exists = groupRepository.existsById(groupId);
-        if (!exists) {
-            throw new IllegalStateException("Group with id " + groupId + " does not exist!");
+        Optional<Member> adminByGroupAndUser = memberRepository.findMemberByGroupAndUser(group, current);
+        if (adminByGroupAndUser.isEmpty()) {
+            throw new IllegalStateException("User with id " + current.getId() + " is not a member of group with id " + group.getGid() + "!");
         }
+        Member admin = adminByGroupAndUser.get();
+        if (!admin.getAdminRights()) {
+            throw new IllegalStateException("User with id " + current.getId() + " does not have admin rights in group with id " + group.getGid() + "!");
+        }
+        Member member = memberByGroupAndUser.get();
+        return member.getMemberId();
     }
+
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "User with id " + userId + " does not exist!"));
+    }
+
+    private Group getGroup(Long groupId) {
+        return groupRepository.findById(groupId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Group with id " + groupId + " does not exist!"));
+    }
+
 }

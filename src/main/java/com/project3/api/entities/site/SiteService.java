@@ -2,7 +2,6 @@ package com.project3.api.entities.site;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -29,7 +28,7 @@ private final SiteRepository siteRepository;
 
     public Site getSiteByID(Long sId) {
         Optional<Site> siteById = siteRepository.findSiteBySid(sId);
-        if (!siteById.isPresent()) {
+        if (siteById.isEmpty()) {
             throw new IllegalStateException("Site with id " + sId + " does not exist!");
         }
         return siteById.get();

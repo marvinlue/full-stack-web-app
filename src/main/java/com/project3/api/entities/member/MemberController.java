@@ -33,18 +33,27 @@ public class MemberController {
         memberService.addNewMember(groupId, userId, member);
     }
 
-    @DeleteMapping(path = "{groupId}")
-    public void deleteGroup(
-            @PathVariable("groupId") Long groupId,
-            @RequestParam Long userId) {
-        memberService.deleteMember(groupId, userId);
+    @DeleteMapping
+    public void leaveGroup(
+            @RequestParam Long userId,
+            @RequestParam Long groupId) {
+        memberService.leaveGroup(userId, groupId);
     }
 
-    @PutMapping(path = "{groupId}")
-    public void updateMember(
-            @PathVariable("groupId") Long groupId,
+    @DeleteMapping(path = "{currentUserId}")
+    public void deleteMember(
+            @PathVariable("currentUserId") Long currentUserId,
             @RequestParam Long userId,
+            @RequestParam Long groupId) {
+        memberService.deleteMember(currentUserId, userId, groupId);
+    }
+
+    @PutMapping(path = "{currentUserId}")
+    public void updateMember(
+            @PathVariable("currentUserId") Long currentUserId,
+            @RequestParam Long userId,
+            @RequestParam Long groupId,
             @RequestParam Boolean adminRights) {
-        memberService.updateMember(groupId, userId, adminRights);
+        memberService.updateMember(currentUserId, userId, groupId, adminRights);
     }
 }

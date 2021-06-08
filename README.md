@@ -137,22 +137,22 @@ POST http://localhost:8080/api/groups?userId=1
 
 **NOTE:** Upon group creation user who created group is added to group. All info regarding groups and their members are kept in the members_info table
 ##### DELETE
-* To delete a group with groupId from _groups table using a DELETE request:
+* A logged in user with a specific userId may delete a group with a specific groupId from _groups table using a DELETE request if they are a member of the group and have admin rights:
 ```
-DELETE http://localhost:8080/api/groups/{{groupId}}
+DELETE http://localhost:8080/api/groups/{{userId}}?groupId={{groupId}}
 ```
-e.g. deleting group with groupId 1:
+e.g. User with userId 1 deleting group with groupId 1:
 ```
-DELETE http://localhost:8080/api/groups/1
+DELETE http://localhost:8080/api/groups/1?groupId=1
 ```
 ##### PUT
-* Update groupName of group with specific groupId in _groups table using a PUT request:
+* A logged in user with a specific userId may update the groupName of group with a specific groupId in _groups table using a PUT request if they are a member of the group and have admin rights:
 ```
-PUT http://localhost:8080/api/groups/{{groupId}}?groupName={{groupName}}
+PUT http://localhost:8080/api/groups/{{userId}}?groupId={{groupId}}&groupName={{groupName}}
 ```
-e.g. setting groupName of group with groupId 1 to "new-groupname":
+e.g. User with userId 1 setting groupName of group with groupId 1 to "new-groupname":
 ```
-PUT http://localhost:8080/api/groups/1?groupName=new-groupname
+PUT http://localhost:8080/api/groups/1?groupId=1&groupName=new-groupname
 ```
 
 #### Members
@@ -186,41 +186,59 @@ e.g. to get user with userId 1 belonging to group with groupId 1:
 GET http://localhost:8080/api/members/1?userId=1
 ```
 ##### POST
-* A user with a specific userId can be added to a group with a specific groupId by using a POST request. This is done by adding a entry to members_info table with a dictoinary as input:
+* A user with a specific userId can join a group with a specific groupId by using a POST request. This is done by adding a entry to members_info table with a dictoinary as input:
 ```
 POST http://localhost:8080/api/members?groupId={{groupId}}&userId={{userId}}
 ```
 Dictionary must be in the following form:
 ```
 {
-  "adminRights": "true/false"
+  "adminRights": "false"
 }
 ```
-e.g. if user with userId 1 is added to group with groupId 1 and is granted adminRights:
+e.g. if user with userId 1 joins group with groupId 1:
 ```
 POST http://localhost:8080/api/members?groupId=1&userId=1
 
 {
-  "adminRights": "true"
+  "adminRights": "false"
 }
 ```
 ##### DELETE
-* A user with userId 1 can be deleted from a group with groupId using a DELETE request. This is done by deleting corresponding entry in members_info table:
+* A logged in user with a specific currentUserId may delete an user with userId from a group with groupId using a DELETE request if they are both members of the group, the currently logged in user has admin rights and the user being deleted does not. This is done by deleting corresponding entry in members_info table:
 ```
-DELETE http://localhost:8080/api/members/{{groupId}}?userId={{userId}}
+DELETE http://localhost:8080/api/members/{{currentUserId}}?userId={{userId}}&groupId={{groupId}}
 ```
-e.g. deleting user with userId 1 from group with groupId 1:
+e.g. Logged in user with currentUserId 1 deleting user with userId 2 from group with groupId 1:
 ```
-DELETE http://localhost:8080/api/members/1?userId=1
+DELETE http://localhost:8080/api/members/1?userId=2&groupId=1
 ```
+**NOTE:** This should be the route used by group admins if they want to delete a member of a group
+* A logged in user with a specific currentUserId may leave a group with groupId using a DELETE request if they are a member of the group. This is done by deleting corresponding entry in members_info table:
+```
+DELETE http://localhost:8080/api/members/{{currentUserId}}?groupId={{groupId}}
+```
+e.g. Logged in user with currentUserId 1 leaving group with groupId 1:
+```
+DELETE http://localhost:8080/api/members/1?groupId=1
+```
+**NOTE:** This should be the route used if a user wants to leave a group
 ##### PUT
-* The adminRights of user with userId in group with groupId can be updated using a PUT request. This is done by updating corresponding entry in members_info table:
+* A logged in user with a specific currentUserId may update the adminRights of user with userId in group with groupId using a PUT request if they are both members of the group, the currently logged in user has admin rights and the other user does not. This is done by updating corresponding entry in members_info table:
 ```
-PUT http://localhost:8080/api/members/{{groupId}}?userId={{userId}}&adminRights={{adminRights}}
+PUT http://localhost:8080/api/members/{{currentUserId}}?userId={{userId}}&groupId={{groupId}}&adminRights={{adminRights}}
 ```
-e.g. setting adminRights of user with userId 1 belonging to group with groupId 1 to "true":
+e.g. Logged in user with currentUserId 1 setting adminRights of user with userId 2 belonging to group with groupId 1 to "true":
 ```
-PUT http://localhost:8080/api/members/1?userId=1&adminRights=true
+PUT http://localhost:8080/api/members/1?userId=2&groupId=1&adminRights=true
+```
+* A logged in user with a specific currentUserId who is part of a group with specific groupId may update their own adminRights using a PUT request if they have admin rights to do so. This is done by updating corresponding entry in members_info table:
+```
+PUT http://localhost:8080/api/members/{{currentUserId}}?userId={{userId}}&groupId={{groupId}}&adminRights={{adminRights}}
+```
+e.g. Logged in user with currentUserId 1, belonging to group with groupId 1, setting their adminRights to "false":
+```
+PUT http://localhost:8080/api/members/1?userId=1&groupId=1&adminRights=false
 ```
 ### Note
 

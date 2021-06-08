@@ -4,7 +4,6 @@ import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.post.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

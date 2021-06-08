@@ -1,7 +1,6 @@
 package com.project3.api.entities.site;
 
 import org.locationtech.jts.geom.Point;
-
 import javax.persistence.*;
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -26,13 +25,16 @@ public class Site {
 
     @Column(
             name = "site_name",
-            updatable = false
+            nullable = false,
+            updatable = false,
+            unique = true
     )
     private String siteName;
 
     @Column(
             name = "location",
             updatable = false,
+            nullable = false,
             columnDefinition = "POINT"
     )
     private Point location;

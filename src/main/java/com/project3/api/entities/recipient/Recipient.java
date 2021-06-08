@@ -27,12 +27,12 @@ public class Recipient {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
-    @JoinColumn(name = "message_id", referencedColumnName="mid", updatable = false)
+    @JoinColumn(name = "message_id", referencedColumnName="mid", updatable = false, nullable = false)
     private Message message;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
-    @JoinColumn(name = "recipient", referencedColumnName="id", updatable = false)
+    @JoinColumn(name = "recipient", referencedColumnName="id", updatable = false, nullable = false)
     private User user;
 
     public Recipient() {

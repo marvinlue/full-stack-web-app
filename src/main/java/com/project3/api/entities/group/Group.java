@@ -1,13 +1,10 @@
 package com.project3.api.entities.group;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.project3.api.entities.member.Member;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Table(name = "_groups")
@@ -31,12 +28,15 @@ public class Group {
 
     @Column(
             name = "group_name",
-            columnDefinition = "TEXT"
+            nullable = false,
+            columnDefinition = "TEXT",
+            unique = true
     )
     private String groupName;
 
     @Column(
             name = "created_at",
+            nullable = false,
             updatable = false
     )
     private Timestamp createdAt;

@@ -5,7 +5,6 @@ import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.user.User;
 import org.locationtech.jts.geom.Point;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ public class Post {
 
     @Column(
             name = "post",
+            nullable = false,
             columnDefinition = "TEXT"
     )
     private String post;
@@ -46,12 +46,12 @@ public class Post {
 
     @JsonIgnoreProperties({"createdAt"})
     @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false)
+    @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false, nullable = false)
     private Group group;
 
     @JsonIgnoreProperties({"password","registeredAt"})
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false, nullable = false)
     private User user;
 
     @Column(
@@ -63,7 +63,8 @@ public class Post {
 
     @Column(
             name = "posted_at",
-            updatable = false
+            updatable = false,
+            nullable = false
     )
     private Timestamp postedAt;
 

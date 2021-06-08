@@ -32,19 +32,19 @@ public class UserService {
         }
         if (userId != null && username != null) {
             Optional<User> userByIdAndUsername = userRepository.findByIdAndUsername(userId, username);
-            if (!userByIdAndUsername.isPresent()) {
+            if (userByIdAndUsername.isEmpty()) {
                 throw new IllegalStateException("User with id " + userId + " and username " + username + " not found!");
             }
         }
         if (userId != null) {
             Optional<User> userById = userRepository.findUserById(userId);
-            if (!userById.isPresent()) {
+            if (userById.isEmpty()) {
                 throw new IllegalStateException("User with id " + userId + " does not exist!");
             }
             return userById.get();
         }
         Optional<User> userByUsername = userRepository.findUserByUsername(username);
-        if (!userByUsername.isPresent()) {
+        if (userByUsername.isEmpty()) {
             throw new IllegalStateException("User with username " + username + " does not exist!");
         }
         return userByUsername.get();

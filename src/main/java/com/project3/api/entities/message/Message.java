@@ -30,18 +30,20 @@ public class Message {
 
     @Column(
             name = "message",
+            nullable = false,
             columnDefinition = "TEXT"
     )
     private String message;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
-    @JoinColumn(name = "sender", referencedColumnName="id", updatable = false)
+    @JoinColumn(name = "sender", referencedColumnName="id", updatable = false, nullable = false)
     private User user;
 
     @Column(
             name = "sent_at",
-            updatable = false
+            updatable = false,
+            nullable = false
     )
     private Timestamp sentAt;
 

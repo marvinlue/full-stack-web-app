@@ -28,22 +28,24 @@ public class Member {
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
-    @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false)
+    @JoinColumn(name = "group_id", referencedColumnName="gid", updatable = false, nullable = false)
     private Group group;
 
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false)
+    @JoinColumn(name = "user_id", referencedColumnName="id", updatable = false, nullable = false)
     private User user;
 
     @Column(
-            name = "admin_rights"
+            name = "admin_rights",
+            nullable = false
     )
     private Boolean adminRights;
 
     @Column(
             name = "joined_at",
-            updatable = false
+            updatable = false,
+            nullable = false
     )
     private Timestamp joinedAt;
 

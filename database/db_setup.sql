@@ -23,7 +23,7 @@ ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE sites (
     sid BIGINT AUTO_INCREMENT PRIMARY KEY,
-    site_name VARCHAR(255) UNIQUE,
+    site_name VARCHAR(255) NOT NULL UNIQUE,
     location POINT NOT NULL
 )
 ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -32,7 +32,7 @@ CREATE TABLE posts (
     pid BIGINT AUTO_INCREMENT PRIMARY KEY,
     post VARCHAR(255) NOT NULL,
     category VARCHAR(255),
-    location POINT NOT NULL,
+    location POINT,
     group_id BIGINT NOT NULL,
     user_id BIGINT NOT NULL,
     posted_at TIMESTAMP NOT NULL DEFAULT NOW(),

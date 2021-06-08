@@ -1,7 +1,8 @@
-package com.project3.api.entities.user;
+package com.project3.api;
 
 
 import com.project3.api.JwtUtil;
+import com.project3.api.entities.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

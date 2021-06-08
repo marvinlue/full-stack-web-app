@@ -1,6 +1,6 @@
-package com.project3.api.entities;
+package com.project3.api;
 
-import com.project3.api.entities.user.JwtRequestFilter;
+import com.project3.api.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -74,19 +74,17 @@ public class PostService {
         return  postRepository.findPostsByUserOrGroup(userId, groupId);
     }
 
-    public void deletePostById(Long postId){
-        postRepository.deleteById(postId);
+    public void deletePostById(Long postId, Long userId){
+        if (validatePostUser(postId,userId)) {
+            postRepository.deleteById(postId);
+        }
     }
 
-    public void updatePostText(Long postId, PostUpdate postUpdate) {
-        Optional<Post> postOptional = postRepository.findById(postId);
-        if (postOptional.isPresent()){
-            Post post = postOptional.get();
+    public void updatePostText(Long postId, Long userId, PostUpdate postUpdate) {
+        if (validatePostUser(postId,userId)){
+            Post post = postRepository.getById(postId);
             post.setPost(postUpdate.getText());
             postRepository.save(post);
-        }
-        else {
-            throw new IllegalStateException("No Post: " + postId + " exists");
         }
     }
 
@@ -136,23 +134,48 @@ public class PostService {
         }
     }
 
-    public void deleteComment(Long commentId) {
-        commentRepository.deleteById(commentId);
+    public void deleteComment(Long commentId, Long userId) {
+        if (validateCommentUser(commentId,userId)){
+            commentRepository.deleteById(commentId);
+        }
     }
 
-    public void updateComment(Long commentId, CommentUpdate commentUpdate) {
-        Optional<Comment> commentOptional = commentRepository.findById(commentId);
-        if (commentOptional.isPresent()){
-            Comment comment = commentOptional.get();
+    public void updateComment(Long commentId, Long userId, CommentUpdate commentUpdate) {
+        if (validateCommentUser(commentId, userId)){
+            Comment comment = commentRepository.getById(commentId);
             comment.setComment(commentUpdate.getUpdatedText());
             commentRepository.save(comment);
-        }
-        else {
-            throw new IllegalStateException("No Comment: " + commentId + " exists");
         }
     }
 
     public List<Comment> getCommentsforPost(Long postId) {
         return commentRepository.findCommentsByPostOrderByMadeAtDesc(postId);
+    }
+
+    public boolean validateCommentUser (Long commentId, Long userId){
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        if (commentOptional.isPresent()){
+            return checkUserId(commentOptional.get().getUser().getId(), userId);
+        }
+        else {
+            throw new IllegalStateException("Comment with Id:" + commentId +" does not exist!");
+        }
+    }
+
+    public boolean validatePostUser(Long postId, Long userId){
+        Optional<Post> postOptional = postRepository.findById(postId);
+        if (postOptional.isPresent()){
+            return checkUserId(postOptional.get().getUser().getId(), userId);
+        }
+        else {
+            throw new IllegalStateException("Post with Id:" + postId +" does not exist!");
+        }
+    }
+
+    public boolean checkUserId(Long storedId, Long providedId){
+        if (storedId != providedId){
+            throw new IllegalStateException("User with Id :" + providedId + " has no right to change that!");
+        }
+        return (storedId == providedId);
     }
 }

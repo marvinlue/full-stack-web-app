@@ -255,8 +255,8 @@ Please play around with them to get a feeling for the response Structure!
 | GET | api/posts/byTime | {"time": "2021-06-05T07:26:59.529","operation": "greater"/"less"} | - | Get all Posts after / before certain Timestamp |
 | GET | api/posts/byLocation | {"longitude":"65","latitude": "80","radius": "1"} | - | Gives all Posts around GPS Coord within Radius in km |
 | GET | api/posts/bySite | {"sitename":"Site1","radius": "1"} | - | Get all Posts around a certain Site which is already stored in SiteTable
-| DELETE | api/posts/{postId} | - | api/posts/1 | Delete a Post identified by its ID |
-| PUT | api/posts/{postId} | {"text":"Update"} | api/posts/1 | Update the text of a Post |
+| DELETE | api/posts/{postId}?userId={Id} | - | api/posts/1?userId=1 | Delete a Post identified by its ID |
+| PUT | api/posts/{postId}?userId={Id} | {"text":"Update"} | api/posts/1?userId=1 | Update the text of a Post |
 
 ### Comments
 
@@ -264,8 +264,8 @@ Please play around with them to get a feeling for the response Structure!
 | :---: | :---: | :---: | :---: | :---: |
 | POST | api/posts/{postId}/comment | {"commentText":"Text","userId":"1"} | api/posts/1/comment | Adds Comment to a Post from a User |
 | GET | api/posts/{postId}/comment | - | api/posts/1/comment | Get all Comments to a Post |
-| DELETE | api/posts/comment/{commentId} | - | api/posts/comment/1 | Delete a Comment from a Post |
-| PUT | api/posts/comment/{commentId} | {"updatedText":"Text"} | api/posts/comment/1 | Update the Text of a Comment from a Post |
+| DELETE | api/posts/comment/{commentId}?userId={Id} | - | api/posts/comment/1?userId=1 | Delete a Comment from a Post |
+| PUT | api/posts/comment/{commentId}?userId={Id} | {"updatedText":"Text"} | api/posts/comment/1?userId=1 | Update the Text of a Comment from a Post |
 
 ### Sites
 

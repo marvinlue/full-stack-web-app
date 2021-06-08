@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>2be650a8-2bf4-4488-86a8-302e3ad65034.SCHEMA:network</OriginalElement>
+  <nodes>
+    <node x="255.25" y="24.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.posts</node>
+    <node x="122.125" y="464.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network._groups</node>
+    <node x="0.0" y="666.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.comment_sequence</node>
+    <node x="251.0" y="666.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.recipient_sequence</node>
+    <node x="0.0" y="24.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.members_info</node>
+    <node x="635.0" y="771.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.site_sequence</node>
+    <node x="429.0" y="771.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.user_sequence</node>
+    <node x="800.4616858237548" y="24.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.messages</node>
+    <node x="0.0" y="771.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.group_sequence</node>
+    <node x="846.3136015325671" y="464.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.sites</node>
+    <node x="1011.639846743295" y="24.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.recipient_info</node>
+    <node x="740.0" y="666.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.member_sequence</node>
+    <node x="540.2816091954023" y="454.2183908045977">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.users</node>
+    <node x="540.2816091954023" y="24.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.comments</node>
+    <node x="497.0" y="666.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.message_sequence</node>
+    <node x="221.0" y="771.0">2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.post_sequence</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.recipient_info" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.users" relationship="REFERENCES">
+      <point x="40.0" y="-54.5" />
+      <point x="1131.639846743295" y="126.94252873563218" />
+      <point x="1091.639846743295" y="126.94252873563218" />
+      <point x="1091.639846743295" y="363.00766283524905" />
+      <point x="638.2816091954023" y="363.00766283524905" />
+      <point x="0.0" y="78.5" />
+    </edge>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.posts" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network._groups" relationship="REFERENCES">
+      <point x="46.5" y="-102.5" />
+      <point x="394.75" y="155.92911877394636" />
+      <point x="305.0852490421455" y="155.92911877394636" />
+      <point x="305.0852490421455" y="291.1187739463602" />
+      <point x="210.625" y="291.1187739463602" />
+      <point x="0.0" y="54.5" />
+    </edge>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.posts" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.users" relationship="REFERENCES">
+      <point x="-46.5" y="-102.5" />
+      <point x="301.75" y="224.75862068965517" />
+      <point x="348.25" y="224.75862068965517" />
+      <point x="348.25" y="261.992337164751" />
+      <point x="638.2816091954023" y="261.992337164751" />
+      <point x="0.0" y="78.5" />
+    </edge>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.messages" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.users" relationship="REFERENCES">
+      <point x="0.0" y="-66.5" />
+      <point x="876.9616858237548" y="261.992337164751" />
+      <point x="638.2816091954023" y="261.992337164751" />
+      <point x="0.0" y="78.5" />
+    </edge>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.members_info" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network._groups" relationship="REFERENCES">
+      <point x="41.5" y="-78.5" />
+      <point x="124.5" y="291.1187739463602" />
+      <point x="210.625" y="291.1187739463602" />
+      <point x="0.0" y="54.5" />
+    </edge>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.recipient_info" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.messages" relationship="REFERENCES">
+      <point x="-40.0" y="-54.5" />
+      <point x="1051.639846743295" y="78.5" />
+      <point x="876.9616858237548" y="78.5" />
+      <point x="0.0" y="66.5" />
+    </edge>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.comments" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.posts" relationship="REFERENCES">
+      <point x="42.75" y="-78.5" />
+      <point x="668.5316091954023" y="102.5" />
+      <point x="348.25" y="102.5" />
+      <point x="0.0" y="102.5" />
+    </edge>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.comments" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.users" relationship="REFERENCES">
+      <point x="-42.75" y="-78.5" />
+      <point x="583.0316091954023" y="161.17816091954023" />
+      <point x="638.2816091954023" y="161.17816091954023" />
+      <point x="0.0" y="78.5" />
+    </edge>
+    <edge source="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.members_info" target="2be650a8-2bf4-4488-86a8-302e3ad65034.TABLE:network.users" relationship="REFERENCES">
+      <point x="-41.5" y="-78.5" />
+      <point x="41.5" y="149.76628352490422" />
+      <point x="83.0" y="149.76628352490422" />
+      <point x="83.0" y="363.00766283524905" />
+      <point x="638.2816091954023" y="363.00766283524905" />
+      <point x="0.0" y="78.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.6133960047003525" showDependencies="false" x="467.5" y="415.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Columns</Category>
+    <Category>Key columns</Category>
+    <Category>Virtual foreign keys</Category>
+  </Categories>
+</Diagram>
+

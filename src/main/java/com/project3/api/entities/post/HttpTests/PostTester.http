@@ -75,13 +75,22 @@ GET http://localhost:8080/api/posts/byUser?userId=2
 ### EXPECTED: 1 Post
 GET http://localhost:8080/api/posts/byUserOrGroup?groupId=2
 
-### Update post2
-PUT http://localhost:8080/api/posts/2
+### Update post2 from correct user
+PUT http://localhost:8080/api/posts/2?userId=1
 Content-Type: application/json
 
 {
 "text" : "This is the updated second post"
 }
+
+### Update post2 from wrong user
+PUT http://localhost:8080/api/posts/2?userId=2
+Content-Type: application/json
+
+{
+  "text" : "This is not the updated second post"
+}
+
 
 ### Get Posts after Time
 ### EXPECTED: 3 Posts
@@ -133,8 +142,12 @@ Content-Type: application/json
   "radius": "1"
 }
 
+### Delete second Post with wrong user
+DELETE http://localhost:8080/api/posts/2?userId=2
+### EXPECTED: Error wrong user
+
 ### Delete second Post
-DELETE http://localhost:8080/api/posts/2
+DELETE http://localhost:8080/api/posts/2?userId=1
 
 ### Get Posts
 ### EXPECTED: 2 Posts, no second post

@@ -58,8 +58,17 @@ Content-Type: application/json
 ### EXPECTED: 2 comments
 GET http://localhost:8080/api/posts/1/comment
 
+### Update comment with wrong User
+### EXPECTED: ERROR
+PUT http://localhost:8080/api/posts/comment/1?userId=2
+Content-Type: application/json
+
+{
+  "updatedText": "This is not the updated first comment"
+}
+
 ### Update comment
-PUT http://localhost:8080/api/posts/comment/1
+PUT http://localhost:8080/api/posts/comment/1?userId=1
 Content-Type: application/json
 
 {
@@ -71,7 +80,7 @@ Content-Type: application/json
 GET http://localhost:8080/api/posts/1/comment
 
 ### Delete comment
-DELETE http://localhost:8080/api/posts/comment/2
+DELETE http://localhost:8080/api/posts/comment/2?userId=2
 
 ### Get comments
 ### EXPECTED: 1 comment only first

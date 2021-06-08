@@ -18,7 +18,11 @@ public class PostController {
     }
 
     @PostMapping
-    public void createPost (@RequestParam Long userId, @RequestParam Long groupId, @RequestBody Post post){
+    public void createPost (
+            @RequestParam Long userId,
+            @RequestParam Long groupId,
+            @RequestBody Post post
+    ){
         postService.addNewPost(userId, groupId, post);
     }
 
@@ -28,7 +32,10 @@ public class PostController {
     }
 
     @GetMapping(path = "byUserOrGroup")
-    public List<Post> getPostByUserOrGroup(@RequestParam(required = false) Long userId, @RequestParam(required = false) Long groupId){
+    public List<Post> getPostByUserOrGroup(
+            @RequestParam(required = false) Long userId,
+            @RequestParam(required = false) Long groupId
+    ){
         return postService.getPostsUserGroup(userId, groupId);
     }
 
@@ -48,13 +55,20 @@ public class PostController {
     }
 
     @DeleteMapping(path = "{postId}")
-    public void deletePostByID (@PathVariable("postId") Long postId){
-        postService.deletePostById(postId);
+    public void deletePostByID (
+            @PathVariable("postId") Long postId,
+            @RequestParam Long userId
+    ){
+        postService.deletePostById(postId, userId);
     }
 
     @PutMapping(path = "{postId}")
-    public void updatePostText (@PathVariable("postId") Long postId, @RequestBody PostUpdate postUpdate){
-        postService.updatePostText(postId, postUpdate);
+    public void updatePostText (
+            @PathVariable("postId") Long postId,
+            @RequestParam Long userId,
+            @RequestBody PostUpdate postUpdate
+    ){
+        postService.updatePostText(postId, userId, postUpdate);
     }
 
     //CRUD Comment
@@ -69,13 +83,20 @@ public class PostController {
     }
 
     @DeleteMapping("comment/{commentId}")
-    public void deleteComment(@PathVariable("commentId") Long commentId){
-        postService.deleteComment(commentId);
+    public void deleteComment(
+            @PathVariable("commentId") Long commentId,
+            @RequestParam Long userId
+    ){
+        postService.deleteComment(commentId, userId);
     }
 
     @PutMapping("comment/{commentId}")
-    public void updateComment(@PathVariable("commentId") Long commentId, @RequestBody CommentUpdate commentUpdate){
-        postService.updateComment(commentId, commentUpdate);
+    public void updateComment(
+            @PathVariable("commentId") Long commentId,
+            @RequestBody CommentUpdate commentUpdate,
+            @RequestParam Long userId
+    ){
+        postService.updateComment(commentId, userId, commentUpdate);
     }
 
 }

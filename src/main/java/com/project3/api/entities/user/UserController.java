@@ -68,6 +68,7 @@ public class UserController {
                 return Status.USER_ALREADY_EXISTS;
             }
         }
+        userService.addNewUser(newUser);
         return Status.SUCCESS;
         
     }
@@ -78,7 +79,7 @@ public class UserController {
     @Autowired
     private JwtUtil jwtTokenUtil;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @PostMapping(path = "login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
 
         try {

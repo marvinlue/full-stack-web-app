@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -20,6 +21,9 @@ import static com.project3.api.functions.Hash.toHexString;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -78,11 +82,8 @@ public class UserService implements UserDetailsService {
         if (userByUsername.isPresent()) {
             throw new IllegalStateException("Username already taken!");
         }
-        try {
-            user.setPassword(toHexString(getSHA(user.getPassword())));
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("Exception thrown for incorrect algorithm: " + e);
-        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRegisteredAt(Timestamp.valueOf(LocalDateTime.now()));
         userRepository.save(user);
     }
@@ -118,13 +119,9 @@ public class UserService implements UserDetailsService {
         }
 
         if (password != null && password.length() > 0) {
-            try {
-                String hash = toHexString(getSHA(password));
-                if (!Objects.equals(user.getPassword(), hash)) {
-                    user.setPassword(hash);
-                }
-            } catch (NoSuchAlgorithmException e) {
-                System.out.println("Exception thrown for incorrect algorithm: " + e);
+
+            if (!bCryptPasswordEncoder.matches(password, user.getPassword())){
+                user.setPassword(bCryptPasswordEncoder.encode(password));
             }
         }
     }

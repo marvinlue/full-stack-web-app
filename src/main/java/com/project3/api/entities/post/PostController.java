@@ -6,6 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+//TODO: Check on post such that user can only post in his groups
+//TODO: Implement JWT userId getter
+//TODO: Implement AllPosts for User - DONE
+//TODO: Implement AllPostsFromLocation for User - DONE
+//TODO: Implement AllPostsFromSite for User - DONE
+//TODO:  Implement AllPostsFromTag for User + Additional get all Tags in from Groups User is in - DONE
+
 @RestController
 @RequestMapping(path = "api/posts/")
 public class PostController {
@@ -17,13 +24,36 @@ public class PostController {
         this.postService = postService;
     }
 
-    @PostMapping
-    public void createPost (
-            @RequestParam Long userId,
-            @RequestParam Long groupId,
-            @RequestBody Post post
-    ){
-        postService.addNewPost(userId, groupId, post);
+
+    // ----------------------------------------
+    // POSTS
+    // ----------------------------------------
+
+    // GET
+    // ----------------------------------------
+    @GetMapping(path = "allPosts")
+    public List<Post> getAllPostsForUser (@RequestParam Long userId){
+        return postService.getAllPostsForUser(userId);
+    }
+
+    @GetMapping(path = "allPosts/location")
+    public List<Post> getAllPostsForUserLocation(@RequestBody PostLocation postLocation, @RequestParam Long userId){
+        return postService.getAllPostsForUserLocation(postLocation, userId);
+    }
+
+    @GetMapping(path = "allPosts/site")
+    public List<Post> getAllPostsForUserSite(@RequestBody PostSite postSite, @RequestParam Long userId){
+        return postService.getAllPostsForUserSite(postSite, userId);
+    }
+
+    @GetMapping(path = "allPosts/tag")
+    public List<Post> getAllPostsForUserTag(@RequestParam String tag, @RequestParam Long userId){
+        return postService.getAllPostsForUserTag(tag, userId);
+    }
+
+    @GetMapping(path = "allPosts/tags")
+    public List<String> getAllTagsForUserGroups(@RequestParam Long userId){
+        return postService.getAllTagsForUserGroups(userId);
     }
 
     @GetMapping(path = "byUser")
@@ -54,6 +84,9 @@ public class PostController {
         return postService.getPostBySite(postSite);
     }
 
+
+    // DELETE, POST, PUT
+    // ----------------------------------------
     @DeleteMapping(path = "{postId}")
     public void deletePostByID (
             @PathVariable("postId") Long postId,
@@ -61,6 +94,16 @@ public class PostController {
     ){
         postService.deletePostById(postId, userId);
     }
+
+    @PostMapping
+    public void createPost (
+            @RequestParam Long userId,
+            @RequestParam Long groupId,
+            @RequestBody Post post
+    ){
+        postService.addNewPost(userId, groupId, post);
+    }
+
 
     @PutMapping(path = "{postId}")
     public void updatePostText (
@@ -71,7 +114,9 @@ public class PostController {
         postService.updatePostText(postId, userId, postUpdate);
     }
 
-    //CRUD Comment
+    // ----------------------------------------
+    // COMMENT
+    // ----------------------------------------
     @PostMapping("{postId}/comment")
     public void addComment(@PathVariable("postId") Long postId, @RequestBody PostComment postComment){
         postService.addNewComment(postId, postComment);

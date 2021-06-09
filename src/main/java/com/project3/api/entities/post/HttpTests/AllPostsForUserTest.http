@@ -1,0 +1,133 @@
+### Add user1
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "email": "user1@mail.com",
+  "password": "password"
+}
+
+### Add user2
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "email": "user2@mail.com",
+  "password": "password"
+}
+
+### Add group1
+POST http://localhost:8080/api/groups?userId=1
+Content-Type: application/json
+
+{
+  "groupName": "group1"
+}
+
+### Add group2
+POST http://localhost:8080/api/groups?userId=2
+Content-Type: application/json
+
+{
+  "groupName": "group2"
+}
+
+### Add user1 to group2
+POST http://localhost:8080/api/members?groupId=2&userId=1
+Content-Type: application/json
+
+{
+  "adminRights": "false"
+}
+
+### Add first post
+POST http://localhost:8080/api/posts/?userId=1&groupId=1
+Content-Type: application/json
+
+{
+  "post": "This is the first post",
+  "category" : "First",
+  "location": { "type": "Point", "coordinates": [65,80] }
+}
+
+### Add second post
+POST http://localhost:8080/api/posts/?userId=1&groupId=2
+Content-Type: application/json
+
+{
+  "post": "This is the second post",
+  "category" : "Second",
+  "location": { "type": "Point", "coordinates": [64,80] }
+}
+
+### Add third post
+POST http://localhost:8080/api/posts/?userId=2&groupId=2
+Content-Type: application/json
+
+{
+  "post": "This is the third post",
+  "category" : "First",
+  "location": { "type": "Point", "coordinates": [65,81] }
+}
+
+### Add first comment
+POST http://localhost:8080/api/posts/1/comment
+Content-Type: application/json
+
+{
+  "commentText": "This is the first comment",
+  "userId" : "1"
+}
+
+### Get Posts for user1 around location
+### EXPECTED: 1 post
+GET http://localhost:8080/api/posts/allPosts/location?userId=1
+Content-Type: application/json
+
+{
+  "longitude": "65",
+  "latitude": "80",
+  "radius": "1"
+}
+
+### Get Posts for user2 around location
+### EXPECTED: 0 post
+GET http://localhost:8080/api/posts/allPosts/location?userId=2
+Content-Type: application/json
+
+{
+  "longitude": "65",
+  "latitude": "80",
+  "radius": "1"
+}
+
+### Add Site
+POST http://localhost:8080/api/site/
+Content-Type: application/json
+
+{
+  "siteName": "Site1",
+  "location": { "type": "Point", "coordinates": [65,80] }
+}
+
+### Get Post from Site within Radius
+### EXPECTED: 3 Posts
+GET http://localhost:8080/api/posts/allPosts/site?userId=1
+Content-Type: application/json
+
+{
+  "sitename": "Site1",
+  "radius": "1000000"
+}
+
+### Get Posts for user1 and tag
+### EXPECTED: 2 post
+GET http://localhost:8080/api/posts/allPosts/tag?userId=1&tag=First
+
+### Get all available Tags for user1
+GET http://localhost:8080/api/posts/allPosts/tags?userId=1
+
+### Get all available Tags for user2
+GET http://localhost:8080/api/posts/allPosts/tags?userId=2

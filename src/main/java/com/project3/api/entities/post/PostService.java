@@ -4,6 +4,9 @@ import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.comment.CommentRepository;
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.group.GroupRepository;
+import com.project3.api.entities.member.Member;
+import com.project3.api.entities.member.MemberRepository;
+import com.project3.api.entities.member.MemberService;
 import com.project3.api.entities.post.dto.*;
 import com.project3.api.entities.site.Site;
 import com.project3.api.entities.site.SiteRepository;
@@ -26,6 +29,7 @@ public class PostService {
     private final GroupRepository groupRepository;
     private final CommentRepository commentRepository;
     private final SiteRepository siteRepository;
+    private final MemberService memberService;
 
     @Autowired
     public PostService(
@@ -33,15 +37,21 @@ public class PostService {
             UserRepository userRepository,
             GroupRepository groupRepository,
             CommentRepository commentRepository,
-            SiteRepository siteRepository
+            SiteRepository siteRepository,
+            MemberService memberService
     ) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.groupRepository = groupRepository;
         this.commentRepository = commentRepository;
         this.siteRepository = siteRepository;
+        this.memberService = memberService;
     }
 
+    // ----------------------------------------
+    // POSTS
+    // ----------------------------------------
+    //Getter Methods
     public List<Post> getPostsUser(Long userID) {
         Optional<User> userOptional = userRepository.findUserById(userID);
         if (userOptional.isPresent()) {
@@ -52,6 +62,78 @@ public class PostService {
 
     }
 
+    public List<Post> getPostsUserGroup(Long userId, Long groupId) {
+        return  postRepository.findPostsByUserOrGroup(userId, groupId);
+    }
+
+    public List<Post> getPostByTimestamp(PostTime postTime) {
+        if (postTime.isGreaterOperation()){
+            return postRepository.findPostsByPostedAtGreaterThanOrderByPostedAtDesc(postTime.getTime());
+        }
+        if (postTime.isLessOperation()){
+            return postRepository.findPostsByPostedAtLessThanEqualOrderByPostedAtDesc(postTime.getTime());
+        }
+        else {
+            throw new IllegalStateException("No Operation: " + postTime.getOperation() + " selected");
+        }
+    }
+
+    public List<Post> getPostBySite(PostSite postSite) {
+        Site site = siteRepository.findSiteBySiteName(postSite.getSitename());
+        return postRepository.findAllPostsAroundLocation(
+                site.getLocation().getX(),
+                site.getLocation().getY(),
+                postSite.getRadius()*1000
+        );
+    }
+
+    public List<Post> getAllPostsForUser(Long userId) {
+        List<Group> groupsOfUser = getGroupsOfUser(userId);
+        return postRepository.findPostsByGroups(groupsOfUser);
+    }
+
+    public List<Post> getAllPostsForUserLocation(PostLocation postLocation, Long userId) {
+        List<Group> groupsOfUser = getGroupsOfUser(userId);
+        return postRepository.findPostsByGroupsAndLocation(
+                groupsOfUser,
+                postLocation.getLongitude(),
+                postLocation.getLatitude(),
+                postLocation.getRadius()*1000
+        );
+    }
+
+    public List<Post> getAllPostsForUserSite(PostSite postSite, Long userId) {
+        Site site = siteRepository.findSiteBySiteName(postSite.getSitename());
+        List<Group> groupsOfUser = getGroupsOfUser(userId);
+        return postRepository.findPostsByGroupsAndLocation(
+                groupsOfUser,
+                site.getLocation().getX(),
+                site.getLocation().getY(),
+                postSite.getRadius()*1000
+        );
+
+    }
+
+    public List<Post> getPostsByLocation(PostLocation postLocation) {
+        return postRepository.findAllPostsAroundLocation(
+                postLocation.getLongitude(),
+                postLocation.getLatitude(),
+                postLocation.getRadius()*1000
+        );
+    }
+
+    public List<Post> getAllPostsForUserTag(String tag, Long userId) {
+        List<Group> groupsOfUser = getGroupsOfUser(userId);
+        return postRepository.findPostsByGroupsAndTag(groupsOfUser, tag);
+    }
+
+
+    public List<String> getAllTagsForUserGroups(Long userId) {
+        List<Group> groupsOfUser = getGroupsOfUser(userId);
+        return postRepository.findTagsByGroups(groupsOfUser);
+    }
+
+    // POST, DELETE, PUT
     public void addNewPost(Long userId, Long groupId, Post post) {
         Optional<User> userOptional = userRepository.findUserById(userId);
         Optional<Group> groupOptional = groupRepository.findGroupByGid(groupId);
@@ -69,11 +151,6 @@ public class PostService {
 
     }
 
-
-    public List<Post> getPostsUserGroup(Long userId, Long groupId) {
-        return  postRepository.findPostsByUserOrGroup(userId, groupId);
-    }
-
     public void deletePostById(Long postId, Long userId){
         if (validatePostUser(postId,userId)) {
             postRepository.deleteById(postId);
@@ -88,35 +165,10 @@ public class PostService {
         }
     }
 
-    public List<Post> getPostByTimestamp(PostTime postTime) {
-        if (postTime.isGreaterOperation()){
-            return postRepository.findPostsByPostedAtGreaterThanOrderByPostedAtDesc(postTime.getTime());
-        }
-        if (postTime.isLessOperation()){
-            return postRepository.findPostsByPostedAtLessThanEqualOrderByPostedAtDesc(postTime.getTime());
-        }
-        else {
-            throw new IllegalStateException("No Operation: " + postTime.getOperation() + " selected");
-        }
-    }
 
-    public List<Post> getPostsByLocation(PostLocation postLocation) {
-        return postRepository.findAllPostsAroundLocation(
-                postLocation.getLongitude(),
-                postLocation.getLatitude(),
-                postLocation.getRadius()*1000
-        );
-    }
-
-    public List<Post> getPostBySite(PostSite postSite) {
-        Site site = siteRepository.findSiteBySiteName(postSite.getSitename());
-        return postRepository.findAllPostsAroundLocation(
-                site.getLocation().getX(),
-                site.getLocation().getY(),
-                postSite.getRadius()*1000
-        );
-    }
-
+    // ----------------------------------------
+    // Comments
+    // ----------------------------------------
     public void addNewComment(Long postId, PostComment postComment) {
         Optional<User> userOptional = userRepository.findById(postComment.getUserId());
         Post post = postRepository.getById(postId);
@@ -152,6 +204,10 @@ public class PostService {
         return commentRepository.findCommentsByPostOrderByMadeAtDesc(postId);
     }
 
+
+    // ----------------------------------------
+    // HELPER
+    // ----------------------------------------
     public boolean validateCommentUser (Long commentId, Long userId){
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
         if (commentOptional.isPresent()){
@@ -178,4 +234,20 @@ public class PostService {
         }
         return (storedId == providedId);
     }
+
+    public User getUser(Long userId){
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()){
+            return userOptional.get();
+        }
+        else {
+            throw new IllegalStateException("User with Id:" + userId + " does not exist" );
+        }
+    }
+
+    public List<Group> getGroupsOfUser(Long userId){
+        User user = getUser(userId);
+        return memberService.getGroupsForUser(user);
+    }
+
 }

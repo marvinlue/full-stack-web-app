@@ -83,6 +83,10 @@ public class MemberService {
         }
         Member member = memberByGroupAndUser.get();
         memberRepository.delete(member);
+        List<Member> membersByGroup = memberRepository.findAllByGroup(group);
+        if (membersByGroup.isEmpty()) {
+            groupRepository.delete(group);
+        }
     }
 
     public void deleteMember(Long currentUserId, Long userId, Long groupId) {

@@ -62,8 +62,11 @@ public class User {
     )
     private Timestamp registeredAt;
 
-    @Lob
-    @Column(columnDefinition = "MEDIUMBLOB")
+    @Column(
+            name = "avatar_url",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String avatarUrl;
 
     @OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL)

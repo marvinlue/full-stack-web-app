@@ -25,6 +25,9 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -47,8 +50,14 @@ public class UserController {
     }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(@PathVariable("userId") Long userId) {
-        userService.deleteUser(userId);
+    public void deleteUser(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String token) {
+
+        String username = jwtUtil.extractUsername(token.substring(7));
+        User user = userService.getUserByIdOrUsername(userId,null);
+
+        if (username.equals(user.getUsername())) {
+            userService.deleteUser(userId);
+        }
     }
 
     @PutMapping(path = "{userId}")

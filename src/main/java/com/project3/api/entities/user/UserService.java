@@ -2,6 +2,10 @@ package com.project3.api.entities.user;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
@@ -10,6 +14,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,13 +22,35 @@ import static com.project3.api.functions.Hash.getSHA;
 import static com.project3.api.functions.Hash.toHexString;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
     @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+
+        User user;
+        String usrname = "";
+        String password = "";
+        Optional<User> login = userRepository.findUserByUsername(username);
+
+        if (login.isPresent()) {
+            user = login.get();
+            usrname = user.getUsername();
+            password = user.getPassword();
+
+            return new org.springframework.security.core.userdetails.User(usrname, password, new ArrayList<>());
+        }
+
+        throw new UsernameNotFoundException("Username does not exist");
     }
 
     public List<User> getUsers() {
@@ -60,11 +87,8 @@ public class UserService {
         if (userByUsername.isPresent()) {
             throw new IllegalStateException("Username already taken!");
         }
-        try {
-           user.setPassword(toHexString(getSHA(user.getPassword())));
-        } catch (NoSuchAlgorithmException e) {
-            System.out.println("Exception thrown for incorrect algorithm: " + e);
-        }
+
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRegisteredAt(Timestamp.valueOf(LocalDateTime.now()));
         if (file != null) {
             String fileName = file.getOriginalFilename();
@@ -95,8 +119,8 @@ public class UserService {
                         "User with id " + userId + " does not exist!"));
 
         if (username != null &&
-        username.length() > 0 &&
-        !Objects.equals(user.getUsername(), username)) {
+                username.length() > 0 &&
+                !Objects.equals(user.getUsername(), username)) {
             Optional<User> userByUsername = userRepository.findUserByUsername(username);
             if (userByUsername.isPresent()) {
                 throw new IllegalStateException("Username already taken!");
@@ -105,19 +129,15 @@ public class UserService {
         }
 
         if (email != null &&
-        email.length() > 0 &&
-        !Objects.equals(user.getEmail(), email)) {
+                email.length() > 0 &&
+                !Objects.equals(user.getEmail(), email)) {
             user.setEmail(email);
         }
 
         if (password != null && password.length() > 0) {
-            try {
-                String hash = toHexString(getSHA(password));
-                if (!Objects.equals(user.getPassword(), hash)) {
-                    user.setPassword(hash);
-                }
-            } catch (NoSuchAlgorithmException e) {
-                System.out.println("Exception thrown for incorrect algorithm: " + e);
+
+            if (!bCryptPasswordEncoder.matches(password, user.getPassword())){
+                user.setPassword(bCryptPasswordEncoder.encode(password));
             }
         }
 

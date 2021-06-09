@@ -65,8 +65,15 @@ public class UserController {
             @PathVariable("userId") Long userId,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) String email,
-            @RequestParam(required = false) String password) {
-        userService.updateUser(userId, username, email, password);
+            @RequestParam(required = false) String password,
+            @RequestHeader("Authorization") String token) {
+
+        String token_username = jwtUtil.extractUsername(token.substring(7));
+        User user = userService.getUserByIdOrUsername(userId,null);
+
+        if (token_username.equals(user.getUsername())) {
+            userService.updateUser(userId, username, email, password);
+        }
     }
 
     @PostMapping(path = "register")

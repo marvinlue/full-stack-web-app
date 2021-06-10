@@ -1,5 +1,8 @@
 package com.project3.api.entities.group;
 
+import com.project3.api.JwtUtil;
+import com.project3.api.entities.user.User;
+import com.project3.api.entities.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -8,9 +11,15 @@ import java.util.List;
 @RequestMapping(path = "api/groups")
 public class GroupController {
     private final GroupService groupService;
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public GroupController(GroupService groupService) { this.groupService = groupService; }
+    public GroupController(GroupService groupService, UserService userService, JwtUtil jwtUtil) {
+        this.groupService = groupService;
+        this.userService = userService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @GetMapping
     public List<Group> getGroups() {
@@ -25,22 +34,30 @@ public class GroupController {
     }
 
     @PostMapping
-    public void createNewGroup(@RequestParam Long userId, @RequestBody Group group) {
-        groupService.addNewGroup(group, userId);
+    public void createNewGroup(
+            @RequestBody Group group,
+            @RequestHeader("Authorization") String token) {
+        String username = jwtUtil.extractUsername(token.substring(7));
+        User user = userService.getUserByIdOrUsername(null,username);
+        groupService.addNewGroup(group, user.getId());
     }
 
-    @DeleteMapping(path = "{userId}")
+    @DeleteMapping
     public void deleteGroup(
-            @PathVariable("userId") Long userId,
-            @RequestParam Long groupId) {
-        groupService.deleteGroup(userId, groupId);
+            @RequestParam Long groupId,
+            @RequestHeader("Authorization") String token) {
+        String username = jwtUtil.extractUsername(token.substring(7));
+        User user = userService.getUserByIdOrUsername(null,username);
+        groupService.deleteGroup(user.getId(), groupId);
     }
 
-    @PutMapping(path = "{userId}")
+    @PutMapping
     public void updateGroup(
-            @PathVariable("userId") Long userId,
             @RequestParam Long groupId,
-            @RequestParam String groupName) {
-        groupService.updateGroup(userId, groupId, groupName);
+            @RequestParam String groupName,
+            @RequestHeader("Authorization") String token) {
+        String username = jwtUtil.extractUsername(token.substring(7));
+        User user = userService.getUserByIdOrUsername(null,username);
+        groupService.updateGroup(user.getId(), groupId, groupName);
     }
 }

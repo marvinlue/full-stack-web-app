@@ -30,66 +30,69 @@ API will be running on http://localhost:8080
 * To obtain all entries in users table as a list of dictonaries using a GET request:
 ```
 GET http://localhost:8080/api/users
+Authorization: Bearer token
 ```
-* To obtain the entry in users table with a specific userId and/or username as a dictonary using a GET request:
+* To obtain the entry in users table with a specific username as a json dictonary using a GET request:
 ```
-GET http://localhost:8080/api/users/user?userId={{userId}}&username={{username}}
+GET http://localhost:8080/api/users/user?username={{username}}
+Authorization: Bearer token
 ```
-EXAMPLE 1: Getting user with userId 1:
-```
-GET http://localhost:8080/api/users/user?userId=1
-```
-EXAMPLE 2: Getting user with username "some-username":
+e.g. Getting user with username "some-username":
 ```
 GET http://localhost:8080/api/users/user?username=some-username
+Authorization: Bearer token
 ```
-EXAMPLE 3: Getting user with userId 1 and username "some-username":
-```
-GET http://localhost:8080/api/users/user?userId=1&username=some-username
-```
-**NOTE** EXAMPLE 3 is not really necessary - rather use either of first 2 examples
 ##### POST
-* Using a POST request to add a new user to users table with a dictoinary as input:
+* Using a POST request to register a new user with a json dictoinary as input:
 ```
-POST http://localhost:8080/api/users
+POST http://localhost:8080/api/users/register
 ```
 Dictionary must be in the following form:
 ```
+Content-Type: application/json
+
 {
   "username": "some-unique-username",
   "email": "some-email@gmail.com",
   "password": "some-password"
 }
 ```
+**OPTIONAL** Image may also be uploaded as user avatar. If no image is selected user will be given the default avatar which is located in /static/images (i.e. user's avatarUrl field will be set to "/static/images/default.png")
 ##### DELETE
-* To delete a user with userId from users table using a DELETE request:
+* A user can delete his account using a DELETE request:
 ```
-DELETE http://localhost:8080/api/users/{{userId}}
-```
-e.g. deleting user with userId 1:
-```
-DELETE http://localhost:8080/api/users/1
+DELETE http://localhost:8080/api/users
+Authorization: Bearer token
 ```
 ##### PUT
-* Update user properties (username, email, password) of user with userId in users table using a PUT request:
+* A user may update his details (username, email, password, avatar) using a PUT request:
 ```
-PUT http://localhost:8080/api/users/{{userId}}?username={{username}}&email={{email}}&password={{password}}
+PUT http://localhost:8080/api/users?username={{username}}&email={{email}}&password={{password}}&avatar={{avatar}}
+Authorization: Bearer token
 ```
-EXAMPLE 1: Setting username of user with userId 1 to "new-username":
+EXAMPLE 1: Setting username to "new-username":
 ```
-PUT http://localhost:8080/api/users/1?username=new-username
+PUT http://localhost:8080/api/users?username=new-username
+Authorization: Bearer token
 ```
-EXAMPLE 2: Setting email of user with userId 1 to "new-email":
+EXAMPLE 2: Setting email of user to "new-email":
 ```
-PUT http://localhost:8080/api/users/1?email=new-email@gmail.com
+PUT http://localhost:8080/api/users?email=new-email@gmail.com
+Authorization: Bearer token
 ```
-EXAMPLE 3: Setting password of user with userId 1 to "new-password":
+EXAMPLE 3: Setting password of user to "new-password":
 ```
-PUT http://localhost:8080/api/users/1?password=new-password
+PUT http://localhost:8080/api/users?password=new-password
+Authorization: Bearer token
 ```
-EXAMPLE 4: Updating all properties of user with userId 1:
+EXAMPLE 4: Changing the avatar of user:
+The PUT http://localhost:8080/api/users route requests a file along with Authorization: Bearer token.
+**NOTE** This is an actual file upload of an image and not just the path to the image. The image will then be saved in the /static/images folder and its path to it will be stored in the user's avatarUrl field.
+EXAMPLE 5: Updating all properties of user with userId 1:
 ```
 PUT http://localhost:8080/api/users/1?username=new-username&email=new-email&password=new-password
+Authorization: Bearer token
+And some image upload
 ```
 
 #### Groups
@@ -97,31 +100,39 @@ PUT http://localhost:8080/api/users/1?username=new-username&email=new-email&pass
 * To obtain all entries in _groups ("groups" is a reserved word in MySQL, hence "_groups") table as a list of dictonaries using a GET request:
 ```
 GET http://localhost:8080/api/groups
+Authorization: Bearer token
 ```
 * To obtain the entry in _groups table with a specific groupId and/or groupName as a dictonary using a GET request:
 ```
 GET http://localhost:8080/api/groups/group?groupId={{groupId}}&groupName={{groupName}}
+Authorization: Bearer token
 ```
 EXAMPLE 1: Getting group with groupId 1:
 ```
 GET http://localhost:8080/api/groups/group?groupId=1
+Authorization: Bearer token
 ```
 EXAMPLE 2: Getting group with groupName "some-groupname":
 ```
 GET http://localhost:8080/api/groupss/group?groupName=some-groupname
+Authorization: Bearer token
 ```
 EXAMPLE 3: Getting group with groupId 1 and groupName "some-groupname":
 ```
 GET http://localhost:8080/api/groups/group?groupId=1&groupName=some-groupname
+Authorization: Bearer token
 ```
 **NOTE** EXAMPLE 3 is not really necessary - rather use either of first 2 examples
 ##### POST
-* A user with with a specific userId can use a POST request to add a new group to _groups table with a dictoinary as input:
+* A user may use a POST request to add a new group to _groups table with a json dictoinary as input:
 ```
 POST http://localhost:8080/api/groups?userId={{userId}}
+Authorization: Bearer token
 ```
 Dictionary must be in the following form:
 ```
+Content-Type: application/json
+
 {
   "groupName": "some-unique-group-name"
 }
@@ -129,6 +140,8 @@ Dictionary must be in the following form:
 e.g. if user with userId 1 created the group:
 ```
 POST http://localhost:8080/api/groups?userId=1
+Authorization: Bearer token
+Content-Type: application/json
 
 {
   "groupName": "some-unique-group-name"
@@ -137,108 +150,122 @@ POST http://localhost:8080/api/groups?userId=1
 
 **NOTE:** Upon group creation user who created group is added to group. All info regarding groups and their members are kept in the members_info table
 ##### DELETE
-* A logged in user with a specific userId may delete a group with a specific groupId from _groups table using a DELETE request if they are a member of the group and have admin rights:
+* A user with may delete a group with a specific groupId from _groups table using a DELETE request if they are a member of the group and have admin rights:
 ```
-DELETE http://localhost:8080/api/groups/{{userId}}?groupId={{groupId}}
+DELETE http://localhost:8080/api/groups?groupId={{groupId}}
+Authorization: Bearer token
 ```
-e.g. User with userId 1 deleting group with groupId 1:
+e.g. deleting group with groupId 1:
 ```
-DELETE http://localhost:8080/api/groups/1?groupId=1
+DELETE http://localhost:8080/api/groups?groupId=1
+Authorization: Bearer token
 ```
 ##### PUT
-* A logged in user with a specific userId may update the groupName of group with a specific groupId in _groups table using a PUT request if they are a member of the group and have admin rights:
+* A user may update the groupName of group with a specific groupId in _groups table using a PUT request if they are a member of the group and have admin rights:
 ```
-PUT http://localhost:8080/api/groups/{{userId}}?groupId={{groupId}}&groupName={{groupName}}
+PUT http://localhost:8080/api/groups?groupId={{groupId}}&groupName={{groupName}}
+Authorization: Bearer token
 ```
-e.g. User with userId 1 setting groupName of group with groupId 1 to "new-groupname":
+e.g. setting groupName of group with groupId 1 to "new-groupname":
 ```
-PUT http://localhost:8080/api/groups/1?groupId=1&groupName=new-groupname
+PUT http://localhost:8080/api/groups?groupId=1&groupName=new-groupname
+Authorization: Bearer token
 ```
 
 #### Members
 ##### GET
-* To obtain all entries in members_info table as a list of dictonaries using a GET request:
+* To obtain all entries in members_info table regarding currently logged in user as a list of json dictonaries using a GET request:
 ```
 GET http://localhost:8080/api/members
+Authorization: Bearer token
 ```
-* To obtain all entries in members_info table with a specific groupId using a GET request as a list of dictonaries:
+* To obtain all members in a specific group with groupId as a list of json dictionaries using a GET request:
 ```
 GET http://localhost:8080/api/members?groupId={{groupId}}
+Authorization: Bearer token
 ```
 e.g. getting all the members belonging the group with groupId 1:
 ```
 GET http://localhost:8080/api/members?groupId=1
+Authorization: Bearer token
 ```
-* To obtain all entries in members_info table with a specific userId as a list of dictonaries using a GET request:
+* To obtain the info regarding currently logged in user in a specific group with groupId using a GET request:
 ```
-GET http://localhost:8080/api/members?userId={{userId}}
+GET http://localhost:8080/api/members/{{groupId}}
+Authorization: Bearer token
 ```
-e.g. getting all the groups that user with userId 1 belongs to:
+e.g. to get info of currently logged in user in group with groupId 1:
 ```
-GET http://localhost:8080/api/members?userId=1
-```
-* To obtain the entry in members_info table with a specific groupId and userId as a dictonary using a GET request:
-```
-GET http://localhost:8080/api/members/{{groupId}}?userId={{userId}}
-```
-e.g. to get user with userId 1 belonging to group with groupId 1:
-```
-GET http://localhost:8080/api/members/1?userId=1
+GET http://localhost:8080/api/members/1
+Authorization: Bearer token
 ```
 ##### POST
-* A user with a specific userId can join a group with a specific groupId by using a POST request. This is done by adding a entry to members_info table with a dictoinary as input:
+* A user may join a group with a specific groupId by using a POST request. This is done by adding a entry to members_info table with a json dictoinary as input:
 ```
-POST http://localhost:8080/api/members?groupId={{groupId}}&userId={{userId}}
+POST http://localhost:8080/api/members?groupId={{groupId}}
+Authorization: Bearer token
 ```
 Dictionary must be in the following form:
 ```
+Content-Type: application/json
+
 {
   "adminRights": "false"
 }
 ```
-e.g. if user with userId 1 joins group with groupId 1:
+e.g. if user joins group with groupId 1:
 ```
-POST http://localhost:8080/api/members?groupId=1&userId=1
+POST http://localhost:8080/api/members?groupId=1
+Authorization: Bearer token
+Content-Type: application/json
 
 {
   "adminRights": "false"
 }
 ```
 ##### DELETE
-* A logged in user with a specific currentUserId may delete an user with userId from a group with groupId using a DELETE request if they are both members of the group, the currently logged in user has admin rights and the user being deleted does not. This is done by deleting corresponding entry in members_info table:
+* A user may delete an user with userId from a group with groupId using a DELETE request if they are both members of the group, the currently logged in user has admin rights and the user being deleted does not. This is done by deleting corresponding entry in members_info table:
 ```
-DELETE http://localhost:8080/api/members/{{currentUserId}}?userId={{userId}}&groupId={{groupId}}
+DELETE http://localhost:8080/api/members?userId={{userId}}&groupId={{groupId}}
+Authorization: Bearer token
 ```
-e.g. Logged in user with currentUserId 1 deleting user with userId 2 from group with groupId 1:
+e.g. Currently logged in user deleting another user with userId 2 from group with groupId 1:
 ```
-DELETE http://localhost:8080/api/members/1?userId=2&groupId=1
+DELETE http://localhost:8080/api/members?userId=2&groupId=1
+Authorization: Bearer token
 ```
 **NOTE:** This should be the route used by group admins if they want to delete a member of a group
-* A logged in user with a specific currentUserId may leave a group with groupId using a DELETE request if they are a member of the group. This is done by deleting corresponding entry in members_info table:
+* A user may leave a group with groupId using a DELETE request if they are a member of the group. This is done by deleting corresponding entry in members_info table:
 ```
-DELETE http://localhost:8080/api/members/{{currentUserId}}?groupId={{groupId}}
+DELETE http://localhost:8080/api/members?groupId={{groupId}}
+Authorization: Bearer token
 ```
-e.g. Logged in user with currentUserId 1 leaving group with groupId 1:
+e.g. User leaving group with groupId 1:
 ```
-DELETE http://localhost:8080/api/members/1?groupId=1
+DELETE http://localhost:8080/api/members?groupId=1
+Authorization: Bearer token
 ```
 **NOTE:** This should be the route used if a user wants to leave a group
 ##### PUT
-* A logged in user with a specific currentUserId may update the adminRights of user with userId in group with groupId using a PUT request if they are both members of the group, the currently logged in user has admin rights and the other user does not. This is done by updating corresponding entry in members_info table:
+* A user may update the adminRights of user with userId in group with groupId using a PUT request if they are both members of the group, the currently logged in user has admin rights and the other user does not. This is done by updating corresponding entry in members_info table:
 ```
-PUT http://localhost:8080/api/members/{{currentUserId}}?userId={{userId}}&groupId={{groupId}}&adminRights={{adminRights}}
+PUT http://localhost:8080/api/members?userId={{userId}}&groupId={{groupId}}&adminRights={{adminRights}}
+Authorization: Bearer token
 ```
-e.g. Logged in user with currentUserId 1 setting adminRights of user with userId 2 belonging to group with groupId 1 to "true":
+e.g. Logged in user setting adminRights of another user with userId 2 belonging to group with groupId 1 to "true":
 ```
-PUT http://localhost:8080/api/members/1?userId=2&groupId=1&adminRights=true
+PUT http://localhost:8080/api/members?userId=2&groupId=1&adminRights=true
+Authorization: Bearer token
 ```
-* A logged in user with a specific currentUserId who is part of a group with specific groupId may update their own adminRights using a PUT request if they have admin rights to do so. This is done by updating corresponding entry in members_info table:
+* A user who is part of a group with specific groupId may update their own adminRights using a PUT request if they have admin rights to do so. This is done by updating corresponding entry in members_info table:
 ```
-PUT http://localhost:8080/api/members/{{currentUserId}}?userId={{userId}}&groupId={{groupId}}&adminRights={{adminRights}}
+PUT http://localhost:8080/api/members/{{groupId}}?adminRights={{adminRights}}
+Authorization: Bearer token
 ```
-e.g. Logged in user with currentUserId 1, belonging to group with groupId 1, setting their adminRights to "false":
+e.g. User belonging to group with groupId 1, setting their adminRights to "false":
 ```
-PUT http://localhost:8080/api/members/1?userId=1&groupId=1&adminRights=false
+PUT http://localhost:8080/api/1?adminRights=false
+Authorization: Bearer token
 ```
 ### Note
 

@@ -1,5 +1,5 @@
 ### Add user1
-POST http://localhost:8080/api/users
+POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### Add user2
-POST http://localhost:8080/api/users
+POST http://localhost:8080/api/users/register
 Content-Type: application/json
 
 {
@@ -18,8 +18,29 @@ Content-Type: application/json
   "password": "password"
 }
 
+### Login user1
+### Replace env variable in http-client.env.json with response
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "password"
+}
+
+### Login user2
+### Replace env variable in http-client.env.json with response
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "password": "password"
+}
+
 ### Add group1
 POST http://localhost:8080/api/groups?userId=1
+Authorization: Bearer {{user1_body}}
 Content-Type: application/json
 
 {
@@ -28,6 +49,7 @@ Content-Type: application/json
 
 ### Add group2
 POST http://localhost:8080/api/groups?userId=2
+Authorization: {{user2_token}}
 Content-Type: application/json
 
 {
@@ -35,7 +57,8 @@ Content-Type: application/json
 }
 
 ### Add user1 to group2
-POST http://localhost:8080/api/members?groupId=2&userId=1
+POST http://localhost:8080/api/members?groupId=2
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -43,7 +66,8 @@ Content-Type: application/json
 }
 
 ### Add first post
-POST http://localhost:8080/api/posts/?userId=1&groupId=1
+POST http://localhost:8080/api/posts/?groupId=1
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -53,7 +77,8 @@ Content-Type: application/json
 }
 
 ### Add second post
-POST http://localhost:8080/api/posts/?userId=1&groupId=2
+POST http://localhost:8080/api/posts/?groupId=2
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -63,7 +88,8 @@ Content-Type: application/json
 }
 
 ### Add third post
-POST http://localhost:8080/api/posts/?userId=2&groupId=2
+POST http://localhost:8080/api/posts/?groupId=2
+Authorization: {{user2_token}}
 Content-Type: application/json
 
 {
@@ -74,16 +100,17 @@ Content-Type: application/json
 
 ### Add first comment
 POST http://localhost:8080/api/posts/1/comment
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
-  "commentText": "This is the first comment",
-  "userId" : "1"
+  "commentText": "This is the first comment"
 }
 
 ### Get Posts for user1 around location
 ### EXPECTED: 1 post
-GET http://localhost:8080/api/posts/allPosts/location?userId=1
+GET http://localhost:8080/api/posts/allPosts/location
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -94,7 +121,8 @@ Content-Type: application/json
 
 ### Get Posts for user2 around location
 ### EXPECTED: 0 post
-GET http://localhost:8080/api/posts/allPosts/location?userId=2
+GET http://localhost:8080/api/posts/allPosts/location
+Authorization: {{user2_token}}
 Content-Type: application/json
 
 {
@@ -105,6 +133,7 @@ Content-Type: application/json
 
 ### Add Site
 POST http://localhost:8080/api/site/
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -114,7 +143,8 @@ Content-Type: application/json
 
 ### Get Post from Site within Radius
 ### EXPECTED: 3 Posts
-GET http://localhost:8080/api/posts/allPosts/site?userId=1
+GET http://localhost:8080/api/posts/allPosts/site
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -125,9 +155,12 @@ Content-Type: application/json
 ### Get Posts for user1 and tag
 ### EXPECTED: 2 post
 GET http://localhost:8080/api/posts/allPosts/tag?userId=1&tag=First
+Authorization: {{user1_token}}
 
 ### Get all available Tags for user1
 GET http://localhost:8080/api/posts/allPosts/tags?userId=1
+Authorization: {{user1_token}}
 
 ### Get all available Tags for user2
-GET http://localhost:8080/api/posts/allPosts/tags?userId=2
+GET http://localhost:8080/api/posts/allPosts/tags
+Authorization: {{user2_token}}

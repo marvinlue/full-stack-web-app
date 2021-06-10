@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 //TODO: Update HTTPs
-//TODO: Update Readme
+//TODO: Update Readme - DONE
 
 @RestController
 @RequestMapping(path = "api/posts/")

@@ -272,27 +272,35 @@ Authorization: Bearer token
 HTTP-Testcases for working with Posts, Comments, Sites are already added under post.HTTPTests
 Please play around with them to get a feeling for the response Structure!
 
+To work in an easier fashion with requests there is an env variable file where you can store and reuse tokens!
+
 ### Posts
 
-| Request | route | body | example | explanation |
-| :---: | :---: | :---: | :---: | :---: |
-| POST | api/posts/?userId={userId}&groupId={groupId} | {"post":"Text","category":"cat1","location":{"type":"Point","coordinates":[Lon,Lat]}} | api/posts/?userId=1&groupId=1 | Post is mapped to User and Group |
-| GET | api/posts/byUser?userId={userId} | - | api/posts/byUser?userId=1 | Get all Posts from a User identified by its ID |
-| GET | api/posts/byUserOrGroup?userId={userId}&groupId={groupId} | - | api/posts/byUserOrGroup?userId=1&groupId=2 | Get all Posts from a Group or User or both |
-| GET | api/posts/byTime | {"time": "2021-06-05T07:26:59.529","operation": "greater"/"less"} | - | Get all Posts after / before certain Timestamp |
-| GET | api/posts/byLocation | {"longitude":"65","latitude": "80","radius": "1"} | - | Gives all Posts around GPS Coord within Radius in km |
-| GET | api/posts/bySite | {"sitename":"Site1","radius": "1"} | - | Get all Posts around a certain Site which is already stored in SiteTable
-| DELETE | api/posts/{postId}?userId={Id} | - | api/posts/1?userId=1 | Delete a Post identified by its ID |
-| PUT | api/posts/{postId}?userId={Id} | {"text":"Update"} | api/posts/1?userId=1 | Update the text of a Post |
+| Request | user-specific access | required by | route | body | explanation |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| POST | yes | FE | api/posts/?groupId={Id} | {"post":"...","category":"...","location":{"type":"Point","coordinates":[Lon,Lat]}} | Post is mapped added to Group with user as author |
+| GET | yes | FE | api/posts/allPosts | - | Get all Posts from Groups the user is in ordered by timestamp |
+| GET | yes | FE | api/posts/allPosts/location | {"longitude":"65","latitude": "80","radius": "1"} | Get all Posts from Groups the user is in around a location ordered by timestamp |
+| GET | yes | FE | api/posts/allPosts/site | {"sitename":"Site1","radius": "1"} | Get all Posts from Groups the user is in around a site within radius in km ordered by timestamp |
+| GET | yes | FE | api/posts/allPosts/tag?tag={tagstring] | - | Get all Posts from Groups a user is in having the specific tag |
+| GET | yes | FE | api/posts/allPosts/tags | - | Get all Tags from all Posts in the Groups a user is in |
+| GET | yes | FE | api/posts/allPosts/group?groupId={Id} | - | Get all Posts from a Group with groupId, check if user is in that group |
+| GET | no | Spec | api/posts/byUser?userId={userId} | - | Get all Posts from a User identified by its ID |
+| GET | no | Spec | api/posts/byUserOrGroup?userId={userId}&groupId={groupId} | - | Get all Posts from a Group or User or both |
+| GET | no | Spec | api/posts/byTime | {"time": "2021-06-05T07:26:59.529","operation": "greater"/"less"} | Get all Posts after / before certain Timestamp |
+| GET | no | Spec | api/posts/byLocation | {"longitude":"65","latitude": "80","radius": "1"} | Gives all Posts around GPS Coord within Radius in km |
+| GET | no | - | api/posts/bySite | {"sitename":"Site1","radius": "1"} | Get all Posts around a certain Site which is already stored in SiteTable
+| DELETE | yes | FE |api/posts/{postId} | - | Delete a Post identified by its ID, check if written by user |
+| PUT | yes | Spec | api/posts/{postId} | {"text":"Update"} | Update the text of a Post identified by its ID, check if written by user |
 
 ### Comments
 
-| Request | route | body | example | explanation |
-| :---: | :---: | :---: | :---: | :---: |
-| POST | api/posts/{postId}/comment | {"commentText":"Text","userId":"1"} | api/posts/1/comment | Adds Comment to a Post from a User |
-| GET | api/posts/{postId}/comment | - | api/posts/1/comment | Get all Comments to a Post |
-| DELETE | api/posts/comment/{commentId}?userId={Id} | - | api/posts/comment/1?userId=1 | Delete a Comment from a Post |
-| PUT | api/posts/comment/{commentId}?userId={Id} | {"updatedText":"Text"} | api/posts/comment/1?userId=1 | Update the Text of a Comment from a Post |
+| Request | user-specific access | required by | route | body | explanation |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| POST | yes | FE | api/posts/{postId}/comment | {"commentText":"Text"} | Adds Comment to a Post from a User |
+| GET | no | - | api/posts/{postId}/comment | - | Get all Comments to a Post |
+| DELETE | yes | FE | api/posts/comment/{commentId} | - | Delete a Comment from a Post, check if written by user |
+| PUT | yes | - | api/posts/comment/{commentId} | {"updatedText":"Text"} | api/posts/comment/1?userId=1 | Update the Text of a Comment from a Post |
 
 ### Sites
 

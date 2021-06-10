@@ -19,7 +19,7 @@ public class TokenUtil {
     }
 
     public User getUserFromToken(String token){
-        String userName = jwtUtil.extractUsername(token);
+        String userName = jwtUtil.extractUsername(token.substring(7));
         return userService.getUserByIdOrUsername(null, userName);
     }
 }

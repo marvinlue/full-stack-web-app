@@ -181,13 +181,22 @@ public class PostService {
     // Comments
     // ----------------------------------------
     public void addNewComment(Long postId, User user, PostComment postComment) {
+        List<Group> groupsOfUser = getGroupsOfUser(user);
         Post post = postRepository.getById(postId);
-        Comment comment = new Comment();
-        comment.setPost(post);
-        comment.setUser(user);
-        comment.setComment(postComment.getCommentText());
-        comment.setMadeAt(Timestamp.valueOf(LocalDateTime.now()));
-        commentRepository.save(comment);
+        Long groupId = post.getGroup().getGid();
+
+        if (groupsOfUser.stream().anyMatch(group -> group.getGid().equals(groupId))){
+            Comment comment = new Comment();
+            comment.setPost(post);
+            comment.setUser(user);
+            comment.setComment(postComment.getCommentText());
+            comment.setMadeAt(Timestamp.valueOf(LocalDateTime.now()));
+            commentRepository.save(comment);
+        }
+        else {
+            throw new IllegalStateException("User with Id: " + user.getId() +
+                    " has no access right for group: " + groupId + "OR Group does not exist");
+        }
     }
 
     public void deleteComment(Long commentId, User user) {

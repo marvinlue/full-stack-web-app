@@ -22,6 +22,8 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     List<Post> findPostsByPostedAtLessThanEqualOrderByPostedAtDesc(Timestamp timestamp);
 
+    List<Post> findPostsByGroupOrderByPostedAtDesc(Group group);
+
     @Query("SELECT p FROM posts p WHERE ST_Distance_Sphere(p.location , ST_SRID(POINT(?1,?2) , 4326) ) < ?3")
     List<Post> findAllPostsAroundLocation (Double userLongitude, Double userLatitude, Integer radius);
 

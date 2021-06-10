@@ -4,8 +4,6 @@ import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.comment.CommentRepository;
 import com.project3.api.entities.group.Group;
 import com.project3.api.entities.group.GroupRepository;
-import com.project3.api.entities.member.Member;
-import com.project3.api.entities.member.MemberRepository;
 import com.project3.api.entities.member.MemberService;
 import com.project3.api.entities.post.dto.*;
 import com.project3.api.entities.site.Site;
@@ -58,11 +56,11 @@ public class PostService {
             return postRepository.findPostsByUserOrderByPostedAtDesc(userOptional.get());
         }
         else
-            return Collections.<Post> emptyList();
+            return Collections.emptyList();
 
     }
 
-    public List<Post> getPostsUserGroup(Long userId, Long groupId) {
+    public List<Post> getPostsUserOrGroup(Long userId, Long groupId) {
         return  postRepository.findPostsByUserOrGroup(userId, groupId);
     }
 
@@ -87,13 +85,13 @@ public class PostService {
         );
     }
 
-    public List<Post> getAllPostsForUser(Long userId) {
-        List<Group> groupsOfUser = getGroupsOfUser(userId);
+    public List<Post> getAllPostsForUser(User user) {
+        List<Group> groupsOfUser = getGroupsOfUser(user);
         return postRepository.findPostsByGroups(groupsOfUser);
     }
 
-    public List<Post> getAllPostsForUserLocation(PostLocation postLocation, Long userId) {
-        List<Group> groupsOfUser = getGroupsOfUser(userId);
+    public List<Post> getAllPostsForUserLocation(PostLocation postLocation, User user) {
+        List<Group> groupsOfUser = getGroupsOfUser(user);
         return postRepository.findPostsByGroupsAndLocation(
                 groupsOfUser,
                 postLocation.getLongitude(),
@@ -102,9 +100,9 @@ public class PostService {
         );
     }
 
-    public List<Post> getAllPostsForUserSite(PostSite postSite, Long userId) {
+    public List<Post> getAllPostsForUserSite(PostSite postSite, User user) {
         Site site = siteRepository.findSiteBySiteName(postSite.getSitename());
-        List<Group> groupsOfUser = getGroupsOfUser(userId);
+        List<Group> groupsOfUser = getGroupsOfUser(user);
         return postRepository.findPostsByGroupsAndLocation(
                 groupsOfUser,
                 site.getLocation().getX(),
@@ -122,43 +120,56 @@ public class PostService {
         );
     }
 
-    public List<Post> getAllPostsForUserTag(String tag, Long userId) {
-        List<Group> groupsOfUser = getGroupsOfUser(userId);
+    public List<Post> getAllPostsForUserTag(String tag, User user) {
+        List<Group> groupsOfUser = getGroupsOfUser(user);
         return postRepository.findPostsByGroupsAndTag(groupsOfUser, tag);
     }
 
 
-    public List<String> getAllTagsForUserGroups(Long userId) {
-        List<Group> groupsOfUser = getGroupsOfUser(userId);
+    public List<String> getAllTagsForUserGroups(User user) {
+        List<Group> groupsOfUser = getGroupsOfUser(user);
         return postRepository.findTagsByGroups(groupsOfUser);
     }
 
+    public List<Post> getAllPostsForUserGroup(Long groupId, User user) {
+        List<Group> groupsOfUser = getGroupsOfUser(user);
+        if (groupsOfUser.stream().anyMatch(group -> group.getGid().equals(groupId))){
+            Group group = groupRepository.getById(groupId);
+            return postRepository.findPostsByGroupOrderByPostedAtDesc(group);
+        }
+        else {
+            throw new IllegalStateException("User with Id: " + user.getId() +
+                    " has no access right for group: " + groupId);
+        }
+    }
+
     // POST, DELETE, PUT
-    public void addNewPost(Long userId, Long groupId, Post post) {
-        Optional<User> userOptional = userRepository.findUserById(userId);
+    public void addNewPost(User user, Long groupId, Post post) {
+        List<Group> groupsOfUser = getGroupsOfUser(user);
         Optional<Group> groupOptional = groupRepository.findGroupByGid(groupId);
 
-        if (userOptional.isPresent() && groupOptional.isPresent()){
-            post.setUser(userOptional.get());
+        if (groupsOfUser.stream().anyMatch(group -> group.getGid().equals(groupId))
+            && groupOptional.isPresent()){
+            post.setUser(user);
             post.setGroup(groupOptional.get());
             post.setPostedAt(Timestamp.valueOf(LocalDateTime.now()));
             System.out.println(post);
             postRepository.save(post);
         }
         else {
-            throw new IllegalStateException("No User: " + userId + " or Group: " + groupId + " exist!");
+            throw new IllegalStateException("User with Id: " + user.getId() +
+                    " has no access right for group: " + groupId + "OR Group does not exist");
         }
-
     }
 
-    public void deletePostById(Long postId, Long userId){
-        if (validatePostUser(postId,userId)) {
+    public void deletePostById(Long postId, User user){
+        if (validatePostUser(postId,user)) {
             postRepository.deleteById(postId);
         }
     }
 
-    public void updatePostText(Long postId, Long userId, PostUpdate postUpdate) {
-        if (validatePostUser(postId,userId)){
+    public void updatePostText(Long postId, User user, PostUpdate postUpdate) {
+        if (validatePostUser(postId,user)){
             Post post = postRepository.getById(postId);
             post.setPost(postUpdate.getText());
             postRepository.save(post);
@@ -169,31 +180,24 @@ public class PostService {
     // ----------------------------------------
     // Comments
     // ----------------------------------------
-    public void addNewComment(Long postId, PostComment postComment) {
-        Optional<User> userOptional = userRepository.findById(postComment.getUserId());
+    public void addNewComment(Long postId, User user, PostComment postComment) {
         Post post = postRepository.getById(postId);
-
-        if (userOptional.isPresent()){
-            Comment comment = new Comment();
-            comment.setPost(post);
-            comment.setUser(userOptional.get());
-            comment.setComment(postComment.getCommentText());
-            comment.setMadeAt(Timestamp.valueOf(LocalDateTime.now()));
-            commentRepository.save(comment);
-        }
-        else {
-            throw new IllegalStateException("No User:" + postComment.getUserId() + " exists");
-        }
+        Comment comment = new Comment();
+        comment.setPost(post);
+        comment.setUser(user);
+        comment.setComment(postComment.getCommentText());
+        comment.setMadeAt(Timestamp.valueOf(LocalDateTime.now()));
+        commentRepository.save(comment);
     }
 
-    public void deleteComment(Long commentId, Long userId) {
-        if (validateCommentUser(commentId,userId)){
+    public void deleteComment(Long commentId, User user) {
+        if (validateCommentUser(commentId, user)){
             commentRepository.deleteById(commentId);
         }
     }
 
-    public void updateComment(Long commentId, Long userId, CommentUpdate commentUpdate) {
-        if (validateCommentUser(commentId, userId)){
+    public void updateComment(Long commentId, User user, CommentUpdate commentUpdate) {
+        if (validateCommentUser(commentId, user)){
             Comment comment = commentRepository.getById(commentId);
             comment.setComment(commentUpdate.getUpdatedText());
             commentRepository.save(comment);
@@ -208,46 +212,35 @@ public class PostService {
     // ----------------------------------------
     // HELPER
     // ----------------------------------------
-    public boolean validateCommentUser (Long commentId, Long userId){
+    public boolean validateCommentUser (Long commentId, User user){
         Optional<Comment> commentOptional = commentRepository.findById(commentId);
         if (commentOptional.isPresent()){
-            return checkUserId(commentOptional.get().getUser().getId(), userId);
+            return checkUserId(commentOptional.get().getUser().getId(), user);
         }
         else {
             throw new IllegalStateException("Comment with Id:" + commentId +" does not exist!");
         }
     }
 
-    public boolean validatePostUser(Long postId, Long userId){
+    public boolean validatePostUser(Long postId, User user){
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isPresent()){
-            return checkUserId(postOptional.get().getUser().getId(), userId);
+            return checkUserId(postOptional.get().getUser().getId(), user);
         }
         else {
             throw new IllegalStateException("Post with Id:" + postId +" does not exist!");
         }
     }
 
-    public boolean checkUserId(Long storedId, Long providedId){
-        if (storedId != providedId){
+    public boolean checkUserId(Long storedId, User user){
+        Long providedId = user.getId();
+        if (!storedId.equals(providedId)){
             throw new IllegalStateException("User with Id :" + providedId + " has no right to change that!");
         }
-        return (storedId == providedId);
+        return (storedId.equals(providedId));
     }
 
-    public User getUser(Long userId){
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()){
-            return userOptional.get();
-        }
-        else {
-            throw new IllegalStateException("User with Id:" + userId + " does not exist" );
-        }
-    }
-
-    public List<Group> getGroupsOfUser(Long userId){
-        User user = getUser(userId);
+    public List<Group> getGroupsOfUser(User user){
         return memberService.getGroupsForUser(user);
     }
-
 }

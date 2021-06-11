@@ -1,5 +1,26 @@
+### Add user1
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "email": "user1@mail.com",
+  "password": "password"
+}
+
+### Login user1
+### Replace env variable in http-client.env.json with response
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "password"
+}
+
 ### Add Site1
 POST http://localhost:8080/api/site/
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -9,6 +30,7 @@ Content-Type: application/json
 
 ### Add Site2
 POST http://localhost:8080/api/site/
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -19,14 +41,18 @@ Content-Type: application/json
 ### Get Site1
 ### EXPECTED: 1 Site
 GET http://localhost:8080/api/site/id?sId=1
+Authorization: {{user1_token}}
 
 ### Get Site2
 ### EXPECTED: 1 Site
 GET http://localhost:8080/api/site/name?name=Site2
+Authorization: {{user1_token}}
 
 ### Delete Site1
 DELETE http://localhost:8080/api/site/1
+Authorization: {{user1_token}}
 
 ### Get all Sites
 ### EXPECTED: 1 Site
 GET http://localhost:8080/api/site/all
+Authorization: {{user1_token}}

@@ -35,7 +35,7 @@ public class User {
     @Column(
             name = "username",
             nullable = false,
-            columnDefinition = "TEXT",
+            columnDefinition = "VARCHAR(255)",
             unique = true
     )
     private String username;

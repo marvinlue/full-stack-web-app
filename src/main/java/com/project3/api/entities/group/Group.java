@@ -29,7 +29,7 @@ public class Group {
     @Column(
             name = "group_name",
             nullable = false,
-            columnDefinition = "TEXT",
+            columnDefinition = "VARCHAR(255)",
             unique = true
     )
     private String groupName;

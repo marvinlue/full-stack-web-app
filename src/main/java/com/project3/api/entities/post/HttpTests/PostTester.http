@@ -1,6 +1,6 @@
 ### Add group1
 POST http://localhost:8080/api/groups?userId=1
-Authorization: Bearer {{user1_body}}
+Authorization: {{user1_token}}
 Content-Type: application/json
 
 {
@@ -67,29 +67,31 @@ Content-Type: application/json
   "commentText": "This is the first comment"
 }
 
-### Get Posts for user1 around location
-### EXPECTED: 1 post
-GET http://localhost:8080/api/posts/allPosts/location
+### Get all posts from user1
+### EXPECTED: 2
+GET http://localhost:8080/api/posts/byUser?userId=1
+Authorization: {{user1_token}}
+
+### Get all posts from user2 & group1
+### EXPECTED: 2
+GET http://localhost:8080/api/posts/byUserOrGroup?userId=2&groupId=1
+Authorization: {{user1_token}}
+
+### Get all posts after timestamp
+### EXPECTED: 3
+GET http://localhost:8080/api/posts/byTime
 Authorization: {{user1_token}}
 Content-Type: application/json
 
-{
-  "longitude": "65",
-  "latitude": "80",
-  "radius": "1"
-}
+{"time": "2021-06-05T07:26:59.529","operation": "greater"}
 
-### Get Posts for user2 around location
-### EXPECTED: 0 post
-GET http://localhost:8080/api/posts/allPosts/location
+### Get all posts around location
+### EXPECTED: 1
+GET http://localhost:8080/api/posts/byLocation
 Authorization: {{user2_token}}
 Content-Type: application/json
 
-{
-  "longitude": "65",
-  "latitude": "80",
-  "radius": "1"
-}
+{"longitude":"65","latitude": "80","radius": "1"}
 
 ### Add Site
 POST http://localhost:8080/api/site/
@@ -101,26 +103,41 @@ Content-Type: application/json
   "location": { "type": "Point", "coordinates": [65,80] }
 }
 
-### Get Post from Site within Radius
-### EXPECTED: 3 Posts
-GET http://localhost:8080/api/posts/allPosts/site
+### Get all posts around site
+### EXPECTED: 1
+GET http://localhost:8080/api/posts/bySite
+Authorization: {{user2_token}}
+Content-Type: application/json
+
+{"sitename":"Site1","radius": "1"}
+
+
+### Update post 1 with user2
+### EXPECTED: ERROR
+PUT http://localhost:8080/api/posts/1
+Authorization: {{user2_token}}
+Content-Type: application/json
+
+{"text":"Unauthorized Update from User 2"}
+
+### Update post 1 with user1
+PUT http://localhost:8080/api/posts/1
 Authorization: {{user1_token}}
 Content-Type: application/json
 
-{
-  "sitename": "Site1",
-  "radius": "1000000"
-}
+{"text":"This is the updated post from User 1"}
 
-### Get Posts for user1 and tag
-### EXPECTED: 2 post
-GET http://localhost:8080/api/posts/allPosts/tag?userId=1&tag=First
-Authorization: {{user1_token}}
-
-### Get all available Tags for user1
-GET http://localhost:8080/api/posts/allPosts/tags?userId=1
-Authorization: {{user1_token}}
-
-### Get all available Tags for user2
-GET http://localhost:8080/api/posts/allPosts/tags
+### Delete post 1 with user2
+### EXPECTED: ERROR
+DELETE http://localhost:8080/api/posts/1
 Authorization: {{user2_token}}
+
+### Delete post 2 with user1
+DELETE http://localhost:8080/api/posts/2
+Authorization: {{user1_token}}
+
+### Get updated post
+### EXPECTED: 1 Posts with one updated text
+GET http://localhost:8080/api/posts/byUser?userId=1
+Authorization: {{user2_token}}
+

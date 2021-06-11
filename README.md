@@ -273,44 +273,45 @@ HTTP-Testcases for working with Posts, Comments, Sites are already added under p
 Please play around with them to get a feeling for the response Structure!
 
 To work in an easier fashion with requests there is an env variable file where you can store and reuse tokens!
+Also there is a user setup script where you register and login 2 users. Add the jwt Token credentials to env file and then run the http files at once!
 
 ### Posts
 
-| Request | user-specific access | required by | route | body | explanation |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| POST | yes | FE | api/posts/?groupId={Id} | {"post":"...","category":"...","location":{"type":"Point","coordinates":[Lon,Lat]}} | Post is mapped added to Group with user as author |
-| GET | yes | FE | api/posts/allPosts | - | Get all Posts from Groups the user is in ordered by timestamp |
-| GET | yes | FE | api/posts/allPosts/location | {"longitude":"65","latitude": "80","radius": "1"} | Get all Posts from Groups the user is in around a location ordered by timestamp |
-| GET | yes | FE | api/posts/allPosts/site | {"sitename":"Site1","radius": "1"} | Get all Posts from Groups the user is in around a site within radius in km ordered by timestamp |
-| GET | yes | FE | api/posts/allPosts/tag?tag={tagstring] | - | Get all Posts from Groups a user is in having the specific tag |
-| GET | yes | FE | api/posts/allPosts/tags | - | Get all Tags from all Posts in the Groups a user is in |
-| GET | yes | FE | api/posts/allPosts/group?groupId={Id} | - | Get all Posts from a Group with groupId, check if user is in that group |
-| GET | no | Spec | api/posts/byUser?userId={userId} | - | Get all Posts from a User identified by its ID |
-| GET | no | Spec | api/posts/byUserOrGroup?userId={userId}&groupId={groupId} | - | Get all Posts from a Group or User or both |
-| GET | no | Spec | api/posts/byTime | {"time": "2021-06-05T07:26:59.529","operation": "greater"/"less"} | Get all Posts after / before certain Timestamp |
-| GET | no | Spec | api/posts/byLocation | {"longitude":"65","latitude": "80","radius": "1"} | Gives all Posts around GPS Coord within Radius in km |
-| GET | no | - | api/posts/bySite | {"sitename":"Site1","radius": "1"} | Get all Posts around a certain Site which is already stored in SiteTable
-| DELETE | yes | FE |api/posts/{postId} | - | Delete a Post identified by its ID, check if written by user |
-| PUT | yes | Spec | api/posts/{postId} | {"text":"Update"} | Update the text of a Post identified by its ID, check if written by user |
+| Request | user-specific access | required by | route | body | explanation | http test? |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| POST | yes | FE | api/posts/?groupId={Id} | {"post":"...","category":"...","location":{"type":"Point","coordinates":[Lon,Lat]}} | Post is mapped added to Group with user as author | yes |
+| GET | yes | FE | api/posts/allPosts | - | Get all Posts from Groups the user is in ordered by timestamp | yes |
+| GET | yes | FE | api/posts/allPosts/location | {"longitude":"65","latitude": "80","radius": "1"} | Get all Posts from Groups the user is in around a location ordered by timestamp | yes |
+| GET | yes | FE | api/posts/allPosts/site | {"sitename":"Site1","radius": "1"} | Get all Posts from Groups the user is in around a site within radius in km ordered by timestamp | yes |
+| GET | yes | FE | api/posts/allPosts/tag?tag={tagstring] | - | Get all Posts from Groups a user is in having the specific tag | yes |
+| GET | yes | FE | api/posts/allPosts/tags | - | Get all Tags from all Posts in the Groups a user is in | yes |
+| GET | yes | FE | api/posts/allPosts/group?groupId={Id} | - | Get all Posts from a Group with groupId, check if user is in that group | yes |
+| GET | no | Spec | api/posts/byUser?userId={userId} | - | Get all Posts from a User identified by its ID | yes |
+| GET | no | Spec | api/posts/byUserOrGroup?userId={userId}&groupId={groupId} | - | Get all Posts from a Group or User or both | yes |
+| GET | no | Spec | api/posts/byTime | {"time": "2021-06-05T07:26:59.529","operation": "greater"/"less"} | Get all Posts after / before certain Timestamp | yes |
+| GET | no | Spec | api/posts/byLocation | {"longitude":"65","latitude": "80","radius": "1"} | Gives all Posts around GPS Coord within Radius in km | yes |
+| GET | no | - | api/posts/bySite | {"sitename":"Site1","radius": "1"} | Get all Posts around a certain Site which is already stored in SiteTable | yes |
+| DELETE | yes | FE |api/posts/{postId} | - | Delete a Post identified by its ID, check if written by user | yes |
+| PUT | yes | Spec | api/posts/{postId} | {"text":"Update"} | Update the text of a Post identified by its ID, check if written by user | yes |
 
 ### Comments
 
-| Request | user-specific access | required by | route | body | explanation |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| POST | yes | FE | api/posts/{postId}/comment | {"commentText":"Text"} | Adds Comment to a Post from a User |
-| GET | no | - | api/posts/{postId}/comment | - | Get all Comments to a Post |
-| DELETE | yes | FE | api/posts/comment/{commentId} | - | Delete a Comment from a Post, check if written by user |
-| PUT | yes | - | api/posts/comment/{commentId} | {"updatedText":"Text"} | api/posts/comment/1?userId=1 | Update the Text of a Comment from a Post |
+| Request | user-specific access | required by | route | body | explanation | http test? |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| POST | yes | FE | api/posts/{postId}/comment | {"commentText":"Text"} | Adds Comment to a Post from a User | yes |
+| GET | no | - | api/posts/{postId}/comment | - | Get all Comments to a Post | yes |
+| DELETE | yes | FE | api/posts/comment/{commentId} | - | Delete a Comment from a Post, check if written by user | yes |
+| PUT | yes | - | api/posts/comment/{commentId} | {"updatedText":"Text"} | Update the Text of a Comment from a Post | yes |
 
 ### Sites
 
-| Request | route | body | example | explanation |
-| :---: | :---: | :---: | :---: | :---: |
-| POST | api/site/ | {"siteName":"Site1","location":{"type":"Point","coordinates":[Lon,Lat]}} | - | Adds Site |
-| GET | api/site/id?sId={Id} | - | api/site/id?sId=1 | Get Site by its ID |
-| GET | api/site/name?name={Name} | - | api/site/name?name=Site1 | Get Site by its Name |
-| GET | api/site/all | - | - | Get all Sites |
-| DELETE | api/site/{siteId} | - | api/site/1 | Delete a Site |
+| Request | route | body | example | explanation | http test |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| POST | api/site/ | {"siteName":"Site1","location":{"type":"Point","coordinates":[Lon,Lat]}} | - | Adds Site | yes |
+| GET | api/site/id?sId={Id} | - | api/site/id?sId=1 | Get Site by its ID | yes |
+| GET | api/site/name?name={Name} | - | api/site/name?name=Site1 | Get Site by its Name | yes |
+| GET | api/site/all | - | - | Get all Sites | yes |
+| DELETE | api/site/{siteId} | - | api/site/1 | Delete a Site | yes |
 
 ## SETUP
 ### Steps to set up MySQL

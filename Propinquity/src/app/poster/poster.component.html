@@ -1,0 +1,42 @@
+<body style="font-family: 'Baloo Tammudu 2', sans-serif; background-color:#C5D5E4">
+<div class="container">
+  <div [hidden]="submitted">
+    <h1 class="padding">Create new post:</h1>
+    <form (ngSubmit)="onSubmit()" #groupForm="ngForm">
+
+      <div class="form-group">
+        <label for="text">Post content:</label>
+        <input type="text" class="form-control" id="text"
+               [(ngModel)]="model.text" name="text">
+      </div>
+
+      <div class="form-group">
+        <label for="group">Posted under group:</label>
+        <select class="form-control" id="group"
+                required
+                [(ngModel)]="model.group" name="group"
+                #power="ngModel">
+          <option *ngFor="let g of groups" [value]="g">{{g}}</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="!groupForm.form.valid">Submit</button>
+      <button type="button" class="btn btn-default" (click)="newGroup(); groupForm.reset()">Reset Fields</button>
+    </form>
+  </div>
+
+  <div [hidden]="!submitted">
+    <h2>You submitted the following:</h2>
+    <div class="row">
+      <div class="col-xs-3">Post: </div>
+      <div class="col-xs-9">{{ model.text }}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3">Group: </div>
+      <div class="col-xs-9">{{ model.group }}</div>
+    </div>
+    <br>
+    <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+  </div>
+</div>
+</body>

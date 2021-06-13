@@ -10,6 +10,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { AddGroupComponent } from './add-group/add-group.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupFormComponent } from './group-form/group-form.component';
+import { PosterComponent } from './poster/poster.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { GroupFormComponent } from './group-form/group-form.component';
     HomepageComponent,
     AddGroupComponent,
     GroupFormComponent,
+    PosterComponent,
   ],
   imports: [
     BrowserModule,

@@ -143,6 +143,24 @@ h1, h2, h6 {
   opacity: 1;
 }
 
+.btn, .btn-primary, .btn-primary:active, .btn-primary:visited, .btn:focus, .btn:active  {
+    background-color: #7E6551 !important;
+    outline: none !important;
+    box-shadow: none !important;
+    border:none;
+    margin:auto;
+     align-content: center
+}
+
+.btn-primary:hover {
+    background-color: #938581 !important;
+}
+
+.align {
+ display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+}
 
 
 

@@ -72,10 +72,12 @@ h1, h2, h6 {
     background-color: #7E6551 !important;
     outline: none !important;
     box-shadow: none !important;
+      border:none;
 }
 
 .btn-primary:hover {
     background-color: #938581 !important;
+      border:none;
 }
 
 .groups .badge4 {

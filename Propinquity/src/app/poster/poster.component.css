@@ -1,0 +1,35 @@
+h2, h6 {
+    font-family: 'Baloo Tammudu 2', sans-serif;
+}
+
+h1 {
+    font-family: 'Baloo Tammudu 2', sans-serif;
+    padding-top: 25px;
+}
+
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+    background-color: #7E6551 !important;
+    outline: none !important;
+    box-shadow: none !important;
+     border:none;
+}
+
+.btn-default:hover {
+    background-color: #7E6551 !important;
+    outline: none !important;
+    box-shadow: none !important;
+      border:none;
+}
+
+.btn-primary:hover {
+    background-color: #938581 !important;
+     border:none;
+}
+
+div.twentysquare {
+	background: #999;
+	width: 20vw;
+	height: 20vw;
+}
+
+

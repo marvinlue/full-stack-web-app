@@ -31,8 +31,6 @@
               "src/styles.css"
             ],
             "scripts": [
-            "node_modules/jquery/dist/jquery.min.js",
-            "src/custom.js"
             ]
           },
           "configurations": {

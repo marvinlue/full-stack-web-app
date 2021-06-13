@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2:wght@500&display=swap');
+
+h1, h6, div {
+  font-family: 'Baloo Tammudu 2', sans-serif;
+}
+
+h2 {
+  font-family: 'Baloo Tammudu 2', sans-serif;
+  text-align: center;
+}
+
+.panel {
+  background-color: #FFF;
+  border-radius: 12px 0px 0px 0px;
+  transition: all 2s ease-in-out;
+  position: relative;
+  -webkit-animation: floatBubble 2s  normal ease-out;
+  -moz-animation: floatBubble 2s  normal ease-out;
+  animation: floatBubble 2s normal ease-out;
+    animation-iteration-count: 1;
+}
+
+@-webkit-keyframes floatBubble {
+    0% {
+        top:500px;
+    }
+    100% {
+        top: 0px;
+    }
+}
+@keyframes floatBubble {
+    0% {
+        top:500px;
+    }
+    100% {
+        top: 0px;
+    }
+}

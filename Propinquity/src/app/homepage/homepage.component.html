@@ -1,0 +1,33 @@
+
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<body style="background-color:#d7f9f1">
+
+<ul class="homepage">
+<div class="grid">
+  <li *ngFor="let homepage of homepage" [class.selected]="homepage === selectedHomepage" (click)="onSelect(homepage)">
+     <span class="badge2">{{homepage.name}}</span>  <span class="badge3">{{homepage.text}}</span>  
+     <span class="badge4"> {{homepage.date}}</span>  <span class="badge">{{homepage.id}}</span>
+      
+  </li>
+ </div>
+</ul>
+
+<div *ngIf="selectedHomepage">
+
+  <h2>{{selectedHomepage.name | uppercase}} Details</h2>
+  <div><span>id: </span>{{selectedHomepage.id}}</div>
+  <div>
+    <label for="homepage-name">Hero name: </label>
+    <input id="homepage-name" [(ngModel)]="selectedHomepage.name" placeholder="name">
+  </div>
+
+</div>
+</body>
+

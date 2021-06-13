@@ -14,10 +14,12 @@ h2 {
   border-radius: 12px 0px 0px 0px;
   transition: all 2s ease-in-out;
   position: relative;
+  align-content: center;
+     text-align: center;
   -webkit-animation: floatBubble 2s  normal ease-out;
   -moz-animation: floatBubble 2s  normal ease-out;
   animation: floatBubble 2s normal ease-out;
-    animation-iteration-count: 1;
+  animation-iteration-count: 1;
 }
 
 @-webkit-keyframes floatBubble {

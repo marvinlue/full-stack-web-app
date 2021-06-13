@@ -8,19 +8,19 @@ h1 {
 }
 
 .btn-primary, .btn-primary:active, .btn-primary:visited {
-    background-color: #618b4a !important;
+    background-color: #7E6551 !important;
     outline: none !important;
     box-shadow: none !important;
 }
 
 .btn-default:hover {
-    background-color: #618b4a !important;
+    background-color: #7E6551 !important;
     outline: none !important;
     box-shadow: none !important;
 }
 
 .btn-primary:hover {
-    background-color: #40531b !important;
+    background-color: #938581 !important;
 }
 
 div.twentysquare {

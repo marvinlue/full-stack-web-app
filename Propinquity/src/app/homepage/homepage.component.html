@@ -7,7 +7,7 @@
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-<body style="background-color:#d7f9f1">
+<body style="background-color:#C5D5E4">
 
 <ul class="homepage">
 <div class="grid">
@@ -18,16 +18,15 @@
   </li>
  </div>
 </ul>
-
+<div class="panel">
 <div *ngIf="selectedHomepage">
-
-  <h2>{{selectedHomepage.name | uppercase}} Details</h2>
-  <div><span>id: </span>{{selectedHomepage.id}}</div>
-  <div>
-    <label for="homepage-name">Hero name: </label>
-    <input id="homepage-name" [(ngModel)]="selectedHomepage.name" placeholder="name">
-  </div>
-
+  <h2>{{selectedHomepage.name | uppercase}}'s post</h2>
+  <div><span>Posted under: </span>{{selectedHomepage.id}}</div>
+ <div>{{selectedHomepage.text}}</div>
+ <div>
+ </div>
+ <div><span>Date posted: </span>{{selectedHomepage.date}}</div>
+</div>
 </div>
 </body>
 

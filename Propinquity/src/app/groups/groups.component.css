@@ -26,15 +26,15 @@
   left: .1em;
 }
 .groups li.selected {
-  background-color: #40531b;
+  background-color: #8896AB;
   color: white;
 }
 .groups li.selected:hover {
-  background-color: #40531b;
+  background-color: #8896AB;
   color: white;
 }
 .groups li.selected:active {
-  background-color: #40531b;
+  background-color: #8896AB;
   color: white;
 }
 .groups .badge {
@@ -42,7 +42,7 @@
   font-size: small;
   color: white;
   padding: 0.8em 0.7em 0 0.7em;
-  background-color:#7aa095;
+  background-color:#7E6551;
   line-height: 1em;
   position: relative;
   left: -1px;
@@ -69,13 +69,13 @@ h1, h2, h6 {
 }
 
 .btn, .btn-primary, .btn-primary:active, .btn-primary:visited {
-    background-color: #618b4a !important;
+    background-color: #7E6551 !important;
     outline: none !important;
     box-shadow: none !important;
 }
 
 .btn-primary:hover {
-    background-color: #40531b !important;
+    background-color: #938581 !important;
 }
 
 .groups .badge4 {
@@ -83,7 +83,7 @@ h1, h2, h6 {
   font-size: small;
   color: white;
   padding: 0.8em 0.7em 0 0.7em;
-  background-color:#618b4a;
+  background-color:#938581;
   line-height: 1em;
   position: relative;
   left: -1px;

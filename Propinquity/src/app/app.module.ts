@@ -11,6 +11,8 @@ import { AddGroupComponent } from './add-group/add-group.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupFormComponent } from './group-form/group-form.component';
 import { PosterComponent } from './poster/poster.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { PosterComponent } from './poster/poster.component';
     AddGroupComponent,
     GroupFormComponent,
     PosterComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

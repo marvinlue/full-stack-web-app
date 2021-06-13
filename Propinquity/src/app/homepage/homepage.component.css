@@ -112,15 +112,15 @@ h1, h2, h6 {
 
 .panel {
   background-color: #FFF;
-  border-radius: 12px 0px 0px 0px;
+  border-radius: 12px 12px 12px 12px;
   transition: all 2s ease-in-out;
   position: relative;
   -webkit-animation: floatBubble 2s  normal ease-out;
   -moz-animation: floatBubble 2s  normal ease-out;
   animation: floatBubble 2s normal ease-out;
-    animation-iteration-count: 1;
-    align-content: center;
-     text-align: center;
+  animation-iteration-count: 1;
+  align-content: center;
+  text-align: center;
 }
 
 @-webkit-keyframes floatBubble {

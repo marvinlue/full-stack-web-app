@@ -26,6 +26,10 @@ public class MemberService {
         this.groupRepository = groupRepository;
     }
 
+    public List<Group> getGroupsForUser(User user){
+        return memberRepository.findAllGroupsByUser(user);
+    }
+
     public List<Member> getMembers(Long groupId, Long userId) {
         boolean exists;
         if (groupId != null && userId != null) {

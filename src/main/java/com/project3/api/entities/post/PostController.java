@@ -1,29 +1,86 @@
 package com.project3.api.entities.post;
 
+import com.project3.api.JwtUtil;
 import com.project3.api.entities.comment.Comment;
 import com.project3.api.entities.post.dto.*;
+import com.project3.api.entities.user.User;
+import com.project3.api.utils.TokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
+//TODO: Update HTTPs
+//TODO: Update Readme - DONE
 
 @RestController
 @RequestMapping(path = "api/posts/")
 public class PostController {
 
     private final PostService postService;
+    private final TokenUtil tokenUtil;
 
     @Autowired
-    public PostController(PostService postService) {
+    public PostController(
+            PostService postService,
+            TokenUtil tokenUtil
+    ) {
         this.postService = postService;
+        this.tokenUtil = tokenUtil;
     }
 
-    @PostMapping
-    public void createPost (
-            @RequestParam Long userId,
-            @RequestParam Long groupId,
-            @RequestBody Post post
-    ){
-        postService.addNewPost(userId, groupId, post);
+
+    // ----------------------------------------
+    // POSTS
+    // ----------------------------------------
+
+    // GET
+    // ----------------------------------------
+    //User-only access
+    @GetMapping(path = "allPosts")
+    public List<Post> getAllPostsForUser (@RequestHeader("Authorization") String token){
+        return postService.getAllPostsForUser(tokenUtil.getUserFromToken(token));
+    }
+
+    //User-only access//secured
+    @GetMapping(path = "allPosts/location")
+    public List<Post> getAllPostsForUserLocation(@RequestBody PostLocation postLocation, @RequestHeader("Authorization") String token){
+        return postService.getAllPostsForUserLocation(
+                postLocation,
+                tokenUtil.getUserFromToken(token)
+        );
+    }
+
+    //User-only access
+    @GetMapping(path = "allPosts/site")
+    public List<Post> getAllPostsForUserSite(@RequestBody PostSite postSite, @RequestHeader("Authorization") String token){
+        return postService.getAllPostsForUserSite(
+                postSite,
+                tokenUtil.getUserFromToken(token)
+        );
+    }
+
+    //User-only access
+    @GetMapping(path = "allPosts/tag")
+    public List<Post> getAllPostsForUserTag(@RequestParam String tag, @RequestHeader("Authorization") String token){
+        return postService.getAllPostsForUserTag(
+                tag,
+                tokenUtil.getUserFromToken(token)
+        );
+    }
+
+    //User-only access
+    @GetMapping(path = "allPosts/tags")
+    public List<String> getAllTagsForUserGroups(@RequestHeader("Authorization") String token){
+        return postService.getAllTagsForUserGroups(tokenUtil.getUserFromToken(token));
+    }
+
+    //User-only access
+    @GetMapping(path = "allPosts/group")
+    public List<Post> getAllPostsForUserGroup(@RequestParam Long groupId, @RequestHeader("Authorization") String token){
+        return postService.getAllPostsForUserGroup(
+                groupId,
+                tokenUtil.getUserFromToken(token)
+        );
     }
 
     @GetMapping(path = "byUser")
@@ -36,7 +93,7 @@ public class PostController {
             @RequestParam(required = false) Long userId,
             @RequestParam(required = false) Long groupId
     ){
-        return postService.getPostsUserGroup(userId, groupId);
+        return postService.getPostsUserOrGroup(userId, groupId);
     }
 
     @GetMapping(path = "byTime")
@@ -54,27 +111,66 @@ public class PostController {
         return postService.getPostBySite(postSite);
     }
 
+
+    // DELETE, POST, PUT
+    // ----------------------------------------
+
+    //User-only access
     @DeleteMapping(path = "{postId}")
     public void deletePostByID (
             @PathVariable("postId") Long postId,
-            @RequestParam Long userId
+            @RequestHeader("Authorization") String token
     ){
-        postService.deletePostById(postId, userId);
+        postService.deletePostById(
+                postId,
+                tokenUtil.getUserFromToken(token)
+        );
     }
 
+    //User-only access
+    @PostMapping
+    public void createPost (
+            @RequestParam Long groupId,
+            @RequestBody Post post,
+            @RequestHeader("Authorization") String token
+    ){
+        postService.addNewPost(
+                tokenUtil.getUserFromToken(token),
+                groupId,
+                post
+        );
+    }
+
+    //User-only access
     @PutMapping(path = "{postId}")
     public void updatePostText (
             @PathVariable("postId") Long postId,
-            @RequestParam Long userId,
+            @RequestHeader("Authorization") String token,
             @RequestBody PostUpdate postUpdate
     ){
-        postService.updatePostText(postId, userId, postUpdate);
+        postService.updatePostText(
+                postId,
+                tokenUtil.getUserFromToken(token),
+                postUpdate
+        );
     }
 
-    //CRUD Comment
+    // ----------------------------------------
+    // COMMENT
+    // ----------------------------------------
+
+    //User-only access
     @PostMapping("{postId}/comment")
-    public void addComment(@PathVariable("postId") Long postId, @RequestBody PostComment postComment){
-        postService.addNewComment(postId, postComment);
+    public void addComment(
+            @PathVariable("postId") Long postId,
+            @RequestHeader("Authorization") String token,
+            @RequestBody PostComment postComment
+    ){
+        postService.addNewComment(
+                postId,
+                tokenUtil.getUserFromToken(token),
+                postComment
+        );
     }
 
     @GetMapping(path = "{postId}/comment")
@@ -82,21 +178,29 @@ public class PostController {
         return postService.getCommentsforPost(postId);
     }
 
+    //User-only access
     @DeleteMapping("comment/{commentId}")
     public void deleteComment(
             @PathVariable("commentId") Long commentId,
-            @RequestParam Long userId
+            @RequestHeader("Authorization") String token
     ){
-        postService.deleteComment(commentId, userId);
+        postService.deleteComment(
+                commentId,
+                tokenUtil.getUserFromToken(token)
+        );
     }
 
+    //User-only access
     @PutMapping("comment/{commentId}")
     public void updateComment(
             @PathVariable("commentId") Long commentId,
             @RequestBody CommentUpdate commentUpdate,
-            @RequestParam Long userId
+            @RequestHeader("Authorization") String token
     ){
-        postService.updateComment(commentId, userId, commentUpdate);
+        postService.updateComment(
+                commentId,
+                tokenUtil.getUserFromToken(token),
+                commentUpdate
+        );
     }
-
 }

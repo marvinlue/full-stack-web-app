@@ -1,0 +1,39 @@
+### Add user1
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "email": "user1@mail.com",
+  "password": "password"
+}
+
+### Add user2
+POST http://localhost:8080/api/users/register
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "email": "user2@mail.com",
+  "password": "password"
+}
+
+### Login user1
+### Replace env variable in http-client.env.json with response
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "username": "user1",
+  "password": "password"
+}
+
+### Login user2
+### Replace env variable in http-client.env.json with response
+POST http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "username": "user2",
+  "password": "password"
+}

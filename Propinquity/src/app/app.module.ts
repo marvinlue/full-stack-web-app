@@ -18,6 +18,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     AppRoutingModule,
     BrowserAnimationsModule,
     CommonModule,
+    HttpClientModule,
 
     MatInputModule,
     MatToolbarModule,

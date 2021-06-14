@@ -1,16 +1,18 @@
 <div class="container">
     <div class="form">
+
+        <div class="title">Register</div>
         <div class="label username">Username</div>
         <div class="label password">Password</div>
 
         <div class="input username">
-            <input class="form-control" type="text" >
+            <input [(ngModel)]="username" class="form-control" type="text" >
         </div>
         <div class="input password">
-            <input class="form-control" type="password" >
+            <input  [(ngModel)]="password" class="form-control" type="password" >
         </div>
     </div>
     <div class="submit-button">
-        <button><span>Login</span></button>
+        <button (click)="submit()" [ngStyle]="{cursor: validInput ? 'pointer' : 'not-allowed'}" [disabled]="!validInput" ><span>Login</span></button>
     </div>
 </div>

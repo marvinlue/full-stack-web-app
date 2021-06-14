@@ -11,15 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import static com.project3.api.functions.Hash.getSHA;
-import static com.project3.api.functions.Hash.toHexString;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -82,6 +76,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void addNewUser(User user, MultipartFile file) {
+        String path;
         System.out.println(user);
         Optional<User> userByUsername = userRepository.findUserByUsername(user.getUsername());
         if (userByUsername.isPresent()) {
@@ -91,17 +86,28 @@ public class UserService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setRegisteredAt(Timestamp.valueOf(LocalDateTime.now()));
         if (file != null) {
-            String fileName = file.getOriginalFilename();
-            try {
-                file.transferTo(new File("/static/images/" + fileName));
-            } catch (IOException e) {
-                throw new IllegalStateException("Error uploading avatar");
-            }
-            user.setAvatarUrl("/static/images/" + fileName);
+            path = "src/main/resources/static/images";
+            File f = new File(path);
+            String absolutePath = f.getAbsolutePath();
+            set_avatar(user, file, absolutePath);
         } else {
-            user.setAvatarUrl("/static/images/default.png");
+            path = "src/main/resources/static/images";
+            File f = new File(path);
+            String absolutePath = f.getAbsolutePath();
+            user.setAvatarUrl(absolutePath + "/" + "default.png");
         }
         userRepository.save(user);
+    }
+
+    private void set_avatar(User user, MultipartFile file, String absolutePath) {
+        String fileName = file.getOriginalFilename();
+        try {
+            assert fileName != null;
+            file.transferTo(new File(absolutePath, fileName));
+        } catch (IOException e) {
+            throw new IllegalStateException("Error uploading avatar");
+        }
+        user.setAvatarUrl(absolutePath + "/" + fileName);
     }
 
     public void deleteUser(Long userId) {
@@ -142,13 +148,10 @@ public class UserService implements UserDetailsService {
         }
 
         if (file != null) {
-            String fileName = file.getOriginalFilename();
-            try {
-                file.transferTo(new File("/static/images/" + fileName));
-            } catch (IOException e) {
-                throw new IllegalStateException("Error uploading avatar");
-            }
-            user.setAvatarUrl("/static/images/" + fileName);
+            String path = "src/main/resources/static/images";
+            File f = new File(path);
+            String absolutePath = f.getAbsolutePath();
+            set_avatar(user, file, absolutePath);
         }
     }
 }

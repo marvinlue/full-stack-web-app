@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   username: string = '';
   password: string = '';
+  rememberMe: boolean = false;
   users: any[] = [];
 
   loginError: boolean = false;
@@ -46,7 +47,8 @@ export class LoginComponent implements OnInit {
       try {
         const result = await this.authService.login(
           this.username,
-          this.password
+          this.password,
+          this.rememberMe
         );
 
         if (result) {

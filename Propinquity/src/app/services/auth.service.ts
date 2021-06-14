@@ -11,13 +11,14 @@ export class AuthService {
   token$: BehaviorSubject<string> = new BehaviorSubject('');
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string) {
+  login(username: string, password: string, rememberMe: boolean) {
     const loginPromise = new Promise((resolve, reject) => {
       console.log('Loggin in now');
       this.http
         .post<{ jwt: string }>(`${environment.apiBaseUrl}/users/login`, {
           username: username,
           password: password,
+          rememberMe: rememberMe,
         })
         .subscribe(
           (res) => {

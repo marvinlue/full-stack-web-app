@@ -9,9 +9,25 @@ div.container {
 div.form {
   display: grid;
   grid-template-columns: 70px 200px;
-  grid-template-rows: 150px 80px 80px;
-  grid-template-areas: "title title" "lblUsername frmUsername" "lblPassword frmPassword";
+  grid-template-rows: 150px 80px 80px 30px;
+  grid-template-areas: "title title" "lblUsername frmUsername" "lblPassword frmPassword" "rm rm";
   align-items: center;
+}
+
+div.rm {
+  grid-area: rm;
+  align-self: end;
+  justify-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+div.rm p {
+  margin: 0 0 0 2.5px;
+  padding: 0 !important;
+  line-height: 30px;
 }
 
 div.title {

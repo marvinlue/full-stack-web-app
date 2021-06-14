@@ -3,6 +3,7 @@
 <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+<body style="background-color:#EBD4CB">
 <div *ngIf="user">
   <h1>User Profile</h1>
 
@@ -24,7 +25,8 @@
 </div>
 
   
-  <button  class = "btn" routerLink="/user-edit">Edit</button>
+  <button  class = "btn" [routerLink]="['/user-edit']">Edit</button>
   <!--button (click)="save()">save</button-->
 
 </div>
+</body>

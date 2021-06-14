@@ -9,7 +9,7 @@
 </head>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand">
     <img src="https://i.ibb.co/drNh8vP/Letter-P-logo-to-business-or-technology-Graphics-4517420-1-1-580x387-removebg-preview.png"  width="30" height="30" class="d-inline-block align-top" alt="">
    <h6> Propinquity </h6>
   </a>
@@ -23,7 +23,7 @@
     
   </button>
   
-  <a href="/search" class="btn btn-primary pad" role="button">🔍</a>
+  <a [routerLink]="['/search']" class="btn btn-primary pad" role="button">🔍</a>
 
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -31,19 +31,19 @@
       <ul class="navbar-nav my-2 my-lg-0">
       
       <li class="nav-item active">
-        <a href="/poster" class="btn btn-primary" role="button">What's on your mind?</a>
+        <a [routerLink]="['/poster']" class="btn btn-primary" role="button">What's on your mind?</a>
       </li>
 <li class="nav-item active">
-        <a class="nav-link" href="/homepage">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" [routerLink]="['/homepage']">Home <span class="sr-only">(current)</span></a>
       </li>
       
 <li class="nav-item active">
-        <a class="nav-link" href="/groups">All Groups <span class="sr-only">(current)</span></a>
+        <a class="nav-link" [routerLink]="['/groups']">All Groups <span class="sr-only">(current)</span></a>
       </li>
 
       
         <li class="nav-item dropdown">
-          <a class="nav-link" href="/edit">Profile <span class="sr-only">(current)</span></a>
+          <a class="nav-link" [routerLink]="['/edit']">Profile <span class="sr-only">(current)</span></a>
 
         </li>
 

@@ -7,6 +7,7 @@ public class AuthenticationRequest implements Serializable {
 
     private String username;
     private String password;
+    private Boolean rememberMe;
 
     public String getUsername() {
         return username;
@@ -24,14 +25,19 @@ public class AuthenticationRequest implements Serializable {
         this.password = password;
     }
 
+    public Boolean getRememberMe() {return rememberMe;}
+
+    public void setRememberMe(Boolean rememberMe){this.rememberMe = rememberMe;}
+
     //need default constructor for JSON Parsing
     public AuthenticationRequest()
     {
 
     }
 
-    public AuthenticationRequest(String username, String password) {
+    public AuthenticationRequest(String username, String password, Boolean rememberMe) {
         this.setUsername(username);
         this.setPassword(password);
+        this.setRememberMe(rememberMe);
     }
 }

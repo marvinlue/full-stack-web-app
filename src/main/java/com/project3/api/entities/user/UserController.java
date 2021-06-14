@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,20 +93,27 @@ public class UserController {
     }
 
     @PostMapping(path = "login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
 
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
-        } catch (BadCredentialsException e){
-            throw new Exception("Incorrect username or password", e);
+        } catch (AuthenticationException e){
+
+            return ResponseEntity.badRequest().body(Status.FAILURE);
         }
 
         final UserDetails userDetails = userService
                 .loadUserByUsername(authenticationRequest.getUsername());
 
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
+        final String jwt;
+
+        if (authenticationRequest.getRememberMe()) {
+            jwt = jwtTokenUtil.generateRememberMeToken(userDetails);
+        } else {
+            jwt = jwtTokenUtil.generateToken(userDetails);
+        }
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }

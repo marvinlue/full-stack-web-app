@@ -1,29 +1,83 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from '@angular/common/http'
+import { HttpClient, HttpUrlEncodingCodec } from '@angular/common/http';
 import { AuthService } from '../services/auth.service';
+import { environment } from 'src/environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-
   username: string = '';
   password: string = '';
+  users: any[] = [];
 
-  constructor(private authService: AuthService) { }
+  loginError: boolean = false;
+  redirectUrl!: string;
 
-  ngOnInit(): void {
+  constructor(
+    private authService: AuthService,
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.route.queryParams.subscribe((params) => {
+      if (params.red) {
+        const decoder = new HttpUrlEncodingCodec();
+
+        const redirect = decoder.decodeValue(params.red);
+        console.log(redirect);
+        this.redirectUrl = redirect.substr(1, redirect.length - 2);
+      } else {
+        this.redirectUrl = '/';
+      }
+    });
   }
+
+  ngOnInit(): void {}
 
   get validInput() {
-    return this.username != '' && this.password != ''
+    return this.username != '' && this.password != '';
   }
 
-  submit() {
+  async submit() {
     if (this.validInput) {
-      this.authService.login(this.username, this.password);
+      try {
+        const result = await this.authService.login(
+          this.username,
+          this.password
+        );
+
+        if (result) {
+          this.router.navigateByUrl(this.redirectUrl);
+        }
+        {
+          this.username = '';
+          this.password = '';
+          this.loginError = true;
+        }
+      } catch (err) {
+        this.username = '';
+        this.password = '';
+        this.loginError = true;
+      }
     }
   }
 
+  get queryRedirectUrl() {
+    return `"${this.redirectUrl}"`;
+  }
+
+  getUsers() {
+    console.log('Getting users');
+    this.http.get<any[]>(`${environment.apiBaseUrl}/users`).subscribe(
+      (res) => {
+        this.users = res;
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }
 }

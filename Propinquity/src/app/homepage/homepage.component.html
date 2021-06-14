@@ -1,32 +1,41 @@
+<!-- Required meta tags -->
+<meta charset="utf-8" />
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, shrink-to-fit=no"
+/>
 
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
 
-  <!-- Bootstrap CSS -->
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+  crossorigin="anonymous"
+/>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-<body style="background-color:#EBD4CB">
-
-<ul class="homepage">
-<div class="grid">
-  <li *ngFor="let homepage of homepage" [class.selected]="homepage === selectedHomepage" (click)="onSelect(homepage)">
-     <span class="badge2">{{homepage.name}}</span>  <span class="badge3">{{homepage.text}}</span>  
-     <span class="badge4"> {{homepage.date}}</span>  <span class="badge">{{homepage.id}}</span>
-      
-  </li>
- </div>
-</ul>
-<div class="panel">
-<div *ngIf="selectedHomepage">
-  <h2>{{selectedHomepage.name | uppercase}}'s post</h2>
-  <div><span>Posted under: </span>{{selectedHomepage.id}}</div>
- <div>{{selectedHomepage.text}}</div>
- <div>
- </div>
- <div><span>Date posted: </span>{{selectedHomepage.date}}</div>
-</div>
-</div>
+<body style="background-color: #ebd4cb">
+  <ul class="homepage">
+    <div class="grid">
+      <li
+        *ngFor="let homepage of homepage"
+        [class.selected]="homepage === selectedHomepage"
+        (click)="onSelect(homepage)"
+      >
+        <span class="badge2">{{ homepage.name }}</span>
+        <span class="badge3">{{ homepage.text }}</span>
+        <span class="badge4"> {{ homepage.date }}</span>
+        <span class="badge">{{ homepage.id }}</span>
+      </li>
+    </div>
+  </ul>
+  <div class="panel">
+    <div *ngIf="selectedHomepage">
+      <h2>{{ selectedHomepage.name | uppercase }}'s post</h2>
+      <div><span>Posted under: </span>{{ selectedHomepage.id }}</div>
+      <div>{{ selectedHomepage.text }}</div>
+      <div></div>
+      <div><span>Date posted: </span>{{ selectedHomepage.date }}</div>
+    </div>
+  </div>
 </body>
-

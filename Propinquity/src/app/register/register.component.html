@@ -1,21 +1,30 @@
 <div class="container">
-    <div class="form">
-        <div class="title">Register</div>
-        <div class="label username">Username</div>
-        <div class="label password">Password</div>
-        <div class="label email">Email Address</div>
-        <div class="input username">
-            <input [(ngModel)]="username" class="form-control" type="text" >
-        </div>
-        <div class="input password">
-            <input  [(ngModel)]="password" class="form-control" type="password" >
-        </div>
-        <div class="input email">
-            <input  [(ngModel)]="email" class="form-control" type="email" >
+  <div class="form">
+    <div class="title">Register</div>
+    <div class="label username">Username</div>
+    <div class="label password">Password</div>
+    <div class="label email">Email Address</div>
+    <div class="input username">
+      <input [(ngModel)]="username" class="form-control" type="text" />
+    </div>
+    <div class="input email">
+      <input [(ngModel)]="email" class="form-control" type="email" />
+    </div>
+    <div class="input password">
+      <input [(ngModel)]="password" class="form-control" type="password" />
+    </div>
+  </div>
+  <div class="submit-button">
+    <button
+      (click)="submit()"
+      [ngStyle]="{ cursor: validInput ? 'pointer' : 'not-allowed' }"
+      [disabled]="!validInput"
+    >
+      <span>Login</span>
+    </button>
+  </div>
+</div>
 
-        </div>
-    </div>
-    <div class="submit-button">
-        <button (click)="submit()" [ngStyle]="{cursor: validInput ? 'pointer' : 'not-allowed'}" [disabled]="!validInput" ><span>Login</span></button>
-    </div>
+<div *ngIf="signupError" class="alert">
+  <div class="alert-container">Username/Password incorrect</div>
 </div>

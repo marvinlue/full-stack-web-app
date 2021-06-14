@@ -1,64 +1,106 @@
 div.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    min-height: calc(100vh - 88px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  min-height: calc(100vh - 88px);
 }
 
 div.form {
-    display: grid;
-    grid-template-columns: max-content 200px;
-    grid-template-rows: 150px 80px 80px 80px;
-    grid-template-areas: "title title" "lblUsername frmUsername" "lblEmail frmEmail" "lblPassword frmPassword" ;
-    align-items: center;
+  display: grid;
+  grid-template-columns: max-content 200px;
+  grid-template-rows: 150px 80px 80px 80px;
+  grid-template-areas: "title title" "lblUsername frmUsername" "lblEmail frmEmail" "lblPassword frmPassword";
+  align-items: center;
 }
 
 div.title {
-    grid-area: title;
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 2rem;
-    text-align: center;
-    justify-self: center;
-    align-self: center;
+  grid-area: title;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 2rem;
+  text-align: center;
+  justify-self: center;
+  align-self: center;
 }
 
 div.label {
-    justify-self: end;
-    margin-right: 10px;
+  justify-self: end;
+  margin-right: 10px;
 }
 
 div.input {
-    justify-self: start;
+  justify-self: start;
 }
 
 div.label.username {
-    grid-area: lblUsername;
+  grid-area: lblUsername;
 }
 
 div.label.email {
-    grid-area: lblEmail;
+  grid-area: lblEmail;
 }
 
 div.label.password {
-    grid-area: lblPassword;
+  grid-area: lblPassword;
 }
 
 div.input.username {
-    grid-area: frmUsername;
+  grid-area: frmUsername;
 }
 
 div.input.password {
-    grid-area: frmPassword;
+  grid-area: frmPassword;
 }
 
 div.input.email {
-    grid-area: frmEmail;
+  grid-area: frmEmail;
 }
 
 button {
-    width: 350px;
-    height: 38px;
-    border-radius: 0.25rem;
+  width: 350px;
+  height: 38px;
+  border-radius: 0.25rem;
+}
+
+div.alert {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  position: fixed;
+  top: 120px;
+  right: 60px;
+  background-color: rgb(189, 20, 99);
+}
+
+div.alert-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100%;
+}
+div.close {
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 20px;
+  font-size: 15px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: -20px;
+  margin-right: -30px;
+}
+div.alert * {
+  color: white;
 }

@@ -6,20 +6,28 @@ import { GroupFormComponent } from './group-form/group-form.component';
 import { PosterComponent } from './poster/poster.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-
-
+import { AuthGuard } from './services/guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'groups', component: GroupsComponent },
-  { path: 'homepage', component: HomepageComponent },
-  { path: 'group-form', component: GroupFormComponent},
-  { path: 'poster', component: PosterComponent},
-  { path: 'login', component: LoginComponent},
-  { path: 'register', component: RegisterComponent}
+  {
+    path: '',
+    redirectTo: '/homepage',
+    pathMatch: 'full',
+  },
+  { path: 'groups', component: GroupsComponent, canActivate: [AuthGuard] },
+  { path: 'homepage', component: HomepageComponent, canActivate: [AuthGuard] },
+  {
+    path: 'group-form',
+    component: GroupFormComponent,
+    canActivate: [AuthGuard],
+  },
+  { path: 'poster', component: PosterComponent, canActivate: [AuthGuard] },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

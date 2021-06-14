@@ -19,6 +19,7 @@ enum Status {
     FAILURE
 }
 
+@CrossOrigin
 @RestController
 @RequestMapping(path = "api/users")
 public class UserController {

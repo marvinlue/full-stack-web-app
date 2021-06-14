@@ -8,21 +8,21 @@ h1 {
 }
 
 .btn-primary, .btn-primary:active, .btn-primary:visited {
-    background-color: #7E6551 !important;
+    background-color: #2C0703 !important;
     outline: none !important;
     box-shadow: none !important;
      border:none;
 }
 
 .btn-default:hover {
-    background-color: #7E6551 !important;
+    background-color: #890620 !important;
     outline: none !important;
     box-shadow: none !important;
       border:none;
 }
 
 .btn-primary:hover {
-    background-color: #938581 !important;
+    background-color: #DA9F93 !important;
      border:none;
 }
 

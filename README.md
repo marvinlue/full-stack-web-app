@@ -43,6 +43,24 @@ GET http://localhost:8080/api/users/user?username=some-username
 Authorization: Bearer token
 ```
 ##### POST
+* Using a POST request to login as a user with a json dictoinary as input:
+```
+POST http://localhost:8080/api/users/login
+```
+Dictionary must be in the following form:
+```
+Content-Type: application/json
+
+{
+  "username": "some-unique-username",
+  "password": "some-password",
+  "rememberMe":true
+}
+
+remember me is true for remember me token and false if not
+
+returns a jwt token
+
 * Using a POST request to register a new user with a json dictoinary as input:
 ```
 POST http://localhost:8080/api/users/register

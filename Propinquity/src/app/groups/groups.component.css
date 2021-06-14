@@ -42,7 +42,7 @@
   font-size: small;
   color: white;
   padding: 0.8em 0.7em 0 0.7em;
-  background-color:#7E6551;
+  background-color:#2C0703;
   line-height: 1em;
   position: relative;
   left: -1px;
@@ -69,14 +69,14 @@ h1, h2, h6 {
 }
 
 .btn, .btn-primary, .btn-primary:active, .btn-primary:visited {
-    background-color: #7E6551 !important;
+    background-color: #2C0703 !important;
     outline: none !important;
     box-shadow: none !important;
       border:none;
 }
 
 .btn-primary:hover {
-    background-color: #938581 !important;
+    background-color: #B6465F !important;
       border:none;
 }
 
@@ -85,7 +85,7 @@ h1, h2, h6 {
   font-size: small;
   color: white;
   padding: 0.8em 0.7em 0 0.7em;
-  background-color:#938581;
+  background-color:#DA9F93;
   line-height: 1em;
   position: relative;
   left: -1px;

@@ -13,7 +13,11 @@ import { GroupFormComponent } from './group-form/group-form.component';
 import { PosterComponent } from './poster/poster.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+
 import { MatSliderModule } from '@angular/material/slider';
+import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 @NgModule({
@@ -34,6 +38,9 @@ import { MatSliderModule } from '@angular/material/slider';
     BrowserAnimationsModule,
     CommonModule,
 
+    MatInputModule,
+    MatToolbarModule,
+    MatFormFieldModule,
     // maybe use to sort posts by radius from user?
     MatSliderModule,
   ],

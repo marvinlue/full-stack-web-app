@@ -1,0 +1,46 @@
+div.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 88px);
+}
+
+div.form {
+    display: grid;
+    grid-template-columns: 70px 200px;
+    grid-template-rows: 80px 80px;
+    grid-template-areas: "lblUsername frmUsername" "lblPassword frmPassword";
+    align-items: center;
+}
+
+div.label {
+    justify-self: end;
+    margin-right: 10px;
+}
+
+div.input {
+    justify-self: start;
+}
+
+div.label.username {
+    grid-area: lblUsername;
+}
+
+div.label.password {
+    grid-area: lblPassword;
+}
+
+div.input.username {
+    grid-area: frmUsername;
+}
+
+div.input.password {
+    grid-area: frmPassword;
+}
+
+button {
+    width: 350px;
+    height: 38px;
+    border-radius: 0.25rem;
+}

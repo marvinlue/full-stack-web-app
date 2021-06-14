@@ -1,15 +1,14 @@
-<body style="font-family: 'Baloo Tammudu 2', sans-serif; background-color:#EBD4CB">
+<body style="font-family: 'Baloo Tammudu 2', sans-serif; background-color:#C5D5E4">
 <div class="container">
   <div [hidden]="submitted">
     <h1 class="padding">Create new post:</h1>
     <form (ngSubmit)="onSubmit()" #groupForm="ngForm">
 
-
       <div class="form-group">
-       <label for="input_text">What's on your mind?</label>
-  	<textarea class="md-textarea form-control " rows="3" id="input_text" type="text" length="120" mdbCharCounter mdbInput></textarea>
- 	
-     </div>
+        <label for="text">Post content:</label>
+        <input type="text" class="form-control" id="text"
+               [(ngModel)]="model.text" name="text">
+      </div>
 
       <div class="form-group">
         <label for="group">Posted under group:</label>

@@ -11,7 +11,7 @@ import java.util.List;
 
 //TODO: Update HTTPs
 //TODO: Update Readme - DONE
-@CrossOrigin
+
 @RestController
 @RequestMapping(path = "api/posts/")
 public class PostController {

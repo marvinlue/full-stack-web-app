@@ -1,0 +1,6 @@
+- Single Threaded
+- Blocking code
+- Event Loop Driven System
+Startthework()
+.then() 
+Then complete

@@ -9,6 +9,8 @@ import { environment } from 'src/environments/environment';
 })
 export class AuthService {
   token$: BehaviorSubject<string> = new BehaviorSubject('');
+  currentUsername$: BehaviorSubject<string> = new BehaviorSubject('');
+
   constructor(private http: HttpClient) {}
 
   login(username: string, password: string, rememberMe: boolean) {
@@ -24,6 +26,7 @@ export class AuthService {
           (res) => {
             console.log('JWT from login', res);
             this.token$.next(res.jwt);
+            this.currentUsername$.next(username);
             resolve(true);
           },
           (err) => {

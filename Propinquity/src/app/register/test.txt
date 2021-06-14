@@ -1,0 +1,21 @@
+http://www.facebook.com/api/user?id=24&country=USA
+
+http:// :- Protocol
+www.facebook.com :- Hostname (localhost:8080/api/users/regiser)
+:80 :- Port
+
+/api/user :- Route/Endpoint
+/api/users/register :- Route/Resource/Endpoint
+
+?id=24&country=USA :- Query Params
+{
+    id: 24,
+    country: USA
+}
+
+METHOD:- GET, POST, PUT, DELETE
+Headers (Cache, Cookies, Authorization)
+{
+    Authorization: Bearer {{token}}
+}
+Request Body (POST,PUT,PATCH)

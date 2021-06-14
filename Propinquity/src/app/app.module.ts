@@ -23,6 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/interceptors/auth.interceptor';
+import { TestComponent } from './test/test.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { AuthInterceptor } from './services/interceptors/auth.interceptor';
     UserDetailComponent,
     UserEditComponent,
     UserPasswordComponent,
+    TestComponent,
     
   ],
   imports: [

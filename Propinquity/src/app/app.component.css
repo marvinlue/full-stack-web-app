@@ -1,5 +1,8 @@
 /* HeroesComponent's private CSS styles */
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Tammudu+2:wght@500&display=swap');
+body {
+  background-color: #EBD4CB;
+}
 
 .groups {
   margin: 0 0 2em 0;
@@ -56,7 +59,7 @@ input {
 }
 
 .navbar.bg-light {
-  background-color: #466362 !important;
+  background-color: #890620 !important;
   .form-control {
     border-radius: 4.25rem;
   }
@@ -74,6 +77,11 @@ h1, h2, h6 {
 
 .btn-primary:hover {
     background-color: #40531b !important;
+}
+
+.pad {
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .open-button {
@@ -144,7 +152,7 @@ h1, h2, h6 {
 }
 
 .btn, .btn-primary, .btn-primary:active, .btn-primary:visited, .btn:focus, .btn:active  {
-    background-color: #7E6551 !important;
+    background-color: #2C0703 !important;
     outline: none !important;
     box-shadow: none !important;
     border:none;
@@ -153,7 +161,7 @@ h1, h2, h6 {
 }
 
 .btn-primary:hover {
-    background-color: #938581 !important;
+    background-color: #B6465F !important;
 }
 
 .align {

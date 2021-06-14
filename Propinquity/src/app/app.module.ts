@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { GroupsComponent } from './groups/groups.component';
@@ -13,6 +14,9 @@ import { GroupFormComponent } from './group-form/group-form.component';
 import { PosterComponent } from './poster/poster.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
+import { UserPasswordComponent } from './user-password/user-password.component';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatInputModule } from '@angular/material/input';
@@ -30,6 +34,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     PosterComponent,
     LoginComponent,
     RegisterComponent,
+    UserDetailComponent,
+    UserEditComponent,
+    UserPasswordComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -37,6 +45,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     AppRoutingModule,
     BrowserAnimationsModule,
     CommonModule,
+    HttpClientModule,
 
     MatInputModule,
     MatToolbarModule,

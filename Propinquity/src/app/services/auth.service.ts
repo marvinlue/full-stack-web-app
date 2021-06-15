@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, concat } from 'rxjs';
 import { concatMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -10,9 +11,8 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   token$: BehaviorSubject<string> = new BehaviorSubject('');
   currentUsername$: BehaviorSubject<string> = new BehaviorSubject('');
-  currentUserID$: BehaviorSubject<number> = new BehaviorSubject(-1);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   login(username: string, password: string, rememberMe: boolean) {
     const loginPromise = new Promise((resolve, reject) => {
@@ -28,14 +28,6 @@ export class AuthService {
             console.log('JWT from login', res);
             this.token$.next(res.jwt);
             this.currentUsername$.next(username);
-            const result = await this.http
-              .get<any>(
-                'http://localhost:8080/api/users/user?username=' + username
-              )
-              .toPromise();
-            const id: number = result.id;
-            this.currentUserID$.next(id);
-            console.log(result);
             resolve(true);
           },
           (err) => {
@@ -64,6 +56,7 @@ export class AuthService {
               {
                 username: username,
                 password: password,
+                rememberMe: true,
               }
             );
           })
@@ -82,5 +75,28 @@ export class AuthService {
     });
 
     return registerPromise;
+  }
+
+  async deleteUser() {
+    const url = 'http://localhost:8080/api/users';
+    const reqObs = this.http.delete<any>(url);
+    const reqPromise = reqObs.toPromise();
+
+    try {
+      await reqPromise;
+      this.token$.next('');
+      this.currentUsername$.next('');
+      this.router.navigate(['/login']);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  changeToken(newToken: string) {
+    this.token$.next(newToken);
+  }
+
+  changeUsername(newUsername: string) {
+    this.currentUsername$.next(newUsername);
   }
 }

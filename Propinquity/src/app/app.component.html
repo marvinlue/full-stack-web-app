@@ -17,13 +17,16 @@
     <input
       class="form-control mr-sm-2"
       type="search"
+      [(ngModel)]="searchQuery"
       placeholder="Search"
       aria-label="Search"
+      name="search"
     />
   </form>
   <button
     class="navbar-toggler"
     type="button"
+    (click)="loadSearch()"
     data-toggle="collapse"
     data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent"
@@ -33,9 +36,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <a [routerLink]="['/search']" class="btn btn-primary pad" role="button">🔍</a>
-
-  <a [routerLink]="['/search']" class="btn btn-primary pad" role="button">🔍</a>
+  <a (click)="loadSearch()" class="btn btn-primary pad" role="button">🔍</a>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <div class="mr-auto"></div>
@@ -60,7 +61,7 @@
       <li class="nav-item dropdown">
         <a
           class="nav-link dropdown-toggle"
-          [routerLink]="['/groups']"
+          [routerLink]="['/user-edit']"
           id="navbarDropdown"
           role="button"
           data-display="static"

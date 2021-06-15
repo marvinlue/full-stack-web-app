@@ -7,10 +7,12 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import {
   HttpClient,
   HttpHeaders,
+  HttpParams,
   HttpUrlEncodingCodec,
 } from '@angular/common/http';
 import { User } from '../user';
 import { UserService } from '../user.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-user-edit',
@@ -19,6 +21,10 @@ import { UserService } from '../user.service';
 })
 export class UserEditComponent implements OnInit {
   user: User | undefined;
+
+  updatedEmail: string = '';
+  updatedUsername: string = '';
+  updatedPassword: string = '';
   imgFile: string;
   fileName = '';
 
@@ -27,8 +33,53 @@ export class UserEditComponent implements OnInit {
     private userService: UserService,
     private location: Location,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {}
+
+  async updatedUser() {
+    const encoder = new HttpUrlEncodingCodec();
+    let url = 'http://localhost:8080/api/users';
+    console.log(this.updatedEmail);
+    console.log(this.updatedPassword);
+    console.log(this.updatedUsername);
+    console.log(url);
+    if (this.updatedEmail != '') {
+      console.log('email change email');
+      url = url + '?email=' + encoder.encodeValue(this.updatedEmail);
+      console.log(url);
+    }
+
+    if (this.updatedUsername != '') {
+      console.log('username change');
+      url =
+        url + url.endsWith('users')
+          ? '?username='
+          : '&username=' + encoder.encodeValue(this.updatedUsername);
+      console.log(url);
+    }
+
+    if (this.updatedPassword != '') {
+      console.log('password change ');
+      url =
+        url + url.endsWith('users')
+          ? '?password='
+          : '&password=' + encoder.encodeValue(this.updatedUsername);
+      console.log(url);
+    }
+
+    const reqObs = this.http.put(url, {});
+    const reqPromise = reqObs.toPromise();
+
+    try {
+      const response: any = await reqPromise;
+      console.log(response);
+      this.authService.changeToken(response.jwt);
+      this.router.navigate(['/user-detail']);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   async updateEmail(email: string) {
     const urlEncoder = new HttpUrlEncodingCodec();
@@ -44,6 +95,10 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
+  }
+
+  async deleteUser() {
+    await this.authService.deleteUser();
   }
 
   getUser(): void {

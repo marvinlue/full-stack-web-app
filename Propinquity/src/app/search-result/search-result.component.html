@@ -1,0 +1,6 @@
+<div style="font-size: 2rem" *ngIf="isLoading" class="">Searching Now</div>
+<div *ngIf="!isLoading && !group">
+  No Groups Found with name: {{ searchQuery }}
+</div>
+
+<div *ngIf="!isLoading && !!group">{{ group | json }}</div>

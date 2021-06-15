@@ -38,25 +38,39 @@
       <input
         class="input-field"
         type="text"
-        placeholder="Username"
+        [(ngModel)]="updatedUsername"
+        placeholder="Change Username"
         name="nme"
       />
     </div>
 
     <div class="input-container">
       <i class="fa fa-envelope icon"></i>
-      <input class="input-field" type="text" placeholder="Email" name="email" />
+      <input
+        class="input-field"
+        [(ngModel)]="updatedEmail"
+        type="text"
+        placeholder="Change Email"
+        name="email"
+      />
     </div>
 
     <div class="input-container">
       <i class="fa fa-key icon"></i>
-      <a class="nav-link" [routerLink]="['/password']"> Change Password </a>
+      <input
+        class="input-field"
+        [(ngModel)]="updatedPassword"
+        type="text"
+        placeholder="Change Password"
+        name="password"
+      />
     </div>
 
     <div>
-      <button (click)="updateEmail('hello@test.com')" class="btn" type="submit">
-        Save
-      </button>
+      <button (click)="updatedUser()" class="btn" type="submit">Save</button>
+    </div>
+    <div>
+      <button (click)="deleteUser()" class="btn">Delete User</button>
     </div>
   </form>
 </body>

@@ -10,6 +10,8 @@ import { AuthGuard } from './services/guards/auth.guard';
 import { TestComponent } from './test/test.component';
 import { TestAgainComponent } from './test-again/test-again.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { UserDetailComponent } from './user-detail/user-detail.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 const routes: Routes = [
   {
@@ -40,6 +42,16 @@ const routes: Routes = [
   {
     path: 'user-edit',
     component: UserEditComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'user-detail',
+    component: UserDetailComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'search-group',
+    component: SearchResultComponent,
     canActivate: [AuthGuard],
   },
 ];

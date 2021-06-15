@@ -25,6 +25,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/interceptors/auth.interceptor';
 import { TestComponent } from './test/test.component';
 import { TestAgainComponent } from './test-again/test-again.component';
+import { SearchResultComponent } from './search-result/search-result.component';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { TestAgainComponent } from './test-again/test-again.component';
     UserPasswordComponent,
     TestComponent,
     TestAgainComponent,
+    SearchResultComponent,
     
   ],
   imports: [

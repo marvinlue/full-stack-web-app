@@ -1,34 +1,21 @@
-<html>
-  <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<div *ngIf="isLoading" class="isloading">Loading Groups</div>
+<div *ngIf="!isLoading" class="content">
+  <a
+    [routerLink]="['/group-form']"
+    class="btn btn-primary btn-sm m-2"
+    role="button"
+    >Add new group...</a
+  >
 
-  <!-- Bootstrap CSS -->
+  <ul class="groups">
+    <li
+      *ngFor="let group of groups"
+      [class.selected]="group === selectedGroup"
+      (click)="onSelect(group)"
+    >
+      <span class="badge">{{ group.id }}</span> {{ group.name }}
+    </li>
+  </ul>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-  <link rel="stylesheet" href="groups.component.css">
-  </head>
-
-
-<body style="background-color:#EBD4CB">
-
-<a [routerLink]="['/group-form']" class="btn btn-primary btn-sm m-2" role="button">Add new group...</a>
-
-
-<ul class="groups">  
-  <li *ngFor="let group of groups"
-    [class.selected]="group === selectedGroup"
-    (click)="onSelect(group)">
-    <span class="badge">{{group.id}}</span> {{group.name}}  <span class="badge4">{{group.power}}</span> 
-  </li>
-</ul>
-
-<app-add-group [group]="selectedGroup"></app-add-group>
-
-
-</body>
-
-
-</html>
-
+  <app-add-group [group]="selectedGroup"></app-add-group>
+</div>

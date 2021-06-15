@@ -1,4 +1,11 @@
 # BACK-END API
+
+## PRE INSERT
+
+Insert scripts are in database directory
+1) Run UserInsert.http -> creates 3 users
+2) Run db_insert.sql -> creates groups, members, posts
+
 ## RUN
 ### Steps to run spring boot application
 1. Open terminal in project directory and create a jar file for the application using:

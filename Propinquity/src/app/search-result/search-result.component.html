@@ -1,6 +1,10 @@
-<div style="font-size: 2rem" *ngIf="isLoading" class="">Searching Now</div>
+
+<body
+  style="font-family: 'Baloo Tammudu 2', sans-serif; background-color: #ebd4cb"
+><div style="font-size: 2rem; background-color: #ebd4cb" *ngIf="isLoading" class="">Searching Now</div>
 <div *ngIf="!isLoading && !group">
   No Groups Found with name: {{ searchQuery }}
 </div>
 
 <div *ngIf="!isLoading && !!group">{{ group | json }}</div>
+</body>

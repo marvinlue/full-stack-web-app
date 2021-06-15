@@ -56,7 +56,7 @@ Content-Type: application/json
   "password": "some-password",
   "rememberMe":true
 }
-
+```
 remember me is true for remember me token and false if not
 
 returns a jwt token

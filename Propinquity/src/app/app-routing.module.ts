@@ -8,6 +8,8 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { AuthGuard } from './services/guards/auth.guard';
 import { TestComponent } from './test/test.component';
+import { TestAgainComponent } from './test-again/test-again.component';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 const routes: Routes = [
   {
@@ -28,6 +30,16 @@ const routes: Routes = [
   {
     path: 'test',
     component: TestComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'test2',
+    component: TestAgainComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'user-edit',
+    component: UserEditComponent,
     canActivate: [AuthGuard],
   },
 ];

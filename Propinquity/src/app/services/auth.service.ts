@@ -10,6 +10,7 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   token$: BehaviorSubject<string> = new BehaviorSubject('');
   currentUsername$: BehaviorSubject<string> = new BehaviorSubject('');
+  currentUserID$: BehaviorSubject<number> = new BehaviorSubject(-1);
 
   constructor(private http: HttpClient) {}
 
@@ -23,10 +24,18 @@ export class AuthService {
           rememberMe: rememberMe,
         })
         .subscribe(
-          (res) => {
+          async (res) => {
             console.log('JWT from login', res);
             this.token$.next(res.jwt);
             this.currentUsername$.next(username);
+            const result = await this.http
+              .get<any>(
+                'http://localhost:8080/api/users/user?username=' + username
+              )
+              .toPromise();
+            const id: number = result.id;
+            this.currentUserID$.next(id);
+            console.log(result);
             resolve(true);
           },
           (err) => {

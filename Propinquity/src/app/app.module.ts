@@ -24,6 +24,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './services/interceptors/auth.interceptor';
 import { TestComponent } from './test/test.component';
+import { TestAgainComponent } from './test-again/test-again.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { TestComponent } from './test/test.component';
     UserEditComponent,
     UserPasswordComponent,
     TestComponent,
+    TestAgainComponent,
     
   ],
   imports: [

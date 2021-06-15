@@ -1,23 +1,28 @@
-
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
 
-<body style="background-color:#EBD4CB">
-<h1>Edit Profile</h1>
-<!--img  src='https://www.w3schools.com/howto/img_avatar.png' width="250" height="250"-->
+<body style="background-color: #ebd4cb">
+  <h1>Edit Profile</h1>
+  <!--img  src='https://www.w3schools.com/howto/img_avatar.png' width="250" height="250"-->
 
+  <div class="profile-pic-div">
+    <img
+      src="https://www.w3schools.com/howto/img_avatar.png"
+      id="photo"
+      width="250"
+      height="250"
+    />
+    <input type="file" id="file" />
+  </div>
 
-<div class="profile-pic-div">
-  <img src="https://www.w3schools.com/howto/img_avatar.png" id="photo" width = 250 height = 250>
-  <input type="file" id="file">
-</div>
-
-
-<!--input type="file" class="file-input"
+  <!--input type="file" class="file-input"
        (change)="onFileSelected($event)" #fileUpload-->
 
-<!--div class="file-upload">
+  <!--div class="file-upload">
 
    {{fileName || "No file uploaded yet."}}
 
@@ -26,44 +31,32 @@
     </button>
 </div-->
 
+  <a (click)="submit()" style="text-align: center">Edit Avatar</a>
+  <form action="/action_page.php" style="max-width: 500px; margin: auto">
+    <div class="input-container">
+      <i class="fa fa-user icon"></i>
+      <input
+        class="input-field"
+        type="text"
+        placeholder="Username"
+        name="nme"
+      />
+    </div>
 
-<a (click)="submit()" style = "text-align: center">Edit Avatar</a>
-<form action="/action_page.php" style="max-width:500px;margin:auto">
-  
-  <div class="input-container">
-    <i class="fa fa-user icon"></i>
-    <input class="input-field" type="text" placeholder="Username" name="nme">
-  </div>
+    <div class="input-container">
+      <i class="fa fa-envelope icon"></i>
+      <input class="input-field" type="text" placeholder="Email" name="email" />
+    </div>
 
-  <div class="input-container">
-    <i class="fa fa-envelope icon"></i>
-    <input class="input-field" type="text" placeholder="Email" name="email">
-    
-  </div>
+    <div class="input-container">
+      <i class="fa fa-key icon"></i>
+      <a class="nav-link" [routerLink]="['/password']"> Change Password </a>
+    </div>
 
-  <div class="input-container">
-    <i class="fa fa-key icon"></i>
-    <a class="nav-link" [routerLink]="['/password']"> Change Password </a>
-  </div>
-    
-  
-  <div><button  class = "btn" type="submit" >Save</button></div>
-
-
-  
-
-
-</form>
+    <div>
+      <button (click)="updateEmail('hello@test.com')" class="btn" type="submit">
+        Save
+      </button>
+    </div>
+  </form>
 </body>
-
-
-
-
-  
-
-
-  
-
-  
-
-  
